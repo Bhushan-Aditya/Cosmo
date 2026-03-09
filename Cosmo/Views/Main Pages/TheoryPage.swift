@@ -261,36 +261,45 @@ struct TheoryExplorerView: View {
                 starfieldRotation: starfieldRotation,
                 zoomLevel: zoomLevel
             )
+            .ignoresSafeArea()
 
-            VStack(spacing: 20) { // Spacing in main VStack increased
+            VStack(spacing: 16) {
                 headerSection
-                    .padding(.bottom, 10)
                 theorySelectorSection
+                    .padding(.horizontal)
                 theoriesGrid
-
             }
-            .padding(.horizontal)
         }
         .onAppear {
             startCosmicAnimations()
         }
         .preferredColorScheme(.dark)
-        .sheet(isPresented: $showTheoryDetail) { // ADDED SHEET PRESENTATION HERE
+        .sheet(isPresented: $showTheoryDetail) {
             if let theory = selectedTheory {
                 TheoryDetailModal(theory: theory, isShowing: $showTheoryDetail)
             }
         }
         .sheet(isPresented: $showAddTheory) {
-            TheoryExplorerView.AddTheoryModal(isShowing: $showAddTheory) // CORRECTED LINE HERE
+            TheoryExplorerView.AddTheoryModal(isShowing: $showAddTheory)
         }
     }
 
     // MARK: - View Components
-    private var headerSection: some View { // Header section boxed
-        VStack(spacing: 10) {
-            HStack {
+    private var headerSection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            // Icon + Title row
+            HStack(alignment: .center, spacing: 10) {
+                Image(systemName: "atom")
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [Color.white, Color.cyan.opacity(0.8)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
                 Text("Theory Explorer")
-                    .font(.system(size: 36, weight: .bold))
+                    .font(.system(size: 28, weight: .bold))
                     .foregroundColor(.white)
 
                 Spacer()
@@ -298,23 +307,22 @@ struct TheoryExplorerView: View {
                 if selectedTheoryType == .community {
                     Button(action: { showAddTheory = true }) {
                         Image(systemName: "plus.circle.fill")
-                            .font(.title)
+                            .font(.system(size: 22))
                             .foregroundColor(.blue)
                     }
                 }
             }
 
+            // Subtitle
             Text(headerDescription)
-                .font(.title3)
-                .foregroundColor(.gray)
-                .multilineTextAlignment(.center)
+                .font(.system(size: 13))
+                .foregroundColor(.white.opacity(0.55))
+                .multilineTextAlignment(.leading)
+                .lineLimit(2)
         }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.white.opacity(0.05))
-        )
-
+        .padding(.horizontal, 20)
+        .padding(.top, 16)
+        .padding(.bottom, 4)
     }
 
     private var theorySelectorSection: some View { // Theory type selector boxed
