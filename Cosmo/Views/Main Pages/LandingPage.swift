@@ -47,9 +47,9 @@ struct LandingPage: View {
                 
                 // Start Button and Subtitle
                 VStack(spacing: 20) {
-                    CosmosButton(text: "Begin Journey") {
+                    CosmosButton(text: "Continue") {
                         withAnimation(.easeInOut(duration: 0.5)) {
-                            currentPage = .home
+                            currentPage = .explore
                         }
                     }
                     .opacity(showButton ? 1 : 0)

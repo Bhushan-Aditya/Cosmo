@@ -521,6 +521,25 @@ struct QuizApp: App {
     }
 }
 
+// MARK: - Shared Background (Match Explore)
+private struct ExploreStyleBackground: View {
+    @State private var starfieldRotation: Double = 0
+
+    var body: some View {
+        EnhancedCosmicBackground(
+            parallaxOffset: 0,
+            starfieldRotation: starfieldRotation,
+            zoomLevel: 1.0
+        )
+        .onAppear {
+            starfieldRotation = 0
+            withAnimation(.linear(duration: 20).repeatForever(autoreverses: false)) {
+                starfieldRotation = 360
+            }
+        }
+    }
+}
+
 // MARK: - Welcome View
 struct WelcomeView: View {
     @State private var showThemes = false
@@ -528,7 +547,7 @@ struct WelcomeView: View {
     
     var body: some View {
         ZStack {
-            AnimatedBackgroundView()
+            ExploreStyleBackground()
             
             VStack(spacing: 30) {
                 Text("Cosmic Quiz")
@@ -571,7 +590,7 @@ struct ThemeSelectionView: View {
     
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            ExploreStyleBackground()
             
             ScrollView {
                 VStack(spacing: 20) {
@@ -601,7 +620,7 @@ struct LevelSelectionView: View {
     
     var body: some View {
         ZStack {
-            theme.backgroundColor.ignoresSafeArea()
+            ExploreStyleBackground()
             
             ScrollView {
                 VStack(spacing: 25) {
@@ -679,10 +698,13 @@ struct EnhancedGameView: View {
     
     var body: some View {
         ZStack {
+            ExploreStyleBackground()
+
             AdvancedAnimations.AnimatedGradientBackground(
                 colors: [theme.backgroundColor, theme.accentColor.opacity(0.5)],
                 duration: 5
             )
+            .opacity(0.35)
             
             AdvancedAnimations.WaveAnimation(
                 color: theme.accentColor.opacity(0.3),
@@ -990,8 +1012,8 @@ struct GameOverView: View {
     
     var body: some View {
         ZStack {
-            Color.black.opacity(0.9)
-                .ignoresSafeArea()
+            ExploreStyleBackground()
+                .overlay(Color.black.opacity(0.75).ignoresSafeArea())
             
             VStack(spacing: 30) {
                 Text("Level Complete!")

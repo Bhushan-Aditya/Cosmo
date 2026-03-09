@@ -7,6 +7,7 @@ enum AppPage {
     case explore
     case theories
     case quiz
+    case neo
 }
 
 // MARK: - Theme
@@ -34,50 +35,91 @@ struct ContentView: View {
             StarfieldView()
                 .opacity(showStars ? 1 : 0)
             
-            NavigationStack {
-                Group {
-                    switch currentPage {
-                    case .landing:
-                        LandingPage(currentPage: $currentPage)
-                    case .home:
-                        HomePage(currentPage: $currentPage)
-                    case .explore:
+            switch currentPage {
+            case .landing:
+                LandingPage(currentPage: $currentPage)
+            case .home, .explore, .theories, .quiz, .neo:
+                MainTabView(selectedTab: $currentPage, showStars: $showStars)
+            }
+        }
+    }
+}
+
+private struct MainTabView: View {
+    @Binding var selectedTab: AppPage
+    @Binding var showStars: Bool
+
+    init(selectedTab: Binding<AppPage>, showStars: Binding<Bool>) {
+        self._selectedTab = selectedTab
+        self._showStars = showStars
+
+        let appearance = UITabBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundEffect = nil
+        appearance.backgroundColor = .clear
+        appearance.shadowColor = .clear
+
+        UITabBar.appearance().isTranslucent = true
+        UITabBar.appearance().standardAppearance = appearance
+        UITabBar.appearance().scrollEdgeAppearance = appearance
+    }
+
+    var body: some View {
+        GeometryReader { proxy in
+            let bottomInset = proxy.safeAreaInsets.bottom
+
+            ZStack(alignment: .bottom) {
+                Capsule()
+                    .fill(.ultraThinMaterial)
+                    .overlay(
+                        Capsule()
+                            .stroke(Color.white.opacity(0.18), lineWidth: 1)
+                    )
+                    .shadow(color: Color.black.opacity(0.35), radius: 14, x: 0, y: 8)
+                    .frame(height: 64)
+                    .padding(.horizontal, 18)
+                    .padding(.bottom, max(8, bottomInset * 0.35))
+                    .allowsHitTesting(false)
+                    .accessibilityHidden(true)
+                    .zIndex(0)
+
+                TabView(selection: $selectedTab) {
+                    NavigationStack {
                         ExplorePage()
-                    case .theories:
+                            .toolbar(.hidden, for: .navigationBar)
+                    }
+                    .tag(AppPage.explore)
+                    .tabItem { Label("Explore", systemImage: "sparkles") }
+
+                    NavigationStack {
                         TheoryExplorerView()
-                    case .quiz:
-                        WelcomeView()
+                            .toolbar(.hidden, for: .navigationBar)
                     }
-                }
-                .navigationBarBackButtonHidden(true)
-                .navigationBarHidden(currentPage == .landing)
-                .toolbar {
-                    if currentPage != .landing {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button(action: {
-                                withAnimation(.easeInOut(duration: 0.3)) {
-                                    currentPage = .home
-                                }
-                            }) {
-                                Image(systemName: "house.fill")
-                                    .foregroundColor(.white)
-                                    .font(.title3)
-                            }
-                        }
-                        
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button(action: {
-                                withAnimation {
-                                    showStars.toggle()
-                                }
-                            }) {
-                                Image(systemName: showStars ? "star.fill" : "star")
-                                    .foregroundColor(CosmosColors.starlight)
-                                    .font(.title3)
-                            }
-                        }
+                    .tag(AppPage.theories)
+                    .tabItem { Label("Theories", systemImage: "atom") }
+
+                    NavigationStack {
+                        QuizHomeView()
                     }
+                    .tag(AppPage.quiz)
+                    .tabItem { Label("Quiz", systemImage: "questionmark.circle") }
+
+                    NavigationStack {
+                        NeoView()
+                    }
+                    .tag(AppPage.neo)
+                    .tabItem { Label("Neo", systemImage: "cube.transparent") }
                 }
+                .tint(.white)
+                .toolbarBackground(.hidden, for: .tabBar)
+                .toolbarColorScheme(.dark, for: .tabBar)
+                .zIndex(1)
+            }
+        }
+        .ignoresSafeArea(edges: .bottom)
+        .onAppear {
+            if selectedTab == .landing || selectedTab == .home {
+                selectedTab = .explore
             }
         }
     }

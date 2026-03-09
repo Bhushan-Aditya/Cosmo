@@ -28,57 +28,6 @@ extension Color {
     }
 }
 
-// MARK: - Enhanced Cosmic Background
-struct EnhancedCosmicBackground: View {
-    let parallaxOffset: CGFloat
-    let starfieldRotation: Double
-    let zoomLevel: Double
-
-    var body: some View {
-        ZStack {
-            LinearGradient(
-                colors: [
-                    Color(red: 0.1, green: 0.1, blue: 0.2),
-                    Color(red: 0.15, green: 0.1, blue: 0.3)
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
-
-            ForEach(0..<70) { _ in
-                Circle()
-                    .fill(Color.white)
-                    .frame(width: 1.5, height: 1.5)
-                    .position(
-                        x: CGFloat.random(in: 0...UIScreen.main.bounds.width),
-                        y: CGFloat.random(in: 0...UIScreen.main.bounds.height)
-                    )
-                    .opacity(Double.random(in: 0.2...0.7))
-                    .rotationEffect(.degrees(starfieldRotation))
-            }
-
-            Circle()
-                .fill(
-                    RadialGradient(
-                        colors: [
-                            Color.blue.opacity(0.2),
-                            Color.clear
-                        ],
-                        center: .center,
-                        startRadius: 0,
-                        endRadius: 250
-                    )
-                )
-                .offset(
-                    x: parallaxOffset * 0.5,
-                    y: parallaxOffset * 0.3
-                )
-                .blur(radius: 25)
-        }
-    }
-}
-
 // MARK: - Section Card
 struct SectionCard: View {
     let section: ExploreSection
@@ -234,57 +183,52 @@ struct ExplorePage: View {
     }
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                EnhancedCosmicBackground(
-                    parallaxOffset: parallaxOffset,
-                    starfieldRotation: starfieldRotation,
-                    zoomLevel: zoomLevel
-                )
+        ZStack {
+            EnhancedCosmicBackground(
+                parallaxOffset: parallaxOffset,
+                starfieldRotation: starfieldRotation,
+                zoomLevel: zoomLevel
+            )
 
-                ScrollView(showsIndicators: false) {
-                    VStack(alignment: .leading, spacing: 20) {
-                        Text("Cosmic Odyssey 🌌")
-                            .font(.system(size: 32, weight: .bold))
-                            .foregroundColor(.white)
-                            .padding(.top, 20)
-                            .padding(.horizontal)
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 20) {
+                    Text("Cosmic Odyssey 🌌")
+                        .font(.system(size: 32, weight: .bold))
+                        .foregroundColor(.white)
+                        .padding(.top, 20)
+                        .padding(.horizontal)
 
-                        ForEach(sectionGroups) { group in
-                            VStack(alignment: .leading, spacing: 12) {
-                                Text(group.title)
-                                    .font(.title3)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal)
+                    ForEach(sectionGroups) { group in
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text(group.title)
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                                .padding(.horizontal)
 
-                                LazyVGrid(
-                                    columns: [
-                                        GridItem(.flexible(), spacing: 12),
-                                        GridItem(.flexible(), spacing: 12)
-                                    ],
-                                    spacing: 12
-                                ) {
-                                    ForEach(group.sections) { section in
-                                        NavigationLink(
-                                            destination: SectionContentView(section: section)
-                                        ) {
-                                            SectionCard(section: section)
-                                        }
+                            LazyVGrid(
+                                columns: [
+                                    GridItem(.flexible(), spacing: 12),
+                                    GridItem(.flexible(), spacing: 12)
+                                ],
+                                spacing: 12
+                            ) {
+                                ForEach(group.sections) { section in
+                                    NavigationLink(
+                                        destination: SectionContentView(section: section)
+                                    ) {
+                                        SectionCard(section: section)
                                     }
                                 }
-                                .padding(.horizontal)
                             }
+                            .padding(.horizontal)
                         }
-                        Spacer(minLength: 20)
                     }
+                    Spacer(minLength: 20)
                 }
-                .navigationBarHidden(true)
             }
         }
-        .onAppear {
-            startCosmicAnimations()
-        }
+        .onAppear { startCosmicAnimations() }
         .preferredColorScheme(.dark)
     }
 }

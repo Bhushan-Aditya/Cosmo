@@ -22,26 +22,77 @@ class CardState: ObservableObject {
 }
 
 struct StarfieldBackground: View {
-    let starCount = 100
+    private struct Star: Identifiable {
+        let id: Int
+        let x: CGFloat
+        let y: CGFloat
+        let vx: CGFloat
+        let vy: CGFloat
+        let radius: CGFloat
+        let baseOpacity: Double
+        let twinkleSpeed: Double
+        let phase: Double
+    }
+
+    let starCount = 120
+
+    @State private var stars: [Star] = []
     
     var body: some View {
         GeometryReader { geometry in
-            ForEach(0..<starCount, id: \.self) { _ in
-                Circle()
-                    .fill(Color.white)
-                    .frame(width: 2, height: 2)
-                    .position(
-                        x: CGFloat.random(in: 0...geometry.size.width),
-                        y: CGFloat.random(in: 0...geometry.size.height)
-                    )
-                    .opacity(Double.random(in: 0.2...0.7))
-                    .animation(
-                        Animation
-                            .easeInOut(duration: Double.random(in: 1.0...3.0))
-                            .repeatForever(autoreverses: true),
-                        value: UUID()
-                    )
+            TimelineView(.animation) { timeline in
+                Canvas { context, size in
+                    let time = timeline.date.timeIntervalSinceReferenceDate
+
+                    for star in stars {
+                        let nx = (star.x + (star.vx * CGFloat(time))).truncatingRemainder(dividingBy: 1.0)
+                        let ny = (star.y + (star.vy * CGFloat(time))).truncatingRemainder(dividingBy: 1.0)
+                        let px = nx >= 0 ? nx : (nx + 1.0)
+                        let py = ny >= 0 ? ny : (ny + 1.0)
+
+                        let twinkle = 0.5 + 0.5 * sin((time * star.twinkleSpeed) + star.phase)
+                        let opacity = min(1.0, max(0.0, star.baseOpacity * (0.65 + 0.7 * twinkle)))
+
+                        context.opacity = opacity
+                        context.fill(
+                            Circle().path(
+                                in: CGRect(
+                                    x: px * size.width,
+                                    y: py * size.height,
+                                    width: star.radius * 2,
+                                    height: star.radius * 2
+                                )
+                            ),
+                            with: .color(.white)
+                        )
+                    }
+                }
+                .onAppear {
+                    regenerateStars(for: geometry.size)
+                }
+                .onChange(of: geometry.size) { _, newSize in
+                    regenerateStars(for: newSize)
+                }
             }
+        }
+        .allowsHitTesting(false)
+    }
+
+    private func regenerateStars(for size: CGSize) {
+        guard size.width > 0, size.height > 0 else { return }
+
+        stars = (0..<starCount).map { index in
+            Star(
+                id: index,
+                x: CGFloat.random(in: 0.0...1.0),
+                y: CGFloat.random(in: 0.0...1.0),
+                vx: CGFloat.random(in: -0.002...0.002),
+                vy: CGFloat.random(in: 0.004...0.012),
+                radius: CGFloat.random(in: 0.7...1.8),
+                baseOpacity: Double.random(in: 0.15...0.55),
+                twinkleSpeed: Double.random(in: 0.8...2.2),
+                phase: Double.random(in: 0...(2 * .pi))
+            )
         }
     }
 }

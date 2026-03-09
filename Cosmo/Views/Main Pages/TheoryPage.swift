@@ -1,13 +1,5 @@
 import SwiftUI
 
-// MARK: - Helper Views (Placeholders to fix "not found in scope" errors)
-struct BackgroundGradient: View {
-    var body: some View {
-        LinearGradient(gradient: Gradient(colors: [.blue.opacity(0.7), .purple.opacity(0.7)]), startPoint: .topLeading, endPoint: .bottomTrailing)
-            .ignoresSafeArea()
-    }
-}
-
 struct TheoryTypeButton: View {
     let title: String
     let icon: String
@@ -16,17 +8,25 @@ struct TheoryTypeButton: View {
 
     var body: some View {
         Button(action: action) {
-            HStack {
+            VStack(spacing: 6) {
                 Image(systemName: icon)
+                    .font(.system(size: 20, weight: .semibold))
+
                 Text(title)
+                    .font(.footnote.weight(.semibold))
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.75)
+                    .allowsTightening(true)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
+            .frame(maxWidth: .infinity, minHeight: 68)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 10)
             .background(isSelected ? Color.blue.opacity(0.8) : Color.clear)
             .foregroundColor(.white)
-            .cornerRadius(10)
+            .cornerRadius(14)
             .overlay(
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: 14)
                     .stroke(Color.blue.opacity(isSelected ? 1 : 0), lineWidth: 2)
             )
         }
@@ -47,6 +47,9 @@ struct CategoryButton: View {
                     .foregroundColor(isSelected ? .blue : .gray)
                 Text(category.rawValue)
                     .font(.caption)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+                    .allowsTightening(true)
                     .foregroundColor(isSelected ? .white : .gray)
             }
             .padding(.horizontal, 12)
@@ -218,14 +221,15 @@ enum TheoryCategory: String, CaseIterable, Identifiable { // Conform to Identifi
 
 // MARK: - Main Theory View
 struct TheoryExplorerView: View {
-    @State private var selectedCategory: TheoryCategory = .all
     @State private var selectedTheoryType: TheoryType = .verified //Default to verified.
     @State private var selectedTheory: Theory? = nil
     @State private var showTheoryDetail = false
-    @State private var searchText = ""
     @State private var animateCards = false
     @State private var showAddTheory = false
     @State private var scrollOffset: CGFloat = 0
+    @State private var parallaxOffset: CGFloat = 0
+    @State private var starfieldRotation: Double = 0
+    @State private var zoomLevel: Double = 1.0
 
     private let theories: [Theory] = TheoryDatabase.allTheories
 
@@ -233,40 +237,42 @@ struct TheoryExplorerView: View {
         print("Total theories loaded: \(theories.count)")
     }
 
+    private func startCosmicAnimations() {
+        withAnimation(.linear(duration: 20).repeatForever(autoreverses: false)) {
+            starfieldRotation = 360
+        }
+    }
+
 
     var filteredTheories: [Theory] {
         theories.filter { theory in
-            let categoryMatch = selectedCategory == .all || theory.category == selectedCategory
             let typeMatch = selectedTheoryType == .all || theory.type == selectedTheoryType // Now using .all for TheoryType filtering too if you need it in future
-            let searchMatch = searchText.isEmpty ||
-            theory.title.localizedCaseInsensitiveContains(searchText) ||
-            theory.scientist.localizedCaseInsensitiveContains(searchText)
             if selectedTheoryType == .community && theory.type != .community { // For Offline, only show Community if type filter is Community.
                 return false
             }
-            return categoryMatch && typeMatch && searchMatch
+            return typeMatch
         }
     }
 
     var body: some View {
         ZStack {
-            BackgroundGradient()
+            EnhancedCosmicBackground(
+                parallaxOffset: parallaxOffset,
+                starfieldRotation: starfieldRotation,
+                zoomLevel: zoomLevel
+            )
 
             VStack(spacing: 20) { // Spacing in main VStack increased
                 headerSection
                     .padding(.bottom, 10)
                 theorySelectorSection
-                categoryScrollSection
-                searchAndFilterSection
-                    .background(
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.white.opacity(0.05))
-                    )
-                    .padding()
                 theoriesGrid
 
             }
             .padding(.horizontal)
+        }
+        .onAppear {
+            startCosmicAnimations()
         }
         .preferredColorScheme(.dark)
         .sheet(isPresented: $showTheoryDetail) { // ADDED SHEET PRESENTATION HERE
@@ -351,59 +357,7 @@ struct TheoryExplorerView: View {
         )
     }
 
-    private var categoryScrollSection: some View { // Category scroll boxed
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 10) {
-                ForEach(TheoryCategory.allCases) { category in //  <-- id: \.self COMPLETELY REMOVED HERE
-                    CategoryButton(
-                        category: category,
-                        isSelected: selectedCategory == category,
-                        onTap: {
-                            withAnimation(.spring()) {
-                                selectedCategory = category
-                            }
-                        }
-                    )
-                }
-                .padding(.horizontal)
-            }
-        }
-        .padding(.vertical, 10)
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.white.opacity(0.05))
-        )
-    }
-
-
-    private var searchAndFilterSection: some View { // Search Section Layout - minor adjust already done earlier.
-        VStack(spacing: 15) {
-            HStack {
-                Image(systemName: "magnifyingglass")
-                    .foregroundColor(.gray)
-
-                TextField("Search theories...", text: $searchText)
-                    .textFieldStyle(PlainTextFieldStyle())
-                    .foregroundColor(.white)
-
-                if !searchText.isEmpty {
-                    Button(action: { searchText = "" }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.gray)
-                    }
-                }
-            }
-            .padding()
-            .background(Color.white.opacity(0.1))
-            .cornerRadius(15)
-
-            if !filteredTheories.isEmpty {
-                Text("\(filteredTheories.count) theories found")
-                    .font(.caption)
-                    .foregroundColor(.gray)
-            }
-        }
-    }
+    // Category + search sections removed (per request).
 
     private var theoriesGrid: some View { // Theories Grid
         ScrollView {

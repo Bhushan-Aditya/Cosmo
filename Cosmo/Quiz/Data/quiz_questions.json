@@ -1,0 +1,820 @@
+{
+  "questions": [
+    {
+      "id": "solarSystem_001",
+      "categoryId": "solarSystem",
+      "difficulty": "easy",
+      "prompt": "Which planet is closest to the Sun?",
+      "choices": ["Mercury", "Venus", "Earth", "Mars"],
+      "correctIndex": 0,
+      "explanation": "Mercury is the innermost planet, orbiting the Sun at an average distance of about 0.39 AU.",
+      "sources": ["NASA Solar System Exploration: Mercury"]
+    },
+    {
+      "id": "solarSystem_002",
+      "categoryId": "solarSystem",
+      "difficulty": "easy",
+      "prompt": "Which planet is known for its prominent ring system?",
+      "choices": ["Mars", "Saturn", "Venus", "Mercury"],
+      "correctIndex": 1,
+      "explanation": "Saturn’s rings are the most extensive and visible, made largely of ice and rock particles.",
+      "sources": ["NASA Solar System Exploration: Saturn"]
+    },
+    {
+      "id": "solarSystem_003",
+      "categoryId": "solarSystem",
+      "difficulty": "easy",
+      "prompt": "What is the name of Earth’s natural satellite?",
+      "choices": ["Phobos", "Titan", "The Moon", "Europa"],
+      "correctIndex": 2,
+      "explanation": "Earth has one major natural satellite commonly called the Moon.",
+      "sources": ["NASA: Earth's Moon"]
+    },
+    {
+      "id": "solarSystem_004",
+      "categoryId": "solarSystem",
+      "difficulty": "medium",
+      "prompt": "Which planet has the shortest year (orbital period) around the Sun?",
+      "choices": ["Mercury", "Earth", "Jupiter", "Neptune"],
+      "correctIndex": 0,
+      "explanation": "Mercury completes one orbit in about 88 Earth days, the shortest of any planet.",
+      "sources": ["NASA Solar System Exploration: Mercury"]
+    },
+    {
+      "id": "solarSystem_005",
+      "categoryId": "solarSystem",
+      "difficulty": "medium",
+      "prompt": "Which planet rotates on its side relative to its orbit?",
+      "choices": ["Uranus", "Saturn", "Mars", "Venus"],
+      "correctIndex": 0,
+      "explanation": "Uranus has an axial tilt of about 98°, so it effectively rolls around the Sun on its side.",
+      "sources": ["NASA Solar System Exploration: Uranus"]
+    },
+    {
+      "id": "solarSystem_006",
+      "categoryId": "solarSystem",
+      "difficulty": "medium",
+      "prompt": "Which planet has the Great Red Spot?",
+      "choices": ["Jupiter", "Saturn", "Neptune", "Earth"],
+      "correctIndex": 0,
+      "explanation": "The Great Red Spot is a long-lived storm system in Jupiter’s atmosphere.",
+      "sources": ["NASA Solar System Exploration: Jupiter"]
+    },
+    {
+      "id": "solarSystem_007",
+      "categoryId": "solarSystem",
+      "difficulty": "hard",
+      "prompt": "What is the Kuiper Belt?",
+      "choices": [
+        "A region of asteroids between Mars and Jupiter",
+        "A spherical cloud of icy bodies far beyond Pluto",
+        "A region of icy bodies beyond Neptune, including dwarf planets",
+        "A ring system around Uranus"
+      ],
+      "correctIndex": 2,
+      "explanation": "The Kuiper Belt is a disk-like region beyond Neptune containing many small icy bodies and dwarf planets.",
+      "sources": ["NASA: Kuiper Belt"]
+    },
+    {
+      "id": "solarSystem_008",
+      "categoryId": "solarSystem",
+      "difficulty": "hard",
+      "prompt": "Which statement best describes a comet’s tail?",
+      "choices": [
+        "It always points in the direction the comet is moving",
+        "It always points away from the Sun due to solar wind and radiation pressure",
+        "It is made only of liquid water",
+        "It forms only when the comet is far from the Sun"
+      ],
+      "correctIndex": 1,
+      "explanation": "A comet’s ion and dust tails generally point away from the Sun because of solar wind and radiation pressure.",
+      "sources": ["ESA: Comets"]
+    },
+    {
+      "id": "solarSystem_009",
+      "categoryId": "solarSystem",
+      "difficulty": "medium",
+      "prompt": "Which planet is the largest in the Solar System by diameter?",
+      "choices": ["Jupiter", "Saturn", "Uranus", "Neptune"],
+      "correctIndex": 0,
+      "explanation": "Jupiter is the largest planet in the Solar System by diameter and mass.",
+      "sources": ["NASA Solar System Exploration: Jupiter"]
+    },
+    {
+      "id": "solarSystem_010",
+      "categoryId": "solarSystem",
+      "difficulty": "easy",
+      "prompt": "Which planet is often called the 'Red Planet'?",
+      "choices": ["Mars", "Mercury", "Venus", "Neptune"],
+      "correctIndex": 0,
+      "explanation": "Mars appears reddish because iron-rich minerals in its soil oxidize (rust).",
+      "sources": ["NASA Solar System Exploration: Mars"]
+    },
+
+    {
+      "id": "cosmicPhenomena_001",
+      "categoryId": "cosmicPhenomena",
+      "difficulty": "easy",
+      "prompt": "What is a supernova?",
+      "choices": [
+        "A planet forming in a disk of dust",
+        "A powerful stellar explosion at the end of a star’s life",
+        "A type of comet that burns brightly",
+        "A galaxy with no stars"
+      ],
+      "correctIndex": 1,
+      "explanation": "A supernova is a catastrophic explosion that can occur when massive stars collapse or certain white dwarfs undergo runaway fusion.",
+      "sources": ["NASA: Supernova"]
+    },
+    {
+      "id": "cosmicPhenomena_002",
+      "categoryId": "cosmicPhenomena",
+      "difficulty": "easy",
+      "prompt": "What is the event horizon of a black hole?",
+      "choices": [
+        "A ring of debris orbiting the black hole",
+        "The boundary beyond which nothing can escape",
+        "The bright center of a galaxy",
+        "A type of neutron star"
+      ],
+      "correctIndex": 1,
+      "explanation": "The event horizon marks the point of no return; beyond it, escape velocity exceeds the speed of light.",
+      "sources": ["NASA: Black Holes"]
+    },
+    {
+      "id": "cosmicPhenomena_003",
+      "categoryId": "cosmicPhenomena",
+      "difficulty": "medium",
+      "prompt": "What causes an aurora on Earth?",
+      "choices": [
+        "Earth’s volcanoes ejecting ash into the upper atmosphere",
+        "Solar wind particles interacting with Earth’s magnetic field and atmosphere",
+        "Meteors burning up at the equator only",
+        "Moonlight scattering in the clouds"
+      ],
+      "correctIndex": 1,
+      "explanation": "Charged particles from the Sun are guided by Earth’s magnetic field into the upper atmosphere, where they excite atoms that emit light.",
+      "sources": ["NOAA: Auroras"]
+    },
+    {
+      "id": "cosmicPhenomena_004",
+      "categoryId": "cosmicPhenomena",
+      "difficulty": "medium",
+      "prompt": "What is a pulsar?",
+      "choices": [
+        "A rapidly rotating neutron star that beams radiation",
+        "A planet with a highly elliptical orbit",
+        "A type of galaxy collision",
+        "A comet with multiple tails"
+      ],
+      "correctIndex": 0,
+      "explanation": "Pulsars are neutron stars emitting beams of electromagnetic radiation; as they rotate, the beams sweep past Earth like a lighthouse.",
+      "sources": ["NASA: Neutron Stars and Pulsars"]
+    },
+    {
+      "id": "cosmicPhenomena_005",
+      "categoryId": "cosmicPhenomena",
+      "difficulty": "hard",
+      "prompt": "What is gravitational lensing?",
+      "choices": [
+        "The bending of light by a planet’s atmosphere only",
+        "A telescope technique using glass lenses",
+        "The bending of light by gravity from massive objects",
+        "A mirage caused by heat on a planet"
+      ],
+      "correctIndex": 2,
+      "explanation": "Massive objects curve spacetime, causing light paths to bend; this can magnify or distort distant objects.",
+      "sources": ["ESA: Gravitational Lensing"]
+    },
+    {
+      "id": "cosmicPhenomena_006",
+      "categoryId": "cosmicPhenomena",
+      "difficulty": "medium",
+      "prompt": "What is a nebula?",
+      "choices": [
+        "A cloud of gas and dust in space",
+        "A crater on the Moon",
+        "A frozen ocean on Europa",
+        "A mountain range on Mars"
+      ],
+      "correctIndex": 0,
+      "explanation": "Nebulae are large regions of gas and dust; some are star-forming regions while others are remnants of stellar death.",
+      "sources": ["NASA: Nebulae"]
+    },
+    {
+      "id": "cosmicPhenomena_007",
+      "categoryId": "cosmicPhenomena",
+      "difficulty": "hard",
+      "prompt": "What is a gamma-ray burst (GRB)?",
+      "choices": [
+        "A flare caused by sunspots on the Sun",
+        "A brief, intense flash of gamma rays from distant cosmic events",
+        "A steady radio signal from a pulsar",
+        "A storm in Jupiter’s atmosphere"
+      ],
+      "correctIndex": 1,
+      "explanation": "GRBs are extremely energetic explosions observed in distant galaxies, often linked to massive star collapse or compact-object mergers.",
+      "sources": ["NASA: Gamma-ray Bursts"]
+    },
+    {
+      "id": "cosmicPhenomena_008",
+      "categoryId": "cosmicPhenomena",
+      "difficulty": "easy",
+      "prompt": "What is the Sun classified as?",
+      "choices": ["A red giant", "A white dwarf", "A main-sequence star", "A neutron star"],
+      "correctIndex": 2,
+      "explanation": "The Sun is a G-type main-sequence star, fusing hydrogen into helium in its core.",
+      "sources": ["NASA: Sun Facts"]
+    },
+    {
+      "id": "cosmicPhenomena_009",
+      "categoryId": "cosmicPhenomena",
+      "difficulty": "medium",
+      "prompt": "What is an exoplanet?",
+      "choices": [
+        "A planet outside our Solar System",
+        "A planet made entirely of ice",
+        "A moon that orbits a comet",
+        "A planet with rings"
+      ],
+      "correctIndex": 0,
+      "explanation": "Exoplanets are planets that orbit stars other than the Sun.",
+      "sources": ["NASA Exoplanet Exploration"]
+    },
+    {
+      "id": "cosmicPhenomena_010",
+      "categoryId": "cosmicPhenomena",
+      "difficulty": "hard",
+      "prompt": "What is a neutron star?",
+      "choices": [
+        "A star made mostly of hydrogen",
+        "A very dense stellar remnant composed mostly of neutrons",
+        "A planet with a magnetic field",
+        "A cloud of dust that forms planets"
+      ],
+      "correctIndex": 1,
+      "explanation": "Neutron stars form when massive stars collapse; they pack more mass than the Sun into a sphere only ~20 km wide.",
+      "sources": ["NASA: Neutron Stars"]
+    },
+
+    {
+      "id": "spaceTime_001",
+      "categoryId": "spaceTime",
+      "difficulty": "easy",
+      "prompt": "In special relativity, what happens to time for a fast-moving observer?",
+      "choices": ["It speeds up", "It slows down", "It stops everywhere", "It becomes random"],
+      "correctIndex": 1,
+      "explanation": "Time dilation means a moving clock runs slower relative to a stationary observer.",
+      "sources": ["Einstein: Special Relativity (concept)"]
+    },
+    {
+      "id": "spaceTime_002",
+      "categoryId": "spaceTime",
+      "difficulty": "medium",
+      "prompt": "What does general relativity describe gravity as?",
+      "choices": [
+        "A force carried by photons",
+        "A consequence of spacetime curvature",
+        "A property of only planets",
+        "A type of electromagnetic wave"
+      ],
+      "correctIndex": 1,
+      "explanation": "In general relativity, mass-energy curves spacetime and objects follow paths (geodesics) in that curved geometry.",
+      "sources": ["Einstein: General Relativity (concept)"]
+    },
+    {
+      "id": "spaceTime_003",
+      "categoryId": "spaceTime",
+      "difficulty": "easy",
+      "prompt": "What is the speed of light in vacuum approximately?",
+      "choices": ["300,000 km/s", "30,000 km/s", "3,000 km/s", "3,000,000 km/s"],
+      "correctIndex": 0,
+      "explanation": "The speed of light in vacuum is about 299,792 km/s, often rounded to 300,000 km/s.",
+      "sources": ["CODATA: speed of light"]
+    },
+    {
+      "id": "spaceTime_004",
+      "categoryId": "spaceTime",
+      "difficulty": "medium",
+      "prompt": "Which concept states that nothing with mass can be accelerated to the speed of light?",
+      "choices": ["Doppler effect", "Mass–energy equivalence", "Relativistic energy growth", "Hubble’s law"],
+      "correctIndex": 2,
+      "explanation": "As velocity approaches the speed of light, the energy required to accelerate a massive object grows without bound.",
+      "sources": ["Special Relativity (concept)"]
+    },
+    {
+      "id": "spaceTime_005",
+      "categoryId": "spaceTime",
+      "difficulty": "hard",
+      "prompt": "What is spacetime?",
+      "choices": [
+        "A theory about comets",
+        "A four-dimensional model combining space and time",
+        "A region beyond the Kuiper Belt",
+        "A type of black hole"
+      ],
+      "correctIndex": 1,
+      "explanation": "Spacetime treats time as a dimension alongside three spatial dimensions, providing the stage for relativity.",
+      "sources": ["Minkowski spacetime (concept)"]
+    },
+    {
+      "id": "spaceTime_006",
+      "categoryId": "spaceTime",
+      "difficulty": "medium",
+      "prompt": "What is gravitational time dilation?",
+      "choices": [
+        "Time runs faster near massive objects",
+        "Time runs slower in stronger gravitational fields",
+        "Time stops inside a rocket",
+        "Time is the same everywhere"
+      ],
+      "correctIndex": 1,
+      "explanation": "Clocks tick more slowly closer to massive bodies; this effect is measurable (and relevant for GPS).",
+      "sources": ["General Relativity (concept)"]
+    },
+    {
+      "id": "spaceTime_007",
+      "categoryId": "spaceTime",
+      "difficulty": "hard",
+      "prompt": "What is the equivalence principle (in simplified terms)?",
+      "choices": [
+        "All planets have equal gravity",
+        "The effects of gravity and acceleration are locally indistinguishable",
+        "Energy and mass are unrelated",
+        "Light cannot bend in gravity"
+      ],
+      "correctIndex": 1,
+      "explanation": "Locally, being at rest in a gravitational field can feel the same as accelerating in empty space.",
+      "sources": ["General Relativity (concept)"]
+    },
+    {
+      "id": "spaceTime_008",
+      "categoryId": "spaceTime",
+      "difficulty": "easy",
+      "prompt": "What does \"E = mc^2\" express?",
+      "choices": [
+        "Energy equals mass times the speed of light squared",
+        "Energy equals momentum times speed",
+        "Energy equals charge squared",
+        "Energy equals time times distance"
+      ],
+      "correctIndex": 0,
+      "explanation": "Mass–energy equivalence states that mass can be converted into energy and vice versa.",
+      "sources": ["Special Relativity (concept)"]
+    },
+    {
+      "id": "spaceTime_009",
+      "categoryId": "spaceTime",
+      "difficulty": "medium",
+      "prompt": "What is the light-year?",
+      "choices": [
+        "A unit of time equal to one year",
+        "A unit of distance: how far light travels in one year",
+        "A unit of brightness",
+        "A unit of mass"
+      ],
+      "correctIndex": 1,
+      "explanation": "A light-year is a distance unit used in astronomy, about 9.46 trillion kilometers.",
+      "sources": ["NASA: Distance in Space"]
+    },
+    {
+      "id": "spaceTime_010",
+      "categoryId": "spaceTime",
+      "difficulty": "hard",
+      "prompt": "Why does GPS need relativity corrections?",
+      "choices": [
+        "Satellites move too slowly to compute positions",
+        "Time dilation from both speed and gravity affects satellite clocks",
+        "Radio waves cannot travel in space without relativity",
+        "Earth’s magnetic field changes time randomly"
+      ],
+      "correctIndex": 1,
+      "explanation": "Satellite clocks tick at different rates due to their speed (special relativity) and weaker gravity (general relativity). Corrections are required for accuracy.",
+      "sources": ["NIST: Relativity and GPS"]
+    },
+
+    {
+      "id": "earthAndSpace_001",
+      "categoryId": "earthAndSpace",
+      "difficulty": "easy",
+      "prompt": "What causes ocean tides on Earth most strongly?",
+      "choices": ["The Sun only", "The Moon’s gravity", "Earth’s rotation only", "Ocean currents only"],
+      "correctIndex": 1,
+      "explanation": "The Moon’s gravitational pull is the dominant contributor to tides; the Sun also contributes but less strongly.",
+      "sources": ["NOAA: Tides and Currents"]
+    },
+    {
+      "id": "earthAndSpace_002",
+      "categoryId": "earthAndSpace",
+      "difficulty": "easy",
+      "prompt": "A solar eclipse happens when:",
+      "choices": [
+        "Earth blocks the Sun’s light from reaching the Moon",
+        "The Moon passes between Earth and the Sun",
+        "The Sun passes between Earth and the Moon",
+        "Earth passes between Mars and the Sun"
+      ],
+      "correctIndex": 1,
+      "explanation": "A solar eclipse occurs when the Moon moves between Earth and the Sun, casting a shadow on Earth.",
+      "sources": ["NASA: Eclipses"]
+    },
+    {
+      "id": "earthAndSpace_003",
+      "categoryId": "earthAndSpace",
+      "difficulty": "easy",
+      "prompt": "What is the primary reason astronauts float in orbit?",
+      "choices": [
+        "There is no gravity in space",
+        "They are in continuous free-fall around Earth",
+        "Their spacesuits create anti-gravity",
+        "Earth’s magnetic field cancels gravity"
+      ],
+      "correctIndex": 1,
+      "explanation": "Gravity still acts strongly in low Earth orbit; astronauts appear weightless because they are falling around Earth together with their spacecraft.",
+      "sources": ["NASA: Microgravity"]
+    },
+    {
+      "id": "earthAndSpace_004",
+      "categoryId": "earthAndSpace",
+      "difficulty": "medium",
+      "prompt": "What is Earth's escape velocity (approximately)?",
+      "choices": ["1.12 km/s", "11.2 km/s", "112 km/s", "0.112 km/s"],
+      "correctIndex": 1,
+      "explanation": "Earth’s escape velocity is about 11.2 km/s (ignoring atmospheric drag and rotation).",
+      "sources": ["NASA: Spaceflight basics"]
+    },
+    {
+      "id": "earthAndSpace_005",
+      "categoryId": "earthAndSpace",
+      "difficulty": "medium",
+      "prompt": "Why is the sky blue on Earth?",
+      "choices": [
+        "Oceans reflect blue light",
+        "Rayleigh scattering scatters shorter (blue) wavelengths more",
+        "The Sun emits only blue light",
+        "Air absorbs all red light completely"
+      ],
+      "correctIndex": 1,
+      "explanation": "Molecules in the atmosphere scatter shorter wavelengths more efficiently, making scattered light appear blue from many directions.",
+      "sources": ["NASA: Why is the sky blue?"]
+    },
+    {
+      "id": "earthAndSpace_006",
+      "categoryId": "earthAndSpace",
+      "difficulty": "hard",
+      "prompt": "What is the Van Allen radiation belt?",
+      "choices": [
+        "A ring of asteroids around Earth",
+        "Regions of trapped charged particles held by Earth's magnetic field",
+        "A cloud layer that blocks UV light",
+        "A band of storms near the equator"
+      ],
+      "correctIndex": 1,
+      "explanation": "The Van Allen belts are zones of energetic charged particles trapped by Earth’s magnetic field.",
+      "sources": ["NASA: Van Allen Probes"]
+    },
+    {
+      "id": "earthAndSpace_007",
+      "categoryId": "earthAndSpace",
+      "difficulty": "medium",
+      "prompt": "A lunar eclipse happens when:",
+      "choices": [
+        "The Moon blocks the Sun’s light from reaching Earth",
+        "Earth passes between the Sun and the Moon",
+        "The Sun passes between Earth and the Moon",
+        "Mars passes between the Sun and Earth"
+      ],
+      "correctIndex": 1,
+      "explanation": "In a lunar eclipse, Earth’s shadow falls on the Moon because Earth is between the Sun and Moon.",
+      "sources": ["NASA: Eclipses"]
+    },
+    {
+      "id": "earthAndSpace_008",
+      "categoryId": "earthAndSpace",
+      "difficulty": "hard",
+      "prompt": "Which layer of Earth’s atmosphere contains most weather?",
+      "choices": ["Troposphere", "Stratosphere", "Mesosphere", "Thermosphere"],
+      "correctIndex": 0,
+      "explanation": "Most clouds and weather occur in the troposphere, the lowest atmospheric layer.",
+      "sources": ["NOAA: Atmospheric layers"]
+    },
+    {
+      "id": "earthAndSpace_009",
+      "categoryId": "earthAndSpace",
+      "difficulty": "medium",
+      "prompt": "Why do satellites stay in orbit rather than fall straight down?",
+      "choices": [
+        "They are outside Earth's gravity",
+        "They have enough sideways velocity to keep missing Earth",
+        "They are held up by air pressure",
+        "They are pushed by sunlight only"
+      ],
+      "correctIndex": 1,
+      "explanation": "An orbit is a balance: the satellite is falling due to gravity, but moving forward fast enough that it continuously misses Earth.",
+      "sources": ["NASA: Orbits"]
+    },
+    {
+      "id": "earthAndSpace_010",
+      "categoryId": "earthAndSpace",
+      "difficulty": "easy",
+      "prompt": "What is the name of the force that attracts objects with mass toward each other?",
+      "choices": ["Magnetism", "Gravity", "Friction", "Radiation"],
+      "correctIndex": 1,
+      "explanation": "Gravity is the universal attraction between masses, described by Newton’s law and refined by general relativity.",
+      "sources": ["NASA: Gravity"]
+    },
+
+    {
+      "id": "technology_001",
+      "categoryId": "technology",
+      "difficulty": "easy",
+      "prompt": "What does a telescope primarily do?",
+      "choices": [
+        "Measures ocean tides",
+        "Collects and focuses light (or other wavelengths) to see distant objects",
+        "Creates gravity in space",
+        "Detects only sound waves"
+      ],
+      "correctIndex": 1,
+      "explanation": "Telescopes gather more light than the eye and focus it to observe faint, distant objects across many wavelengths.",
+      "sources": ["NASA: Telescopes"]
+    },
+    {
+      "id": "technology_002",
+      "categoryId": "technology",
+      "difficulty": "easy",
+      "prompt": "Which fuel-oxidizer pair is commonly used in many rockets?",
+      "choices": ["Water and salt", "Liquid oxygen and rocket-grade kerosene", "Helium and nitrogen", "Carbon dioxide and argon"],
+      "correctIndex": 1,
+      "explanation": "Many launch vehicles use liquid oxygen (oxidizer) with kerosene (RP-1) or methane; LOX/RP-1 is a classic combination.",
+      "sources": ["NASA: Rocket Propulsion Basics"]
+    },
+    {
+      "id": "technology_003",
+      "categoryId": "technology",
+      "difficulty": "medium",
+      "prompt": "What is a rocket stage?",
+      "choices": [
+        "A place where rockets are built",
+        "A section of the rocket that contains engines and propellant and can be separated",
+        "The platform a rocket launches from",
+        "A computer that navigates rockets"
+      ],
+      "correctIndex": 1,
+      "explanation": "Staging lets rockets discard empty tanks/engines to reduce mass, improving efficiency and enabling higher velocities.",
+      "sources": ["NASA: Staging"]
+    },
+    {
+      "id": "technology_004",
+      "categoryId": "technology",
+      "difficulty": "medium",
+      "prompt": "Why are many space telescopes placed in orbit instead of on Earth?",
+      "choices": [
+        "To avoid Earth's atmosphere blurring/absorbing some wavelengths",
+        "Because gravity is stronger in orbit",
+        "Because the Sun is closer in orbit",
+        "To make them spin faster"
+      ],
+      "correctIndex": 0,
+      "explanation": "Earth’s atmosphere distorts images and blocks parts of the spectrum (like most UV, X-ray), so space telescopes can see more clearly.",
+      "sources": ["NASA: Space Telescopes"]
+    },
+    {
+      "id": "technology_005",
+      "categoryId": "technology",
+      "difficulty": "hard",
+      "prompt": "What is an ion thruster best known for?",
+      "choices": [
+        "Very high thrust for launch",
+        "High efficiency (high specific impulse) but low thrust",
+        "Using coal as propellant",
+        "Working only under water"
+      ],
+      "correctIndex": 1,
+      "explanation": "Ion propulsion accelerates ions to high speeds, providing efficient long-duration thrust, but it’s too weak for liftoff from Earth.",
+      "sources": ["NASA: Ion Propulsion"]
+    },
+    {
+      "id": "technology_006",
+      "categoryId": "technology",
+      "difficulty": "medium",
+      "prompt": "What does 'LEO' stand for in spaceflight?",
+      "choices": ["Low Energy Orbit", "Low Earth Orbit", "Lunar Escape Orbit", "Light Emission Observatory"],
+      "correctIndex": 1,
+      "explanation": "LEO is Low Earth Orbit, typically a few hundred to ~2,000 km above Earth’s surface.",
+      "sources": ["NASA: Orbits"]
+    },
+    {
+      "id": "technology_007",
+      "categoryId": "technology",
+      "difficulty": "hard",
+      "prompt": "What is specific impulse (Isp) a measure of?",
+      "choices": [
+        "How loud a rocket is",
+        "Propellant efficiency (thrust per unit propellant weight flow)",
+        "How hot the engine runs",
+        "How many stages a rocket has"
+      ],
+      "correctIndex": 1,
+      "explanation": "Specific impulse indicates how effectively a rocket uses propellant—higher Isp generally means better efficiency.",
+      "sources": ["NASA: Rocket engine performance"]
+    },
+    {
+      "id": "technology_008",
+      "categoryId": "technology",
+      "difficulty": "easy",
+      "prompt": "What is the main job of a satellite in Earth orbit?",
+      "choices": [
+        "Only to create tides",
+        "To perform tasks like communication, observation, or navigation from orbit",
+        "To stop asteroids",
+        "To generate oxygen for Earth"
+      ],
+      "correctIndex": 1,
+      "explanation": "Satellites serve many functions: communications, weather monitoring, Earth observation, science, and navigation (like GPS).",
+      "sources": ["ESA: Satellites"]
+    },
+    {
+      "id": "technology_009",
+      "categoryId": "technology",
+      "difficulty": "medium",
+      "prompt": "Why do rockets need an oxidizer in addition to fuel?",
+      "choices": [
+        "Space has too much oxygen already",
+        "There is no oxygen in space to support combustion",
+        "Oxidizer cools the rocket",
+        "Oxidizer is only for decoration"
+      ],
+      "correctIndex": 1,
+      "explanation": "In space there’s no atmospheric oxygen, so rockets carry an oxidizer (like liquid oxygen) to burn fuel.",
+      "sources": ["NASA: Propulsion Basics"]
+    },
+    {
+      "id": "technology_010",
+      "categoryId": "technology",
+      "difficulty": "hard",
+      "prompt": "What is a gravitational slingshot (gravity assist) used for?",
+      "choices": [
+        "Launching rockets from Earth without fuel",
+        "Changing a spacecraft’s speed and direction using a planet’s motion and gravity",
+        "Stopping a spacecraft instantly",
+        "Measuring Earth’s tides"
+      ],
+      "correctIndex": 1,
+      "explanation": "Gravity assists let spacecraft gain or lose energy relative to the Sun by passing near a moving planet, effectively trading momentum.",
+      "sources": ["NASA: Gravity Assist"]
+    },
+
+    {
+      "id": "theories_001",
+      "categoryId": "theories",
+      "difficulty": "easy",
+      "prompt": "What does the Big Bang theory describe?",
+      "choices": [
+        "The formation of the Solar System only",
+        "The expansion of the universe from an early hot, dense state",
+        "The explosion of the Sun",
+        "The collision of two galaxies in the Milky Way"
+      ],
+      "correctIndex": 1,
+      "explanation": "The Big Bang model describes an early hot, dense phase followed by expansion and cooling, supported by observations like cosmic expansion and the CMB.",
+      "sources": ["NASA: Big Bang"]
+    },
+    {
+      "id": "theories_002",
+      "categoryId": "theories",
+      "difficulty": "medium",
+      "prompt": "What is the cosmic microwave background (CMB)?",
+      "choices": [
+        "Radio signals from GPS satellites",
+        "Leftover thermal radiation from the early universe",
+        "Light emitted by black holes",
+        "A haze caused by interstellar dust only"
+      ],
+      "correctIndex": 1,
+      "explanation": "The CMB is faint microwave radiation filling space, a relic of the universe becoming transparent about 380,000 years after the Big Bang.",
+      "sources": ["NASA: CMB"]
+    },
+    {
+      "id": "theories_003",
+      "categoryId": "theories",
+      "difficulty": "medium",
+      "prompt": "What is dark matter (as commonly used in cosmology)?",
+      "choices": [
+        "Ordinary matter that is painted black",
+        "Matter that does not emit light but shows gravitational effects",
+        "Energy that powers stars",
+        "A kind of antimatter"
+      ],
+      "correctIndex": 1,
+      "explanation": "Dark matter is inferred from gravitational effects on galaxies and clusters; it interacts weakly with light, making it hard to detect directly.",
+      "sources": ["NASA: Dark Matter"]
+    },
+    {
+      "id": "theories_004",
+      "categoryId": "theories",
+      "difficulty": "easy",
+      "prompt": "What is Hubble’s law about?",
+      "choices": [
+        "Planets moving in perfect circles",
+        "The relationship between a galaxy’s distance and its recessional velocity",
+        "How black holes emit radiation",
+        "How comets form tails"
+      ],
+      "correctIndex": 1,
+      "explanation": "Hubble’s law states that galaxies farther away tend to recede faster, evidence for an expanding universe.",
+      "sources": ["NASA: Expanding Universe"]
+    },
+    {
+      "id": "theories_005",
+      "categoryId": "theories",
+      "difficulty": "hard",
+      "prompt": "What is inflation (in cosmology)?",
+      "choices": [
+        "A process where stars rapidly gain mass",
+        "A rapid early expansion that smooths and flattens the universe",
+        "The heating of planets by the Sun",
+        "A method of measuring distances using parallax"
+      ],
+      "correctIndex": 1,
+      "explanation": "Inflation proposes a brief period of extremely rapid expansion early in the universe, helping explain uniformity and the observed geometry.",
+      "sources": ["NASA: Inflation"]
+    },
+    {
+      "id": "theories_006",
+      "categoryId": "theories",
+      "difficulty": "hard",
+      "prompt": "What does the term 'dark energy' refer to in modern cosmology?",
+      "choices": [
+        "Energy in dark-colored stars",
+        "A hypothesized component driving the accelerated expansion of the universe",
+        "A type of matter inside black holes",
+        "A fuel used for rockets"
+      ],
+      "correctIndex": 1,
+      "explanation": "Dark energy is a name for the unknown cause of the observed accelerated cosmic expansion.",
+      "sources": ["NASA: Dark Energy"]
+    },
+    {
+      "id": "theories_007",
+      "categoryId": "theories",
+      "difficulty": "medium",
+      "prompt": "What does the term 'observable universe' mean?",
+      "choices": [
+        "The entire universe beyond any limits",
+        "The part of the universe we can see because light has had time to reach us",
+        "Only the Milky Way",
+        "Only planets with telescopes"
+      ],
+      "correctIndex": 1,
+      "explanation": "Because the universe has a finite age and light speed is finite, we can only observe a region from which light has reached Earth.",
+      "sources": ["NASA: Observable Universe"]
+    },
+    {
+      "id": "theories_008",
+      "categoryId": "theories",
+      "difficulty": "easy",
+      "prompt": "Which observation strongly supports the expansion of the universe?",
+      "choices": [
+        "Blue shift of distant galaxies only",
+        "Redshift of distant galaxies increasing with distance",
+        "The Moon’s phases",
+        "Earth’s magnetic field"
+      ],
+      "correctIndex": 1,
+      "explanation": "Many distant galaxies show redshift; more distant ones typically have higher redshift, consistent with expansion.",
+      "sources": ["NASA: Redshift"]
+    },
+    {
+      "id": "theories_009",
+      "categoryId": "theories",
+      "difficulty": "medium",
+      "prompt": "What is the purpose of the scientific method in theory building?",
+      "choices": [
+        "To ensure ideas are popular",
+        "To test hypotheses with evidence and revise models based on results",
+        "To avoid experiments",
+        "To prove theories can never change"
+      ],
+      "correctIndex": 1,
+      "explanation": "Scientific theories are built and refined through observation, hypothesis, testing, and replication—always open to revision with new evidence.",
+      "sources": []
+    },
+    {
+      "id": "theories_010",
+      "categoryId": "theories",
+      "difficulty": "hard",
+      "prompt": "What does 'cosmological constant' commonly represent in Einstein’s equations today?",
+      "choices": [
+        "A fixed speed limit for planets",
+        "A term associated with the energy density of empty space",
+        "A value that sets the Sun’s brightness",
+        "A constant describing Earth’s gravity only"
+      ],
+      "correctIndex": 1,
+      "explanation": "The cosmological constant is often associated with vacuum energy (or a dark-energy-like component) that affects cosmic expansion.",
+      "sources": ["Einstein field equations (concept)"]
+    }
+  ]
+}
+
