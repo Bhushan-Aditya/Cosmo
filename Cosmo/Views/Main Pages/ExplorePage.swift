@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - Models
 struct ExploreSection: Identifiable {
-    let id = UUID()
+    var id: String { title }
     let title: String
     let icon: String
     let emoji: String
@@ -14,7 +14,7 @@ struct ExploreSection: Identifiable {
 }
 
 struct SectionGroup: Identifiable {
-    let id = UUID()
+    var id: String { title }
     let title: String
     let filter: ExploreFilter
     let sections: [ExploreSection]
@@ -45,7 +45,7 @@ struct SectionCard: View {
     let section: ExploreSection
     // Fixed uniform dimensions
     private let animHeight: CGFloat = 108
-    private let infoHeight: CGFloat = 74
+    private let infoHeight: CGFloat = 68
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -61,9 +61,9 @@ struct SectionCard: View {
                 )
 
             // Info area — uniform fixed height
-            VStack(alignment: .leading, spacing: 3) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(section.title)
-                    .font(.system(size: 13, weight: .semibold))
+                    .font(.system(size: 14, weight: .semibold))
                     .foregroundColor(.white)
                     .lineLimit(1)
 
@@ -72,23 +72,9 @@ struct SectionCard: View {
                     .foregroundColor(.white.opacity(0.58))
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
-
-                if let eventNote = section.eventNote, let date = section.nextEventDate {
-                    HStack(spacing: 4) {
-                        Image(systemName: "calendar")
-                            .font(.system(size: 9, weight: .medium))
-                        Text("\(eventNote) · \(date)")
-                            .font(.system(size: 9, weight: .medium))
-                            .lineLimit(1)
-                    }
-                    .foregroundColor(section.color.opacity(0.9))
-                    .padding(.horizontal, 6).padding(.vertical, 3)
-                    .background(section.color.opacity(0.14))
-                    .cornerRadius(6)
-                }
             }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 8)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 10)
             .frame(height: infoHeight, alignment: .topLeading)
             .frame(maxWidth: .infinity, alignment: .leading)
         }

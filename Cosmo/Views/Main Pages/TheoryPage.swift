@@ -8,26 +8,24 @@ struct TheoryTypeButton: View {
 
     var body: some View {
         Button(action: action) {
-            VStack(spacing: 6) {
+            HStack(spacing: 6) {
                 Image(systemName: icon)
-                    .font(.system(size: 20, weight: .semibold))
+                    .font(.system(size: 14, weight: .semibold))
 
                 Text(title)
-                    .font(.footnote.weight(.semibold))
-                    .multilineTextAlignment(.center)
-                    .lineLimit(2)
-                    .minimumScaleFactor(0.75)
-                    .allowsTightening(true)
+                    .font(.system(size: 14, weight: .medium))
             }
-            .frame(maxWidth: .infinity, minHeight: 68)
-            .padding(.horizontal, 10)
+            .padding(.horizontal, 16)
             .padding(.vertical, 10)
-            .background(isSelected ? Color.blue.opacity(0.8) : Color.clear)
-            .foregroundColor(.white)
-            .cornerRadius(14)
+            .background(
+                Capsule()
+                    .fill(isSelected ? Color.blue : Color.white.opacity(0.1))
+                    .shadow(color: isSelected ? Color.blue.opacity(0.4) : .clear, radius: 8, x: 0, y: 4)
+            )
+            .foregroundColor(isSelected ? .white : .gray)
             .overlay(
-                RoundedRectangle(cornerRadius: 14)
-                    .stroke(Color.blue.opacity(isSelected ? 1 : 0), lineWidth: 2)
+                Capsule()
+                    .stroke(isSelected ? Color.white.opacity(0.4) : Color.white.opacity(0.1), lineWidth: 1)
             )
         }
         .buttonStyle(PlainButtonStyle())
@@ -72,12 +70,6 @@ struct TheoryTypeIndicator: View {
                 Text("Verified")
                     .font(.caption2)
                     .foregroundColor(.green)
-            } else if type == .community {
-                Image(systemName: "person.3.fill")
-                    .foregroundColor(.blue)
-                Text("Community")
-                    .font(.caption2)
-                    .foregroundColor(.blue)
             } else if type == .hypothesis {
                 Image(systemName: "questionmark.circle.fill")
                     .foregroundColor(.yellow)
@@ -93,28 +85,6 @@ struct TheoryTypeIndicator: View {
     }
 }
 
-struct CommunityMetricsView: View { // Static placeholder for offline
-    let metrics: CommunityMetrics
-
-    var body: some View {
-        HStack(spacing: 5) {
-            Image(systemName: "arrow.up.heart.fill")
-                .foregroundColor(.white)
-            Text("\(metrics.upvotes)")
-                .font(.caption)
-                .foregroundColor(.white)
-            Image(systemName: "text.bubble.fill")
-                .foregroundColor(.white)
-            Text("\(metrics.comments.count)")
-                .font(.caption)
-                .foregroundColor(.white)
-        }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 4)
-        .background(Color.white.opacity(0.08))
-        .cornerRadius(8)
-    }
-}
 
 struct CategoryTag: View {
     let category: TheoryCategory
@@ -133,7 +103,7 @@ struct CategoryTag: View {
 
 // MARK: - Main Theory Models
 struct Theory: Identifiable {
-    let id = UUID()
+    var id: String { title }
     var title: String
     var category: TheoryCategory
     var scientist: String
@@ -144,31 +114,10 @@ struct Theory: Identifiable {
     let icon: String
     let color: Color
     let type: TheoryType
-    var communityMetrics: CommunityMetrics?
-}
-
-struct CommunityMetrics: Identifiable{
-    let id = UUID() // Added Identifiable conformance and ID for CommunityMetrics
-    var upvotes: Int
-    var downvotes: Int
-    var comments: [TheoryComment]
-    var datePosted: Date
-    var authorName: String
-    var authorCredentials: String?
-}
-
-struct TheoryComment: Identifiable {
-    let id = UUID()
-    let authorName: String
-    let content: String
-    let timestamp: Date
-    var replies: [TheoryComment]
-    var likes: Int
 }
 
 enum TheoryType {
     case verified
-    case community
     case hypothesis
     case all // Added 'all' case if you intend to filter by all theory types
 }
@@ -221,11 +170,10 @@ enum TheoryCategory: String, CaseIterable, Identifiable { // Conform to Identifi
 
 // MARK: - Main Theory View
 struct TheoryExplorerView: View {
-    @State private var selectedTheoryType: TheoryType = .verified //Default to verified.
+    @State private var selectedTheoryType: TheoryType = .all //Default to all.
     @State private var selectedTheory: Theory? = nil
     @State private var showTheoryDetail = false
     @State private var animateCards = false
-    @State private var showAddTheory = false
     @State private var scrollOffset: CGFloat = 0
     @State private var parallaxOffset: CGFloat = 0
     @State private var starfieldRotation: Double = 0
@@ -246,11 +194,7 @@ struct TheoryExplorerView: View {
 
     var filteredTheories: [Theory] {
         theories.filter { theory in
-            let typeMatch = selectedTheoryType == .all || theory.type == selectedTheoryType // Now using .all for TheoryType filtering too if you need it in future
-            if selectedTheoryType == .community && theory.type != .community { // For Offline, only show Community if type filter is Community.
-                return false
-            }
-            return typeMatch
+            selectedTheoryType == .all || theory.type == selectedTheoryType
         }
     }
 
@@ -267,7 +211,7 @@ struct TheoryExplorerView: View {
                 headerSection
                 theorySelectorSection
                     .padding(.horizontal)
-                theoriesGrid
+                theoriesList
             }
         }
         .onAppear {
@@ -279,14 +223,11 @@ struct TheoryExplorerView: View {
                 TheoryDetailModal(theory: theory, isShowing: $showTheoryDetail)
             }
         }
-        .sheet(isPresented: $showAddTheory) {
-            TheoryExplorerView.AddTheoryModal(isShowing: $showAddTheory)
-        }
     }
 
     // MARK: - View Components
     private var headerSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 8) {
             // Icon + Title row
             HStack(alignment: .center, spacing: 10) {
                 Image(systemName: "atom")
@@ -302,115 +243,98 @@ struct TheoryExplorerView: View {
                     .font(.system(size: 28, weight: .bold))
                     .foregroundColor(.white)
 
-                Spacer()
-
-                if selectedTheoryType == .community {
-                    Button(action: { showAddTheory = true }) {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.system(size: 22))
-                            .foregroundColor(.blue)
-                    }
-                }
             }
 
             // Subtitle
             Text(headerDescription)
-                .font(.system(size: 13))
-                .foregroundColor(.white.opacity(0.55))
+                .font(.system(size: 14))
+                .foregroundColor(.white.opacity(0.6))
                 .multilineTextAlignment(.leading)
-                .lineLimit(2)
         }
         .padding(.horizontal, 20)
         .padding(.top, 16)
-        .padding(.bottom, 4)
+        .padding(.bottom, 8)
     }
 
-    private var theorySelectorSection: some View { // Theory type selector boxed
-        HStack(spacing: 16) {
-            TheoryTypeButton(
-                title: "Verified Theories",
-                icon: "checkmark.seal.fill",
-                isSelected: selectedTheoryType == .verified
-            ) {
-                withAnimation(.spring()) {
-                    selectedTheoryType = .verified
+    private var theorySelectorSection: some View { // Theory type selector 
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 12) {
+                TheoryTypeButton(
+                    title: "All",
+                    icon: "star.circle.fill",
+                    isSelected: selectedTheoryType == .all
+                ) {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                        selectedTheoryType = .all
+                    }
                 }
-            }
 
-            TheoryTypeButton(
-                title: "Community Theories",
-                icon: "person.3.fill",
-                isSelected: selectedTheoryType == .community
-            ) {
-                withAnimation(.spring()) {
-                    selectedTheoryType = .community
+                TheoryTypeButton(
+                    title: "Verified",
+                    icon: "checkmark.seal.fill",
+                    isSelected: selectedTheoryType == .verified
+                ) {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                        selectedTheoryType = .verified
+                    }
                 }
-            }
 
-            TheoryTypeButton(
-                title: "Hypotheses",
-                icon: "questionmark.circle.fill",
-                isSelected: selectedTheoryType == .hypothesis
-            ) {
-                withAnimation(.spring()) {
-                    selectedTheoryType = .hypothesis
+                TheoryTypeButton(
+                    title: "Hypotheses",
+                    icon: "questionmark.circle.fill",
+                    isSelected: selectedTheoryType == .hypothesis
+                ) {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                        selectedTheoryType = .hypothesis
+                    }
                 }
             }
+            .padding(.horizontal, 20)
+            .padding(.bottom, 8)
         }
-        .padding(.horizontal)
-        .padding(.vertical, 10)
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.white.opacity(0.05))
-        )
     }
 
     // Category + search sections removed (per request).
 
-    private var theoriesGrid: some View { // Theories Grid
-        ScrollView {
-            LazyVGrid(
-                columns: [
-                    GridItem(.adaptive(minimum: 300, maximum: 400), spacing: 20)
-                ],
-                spacing: 20
-            ) {
+    private var theoriesList: some View { 
+        ScrollView(showsIndicators: false) {
+            LazyVStack(spacing: 12) {
                 ForEach(Array(filteredTheories.enumerated()), id: \.element.id) { index, theory in
-                    TheoryCard(theory: theory) { // <-- CHECK THIS ACTION CLOSURE AGAIN
-                        print("Action from TheoryCard triggered in TheoryExplorerView for: \(theory.title)") // Add print HERE
+                    TheoryCard(theory: theory) { 
+                        print("Action from TheoryCard triggered in TheoryExplorerView for: \(theory.title)") 
                         withAnimation {
                             selectedTheory = theory
                             showTheoryDetail = true
-                            print("  selectedTheory set to: \(selectedTheory?.title ?? "nil")") // Print selected theory
-                            print("  showTheoryDetail set to: \(showTheoryDetail)") // Print showTheoryDetail value
                         }
                     }
-                    .offset(y: animateCards ? 0 : 50)
+                    .offset(y: animateCards ? 0 : 30)
                     .opacity(animateCards ? 1 : 0)
                     .animation(
-                        .spring(response: 0.6, dampingFraction: 0.7)
-                        .delay(Double(index) * 0.1),
+                        .spring(response: 0.45, dampingFraction: 0.75)
+                        .delay(Double(index) * 0.05),
                         value: animateCards
                     )
                 }
             }
-            .padding(.vertical)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
         }
         .onAppear {
-            animateCards = true
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.1)) {
+                animateCards = true
+            }
         }
     }
 
 
     private var headerDescription: String {
         switch selectedTheoryType {
+        case .all: return "Explore all verified theories and proposals across the cosmos"
         case .verified:
             return "Explore scientifically verified theories that shape our understanding of the cosmos"
-        case .community:
-            return "Discover and discuss theories proposed by the space science community (Offline Demo - No Interaction)" // Adjusted Header text for offline demo
+
         case .hypothesis:
             return "Explore emerging hypotheses and theoretical proposals"
-        case .all: return "All theories across types" //Added for completeness if you use .all type in future
         }
     }
 }
@@ -425,59 +349,81 @@ extension TheoryExplorerView {
 
         var body: some View {
             Button(action: {
-                print("TheoryCard Tapped for: \(theory.title)") // ADD THIS PRINT STATEMENT
-                action() // Call the action passed from TheoryExplorerView
+                action()
             }) {
-                VStack(alignment: .leading, spacing: 15) {
-                    // Header
+                VStack(alignment: .leading, spacing: 0) {
+                    // Header Area (Icon & Titles)
+                    HStack(alignment: .top, spacing: 10) {
+                        ZStack {
+                            Circle()
+                                .fill(theory.color.opacity(0.2))
+                                .frame(width: 36, height: 36)
+                            Image(systemName: theory.icon)
+                                .font(.system(size: 16))
+                                .foregroundColor(theory.color)
+                        }
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(theory.title)
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(.white)
+                                .lineLimit(1)
+
+                            Text(theory.scientist)
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundColor(theory.color.opacity(0.9))
+                        }
+                        Spacer()
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.top, 12)
+                    .padding(.bottom, 8)
+
+                    // Description Area
+                    Text(theory.shortDescription)
+                        .font(.system(size: 13))
+                        .foregroundColor(.white.opacity(0.7))
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.horizontal, 12)
+                        .padding(.bottom, 12)
+
+                    // Footer Area (Tags and Metrics)
                     HStack {
-                        TheoryTypeIndicator(type: theory.type)
+                        CategoryTag(category: theory.category)
+                        
+                        Text(theory.year)
+                            .font(.system(size: 11, weight: .medium))
+                            .foregroundColor(.white.opacity(0.6))
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 3)
+                            .background(Capsule().fill(Color.white.opacity(0.1)))
 
                         Spacer()
-
-                        if let metrics = theory.communityMetrics {
-                            CommunityMetricsView(metrics: metrics)
-                        }
+                        
+                        TheoryTypeIndicator(type: theory.type)
                     }
-
-                    // Content
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text(theory.title)
-                            .font(.title3.bold())
-                            .foregroundColor(.white)
-
-                        Text(theory.scientist)
-                            .font(.subheadline)
-                            .foregroundColor(theory.color)
-
-                        Text(theory.shortDescription)
-                            .font(.body)
-                            .foregroundColor(.gray)
-                            .lineLimit(3)
-
-                        // Tags
-                        HStack {
-                            CategoryTag(category: theory.category)
-                            Text(theory.year)
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(Color.white.opacity(0.1))
-                                .cornerRadius(8)
-                        }
-                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 10)
+                    .background(Color.white.opacity(0.03))
                 }
-                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .background(
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(Color.white.opacity(0.05))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 20)
-                                .stroke(theory.color.opacity(isHovered ? 0.5 : 0.2), lineWidth: 1)
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(Color.white.opacity(0.04))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(
+                            LinearGradient(
+                                colors: [theory.color.opacity(isHovered ? 0.6 : 0.2), Color.white.opacity(0.05)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            lineWidth: 1
                         )
                 )
-                .shadow(color: theory.color.opacity(isHovered ? 0.3 : 0), radius: 10)
+                .shadow(color: theory.color.opacity(isHovered ? 0.15 : 0), radius: 8, x: 0, y: 4)
             }
             .buttonStyle(PlainButtonStyle())
             .scaleEffect(isHovered ? 1.02 : 1)
@@ -493,8 +439,10 @@ extension TheoryExplorerView {
 
         var body: some View {
             ZStack {
-                // Background
-                Color.black.opacity(0.8)
+                // Glassmorphic Background Overlay
+                Rectangle()
+                    .fill(.ultraThinMaterial)
+                    .environment(\.colorScheme, .dark)
                     .ignoresSafeArea()
                     .onTapGesture {
                         withAnimation {
@@ -502,25 +450,25 @@ extension TheoryExplorerView {
                         }
                     }
 
-                VStack(spacing: 25) {
-                    // Header
-                    HStack {
-                        VStack(alignment: .leading, spacing: 5) {
+                VStack(spacing: 0) {
+                    // Header Bar
+                    HStack(alignment: .top) {
+                        VStack(alignment: .leading, spacing: 6) {
                             Text(theory.title)
-                                .font(.title.bold())
+                                .font(.system(size: 26, weight: .bold))
                                 .foregroundColor(.white)
 
-                            if let metrics = theory.communityMetrics {
-                                HStack {
-                                    Text("Posted by \(metrics.authorName)") // Corrected String Interpolation
-                                        .font(.body)
-                                        .foregroundColor(.gray)
-                                    Spacer()
-                                }
+                            HStack(spacing: 8) {
+                                Text(theory.scientist)
+                                    .font(.system(size: 15, weight: .medium))
+                                    .foregroundColor(theory.color)
+                                Text("•")
+                                    .foregroundColor(.white.opacity(0.3))
+                                Text(theory.year)
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.white.opacity(0.6))
                             }
-                            Text(theory.scientist)
-                                .font(.subheadline)
-                                .foregroundColor(theory.color)
+
                         }
 
                         Spacer()
@@ -531,299 +479,104 @@ extension TheoryExplorerView {
                             }
                         } label: {
                             Image(systemName: "xmark.circle.fill")
-                                .font(.title2)
-                                .foregroundColor(.gray)
+                                .font(.system(size: 28))
+                                .foregroundColor(Color.white.opacity(0.8))
                         }
                     }
-                    .padding(.horizontal)
+                    .padding(24)
+                    .background(Color.white.opacity(0.03))
 
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 20) {
-                            // Icon
+                    ScrollView(showsIndicators: false) {
+                        VStack(alignment: .leading, spacing: 24) {
+                            // Hero Icon
                             ZStack {
                                 Circle()
-                                    .fill(theory.color.opacity(0.15))
-                                    .frame(width: 80, height: 80)
+                                    .fill(
+                                        RadialGradient(
+                                            colors: [theory.color.opacity(0.3), .clear],
+                                            center: .center,
+                                            startRadius: 0,
+                                            endRadius: 80
+                                        )
+                                    )
+                                    .frame(width: 160, height: 160)
 
                                 Image(systemName: theory.icon)
-                                    .font(.system(size: 40))
-                                    .foregroundColor(theory.color)
+                                    .font(.system(size: 64))
+                                    .foregroundStyle(theory.color.gradient)
+                                    .shadow(color: theory.color.opacity(0.5), radius: 10)
                             }
                             .frame(maxWidth: .infinity)
-                            .padding(.vertical, 20)
+                            .padding(.vertical, 10)
 
                             // Full Description
-                            Text(theory.fullDescription)
-                                .font(.body)
-                                .foregroundColor(.gray)
-                                .multilineTextAlignment(.leading)
-                                .padding(.horizontal)
+                            VStack(alignment: .leading, spacing: 12) {
+                                Text("Overview")
+                                    .font(.system(size: 18, weight: .bold))
+                                    .foregroundColor(.white)
+                                
+                                Text(theory.fullDescription)
+                                    .font(.system(size: 16))
+                                    .lineSpacing(6)
+                                    .foregroundColor(.white.opacity(0.8))
+                                    .multilineTextAlignment(.leading)
+                            }
+                            .padding(.horizontal, 24)
 
                             // Citations Section
                             if !theory.citations.isEmpty {
-                                VStack(alignment: .leading, spacing: 10) {
-                                    Text("Citations")
-                                        .font(.headline)
+                                VStack(alignment: .leading, spacing: 12) {
+                                    Text("Citations & Sources")
+                                        .font(.system(size: 18, weight: .bold))
                                         .foregroundColor(.white)
 
-                                    ForEach(theory.citations, id: \.self) { citation in
-                                        Text("- \(citation)") // Corrected String Interpolation
-                                            .font(.body)
-                                            .foregroundColor(.gray)
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        ForEach(theory.citations, id: \.self) { citation in
+                                            HStack(alignment: .top, spacing: 10) {
+                                                Image(systemName: "link")
+                                                    .font(.system(size: 12))
+                                                    .foregroundColor(theory.color)
+                                                    .padding(.top, 4)
+                                                Text(citation)
+                                                    .font(.system(size: 14))
+                                                    .foregroundColor(.white.opacity(0.7))
+                                                    .lineLimit(nil)
+                                            }
+                                            .padding()
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .background(Color.white.opacity(0.05))
+                                            .cornerRadius(12)
+                                        }
                                     }
                                 }
-                                .padding(.horizontal)
+                                .padding(.horizontal, 24)
+                                .padding(.top, 8)
                             }
 
-                            // Community Features (if applicable) - now using adjusted CommunityInteractionsSection which will be non-functional
-                            if theory.type == .community, let _ = theory.communityMetrics {
-                                CommunityInteractionsSection(metrics: theory.communityMetrics ?? CommunityMetrics(upvotes: 0, downvotes: 0, comments: [], datePosted: Date(), authorName: ""))
-                             }
+
                         }
+                        .padding(.bottom, 40)
                     }
                 }
-                .padding()
                 .background(
-                    RoundedRectangle(cornerRadius: 25)
-                        .fill(Color(white: 0.12, opacity: 1))
+                    RoundedRectangle(cornerRadius: 32, style: .continuous)
+                        .fill(Color(white: 0.08).opacity(0.9))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 32, style: .continuous)
+                                .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                        )
                 )
+                .clipShape(RoundedRectangle(cornerRadius: 32, style: .continuous))
+                .padding(16)
                 .frame(maxWidth: 600)
             }
         }
     }
 
-    // MARK: - Community Features (Adjusted for non-functionality)
-    struct CommunityInteractionsSection: View {
-        @State var metrics: CommunityMetrics
 
-        var body: some View {
-            VStack(spacing: 20) {
-                // Upvote/Downvote - buttons are still present, but actions do nothing
-                    HStack {
-                        Button(action: {
-                            // In offline mode, actions do nothing
-                            print("Upvote action (offline mode - no action)")
-                        }) {
-                            Label("\(metrics.upvotes)", systemImage: "arrow.up.circle.fill")
-                                .font(.title2)
-                                .foregroundColor(.green)
-                        }
-
-                        Spacer()
-
-                        Button(action: {
-                            // In offline mode, actions do nothing
-                            print("Downvote action (offline mode - no action)")
-                        }) {
-                            Label("\(metrics.downvotes)", systemImage: "arrow.down.circle.fill")
-                                .font(.title2)
-                                .foregroundColor(.red)
-                        }
-                    }
-
-
-                    CommentsView(comments: metrics.comments)
-                        .padding(.top)
-                }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(Color(white: 0.1))
-                )
-            }
-        }
-
-        // MARK: - Comments System
-        struct CommentsView: View { // CommentsView remains, but comment data will be static from 'metrics'
-            let comments: [TheoryComment]
-
-            var body: some View {
-                VStack(alignment: .leading, spacing: 20) {
-                    Text("Community Comments")
-                        .font(.headline.bold())
-                        .foregroundColor(.white)
-
-                    ForEach(comments) { comment in
-                        CommentView(comment: comment)
-                    }
-                }
-            }
-        }
-
-        struct CommentView: View { // CommentView UI remains - but comments data is now static.
-            let comment: TheoryComment
-
-            var body: some View {
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack {
-                        Text(comment.authorName)
-                            .font(.body.bold())
-                            .foregroundColor(.blue)
-                        Spacer()
-                        Text("\(comment.timestamp, formatter: DateFormatter.commentDateFormatter)") // Corrected String Interpolation
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                    }
-
-                    Text(comment.content)
-                        .font(.body)
-                        .foregroundColor(.white)
-                        .multilineTextAlignment(.leading)
-
-                    if !comment.replies.isEmpty {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Replies")
-                                .font(.caption.bold())
-                                .foregroundColor(.gray)
-
-                            ForEach(comment.replies) { reply in
-                                CommentView(comment: reply)
-                                    .padding(.leading, 20)
-                            }
-                        }
-                    }
-                }
-                .padding(.bottom)
-            }
-        }
-
-
-        // MARK: - Add Theory Modal (Submit action disabled - OFFLINE MODE)
-        struct AddTheoryModal: View {
-            @Binding var isShowing: Bool
-
-            @State private var newTheoryTitle = ""
-            @State private var newTheoryAuthor = ""
-            @State private var newTheoryDescription = ""
-            @State private var selectedCategory: TheoryCategory = .universe
-            @State private var newTheory: Theory?
-
-            var body: some View {
-                ZStack {
-                    Color.black.opacity(0.8)
-                        .ignoresSafeArea()
-                        .onTapGesture {
-                            withAnimation {
-                                isShowing = false
-                            }
-                        }
-                        .onAppear {
-                            newTheory = Theory(
-                                title: "",
-                                category: .universe,
-                                scientist: "",
-                                year: "2025",
-                                shortDescription: "",
-                                fullDescription: "",
-                                citations: [],
-                                icon: "person.fill",
-                                color: .purple,
-                                type: .community,
-                                communityMetrics: CommunityMetrics(
-                                    upvotes: 0,
-                                    downvotes: 0,
-                                    comments: [],
-                                    datePosted: Date(),
-                                    authorName: "",
-                                    authorCredentials: nil
-                                )
-                            )
-                        }
-
-                    VStack(spacing: 20) {
-                        Text("Submit a New Theory (Offline Demo)") // Updated header to indicate offline demo
-                            .font(.title.bold())
-                            .foregroundColor(.white)
-
-                        ScrollView {
-                            VStack(spacing: 15) {
-                                TextField("Theory Title", text: $newTheoryTitle)
-                                    .modifier(TextFieldModifier())
-                                TextField("Author Name (Optional)", text: $newTheoryAuthor)
-                                    .modifier(TextFieldModifier())
-                                Picker("Category", selection: $selectedCategory) {
-                                    ForEach(TheoryCategory.allCases) { category in // No 'id: \.self' here
-                                        Text(category.rawValue).tag(category)
-                                    }
-                                }
-                                .pickerStyle(MenuPickerStyle())
-                                .foregroundColor(.white)
-                                TextEditor(text: $newTheoryDescription)
-                                    .modifier(TextEditorModifier())
-
-                                Button(action: submitTheoryOffline) { // Changed action to offline version
-                                    Text("Submit Theory (Simulated)") // Updated button text for offline
-                                        .bold()
-                                        .foregroundColor(.white)
-                                        .frame(maxWidth: .infinity)
-                                        .padding()
-                                        .background(Color.blue)
-                                        .cornerRadius(10)
-                                }
-                            }
-                            .padding()
-                        }
-                    }
-                    .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 25)
-                            .fill(Color(white: 0.12, opacity: 1))
-                    )
-                    .padding()
-                }
-            }
-
-            func submitTheoryOffline() { // Offline Submission - no data saving
-                print("\n--- OFFLINE MODE: Theory Submission ---")
-                print("Theory Title: \(newTheoryTitle)")
-                print("Author: \(newTheoryAuthor)")
-                print("Category: \(selectedCategory)")
-                print("Description: \(newTheoryDescription)")
-                print("--- Theory submission simulated (offline) - no data saved. ---\n")
-
-                newTheoryTitle = "" // Clear fields
-                newTheoryAuthor = ""
-                newTheoryDescription = ""
-
-
-                withAnimation {
-                    isShowing = false
-                }
-            }
-        }
-
-        // MARK: - Modifiers (Reusable UI)
-        struct TextFieldModifier: ViewModifier {
-            func body(content: Content) -> some View {
-                content
-                    .padding()
-                    .background(Color.white.opacity(0.1))
-                    .cornerRadius(10)
-                    .foregroundColor(.white)
-            }
-        }
-
-        struct TextEditorModifier: ViewModifier {
-            func body(content: Content) -> some View {
-                content // Corrected: now returning content, which is a View
-                    .frame(height: 80)
-                    .padding()
-                    .background(Color.white.opacity(0.1))
-                    .cornerRadius(10)
-                    .foregroundColor(.white)
-            }
-        }
     }
 
-// MARK: - Helper Date Formatters, TheoryDatabase, etc. (No changes Needed)
-extension DateFormatter { // Helper Date Formatters
-    static var commentDateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .short
-        return formatter
-    }
-}
+
 
 struct TheoryDatabase { // Theory Database
     static var allTheories: [Theory] {
@@ -1267,27 +1020,7 @@ struct TheoryDatabase { // Theory Database
                 type: .verified
             )
         ]
-         // MARK: - Example Community Theories (Added for offline Demo) - included within allTheories
-         let exampleCommunityTheories: [Theory] = [
-             Theory(
-                 title: "Community Proposed Theory Example",
-                 category: .all,
-                 scientist: "Community Member",
-                 year: "2024",
-                 shortDescription: "An example theory proposed by the community - it's non-interactive in offline mode",
-                 fullDescription: "This is an example of a theory added to showcase the Community section UI in offline mode. Interactions are disabled.",
-                 citations: [],
-                 icon: "person.fill",
-                 color: .blue,
-                 type: .community,
-                 communityMetrics: CommunityMetrics(upvotes: 120, downvotes: 25, comments: [ // Static comments
-                     TheoryComment(authorName: "User1", content: "Interesting theory!", timestamp: Date(), replies: [], likes: 5),
-                     TheoryComment(authorName: "User2", content: "Needs more evidence but cool concept", timestamp: Date(), replies: [], likes: 2)
-                 ], datePosted: Date(), authorName: "CommunityMemberExample", authorCredentials: nil)
-             )
-         ]
-
-       return relativityTheories + quantumTheories + blackHoleTheories + cosmologyTheories + darkMatterTheories + spaceTimeTheories + particleTheories + astrobiologyTheories + exampleCommunityTheories
+       return relativityTheories + quantumTheories + blackHoleTheories + cosmologyTheories + darkMatterTheories + spaceTimeTheories + particleTheories + astrobiologyTheories
     }
 
     // Helper methods for filtering
@@ -1310,22 +1043,7 @@ struct TheoryDatabase { // Theory Database
     }
 }
 
-extension TheoryDatabase {
-    static var communityTheories: [Theory] = [] // Starts empty, won't be used actively in offline
 
-    static func addCommunityTheory(_ theory: Theory) { // Offline - No Add action
-        print("\n--- OFFLINE MODE: Attempted to add community theory ---")
-        print("Theory Title: \(theory.title)")
-        print("Offline mode - no data will be permanently saved.\n") // Indicate offline no-op
-    }
-
-    static func updateCommunityTheory(_ theory: Theory) { // Offline - No Update action
-        // Do nothing in offline version
-        print("\n--- OFFLINE MODE: Attempted to update community theory ---")
-        print("Theory Title: \(theory.title)")
-        print("Offline mode - no data will be updated.\n") // Indicate offline no-op
-    }
-}
 
 extension TheoryDatabase {
     static var theoriesCount: [TheoryCategory: Int] {

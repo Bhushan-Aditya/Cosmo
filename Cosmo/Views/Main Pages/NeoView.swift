@@ -3,7 +3,7 @@ import SceneKit
 
 // MARK: - Neo Space Fact Model
 struct NeoFact: Identifiable {
-    let id = UUID()
+    var id: String { title }
     let icon: String
     let title: String
     let body: String
