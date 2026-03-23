@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+
+# Xcode / Swift
+DerivedData/
+build/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Local credential/config files
+**/*Secrets*.xcconfig
+**/*Secrets*.plist
+**/*Credentials*.json
+**/*credentials*.json
+**/GoogleService-Info.plist
+
+# API/Auth key material
+*.p8
+*.pem
+*.key
+
+# Project-local Supabase keys
+Cosmo/Services/Supabase/SupabaseConfig.swift

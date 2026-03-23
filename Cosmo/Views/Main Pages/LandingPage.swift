@@ -49,7 +49,7 @@ struct LandingPage: View {
                 VStack(spacing: 20) {
                     CosmosButton(text: "Continue") {
                         withAnimation(.easeInOut(duration: 0.5)) {
-                            currentPage = .explore
+                            currentPage = .welcomeGate
                         }
                     }
                     .opacity(showButton ? 1 : 0)

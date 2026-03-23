@@ -3,6 +3,7 @@ import SwiftUI
 // MARK: - Navigation
 enum AppPage {
     case landing
+    case welcomeGate
     case home
     case explore
     case theories
@@ -25,7 +26,8 @@ struct CosmosConstants {
 
 // MARK: - Main View
 struct ContentView: View {
-    @State private var currentPage: AppPage = .landing
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var currentPage: AppPage = AuthSessionStore.shared.hasValidLogin ? .explore : .landing
     @State private var showStars = true
 
     var body: some View {
@@ -36,8 +38,29 @@ struct ContentView: View {
             switch currentPage {
             case .landing:
                 LandingPage(currentPage: $currentPage)
+            case .welcomeGate:
+                WelcomeGateView(currentPage: $currentPage)
             case .home, .explore, .theories, .quiz, .neo:
                 MainTabView(selectedTab: $currentPage, showStars: $showStars)
+            }
+        }
+        .onAppear {
+            enforceSessionValidity()
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active {
+                enforceSessionValidity()
+            }
+        }
+    }
+
+    private func enforceSessionValidity() {
+        let hasSession = AuthSessionStore.shared.hasValidLogin
+        let isInMainApp = currentPage == .home || currentPage == .explore || currentPage == .theories || currentPage == .quiz || currentPage == .neo
+
+        if !hasSession && isInMainApp {
+            withAnimation(.easeInOut(duration: 0.35)) {
+                currentPage = .welcomeGate
             }
         }
     }
