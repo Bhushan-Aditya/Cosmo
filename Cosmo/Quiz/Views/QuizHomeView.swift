@@ -9,34 +9,43 @@ struct QuizHomeView: View {
             CosmoAnimatedBackground()
 
             ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 18) {
+                VStack(alignment: .leading, spacing: 0) {
                     header
-                        .padding(.top, 18)
 
                     categoriesGrid
+                        .padding(.top, 20)
                 }
-                .padding(.horizontal, 16)
-                .padding(.bottom, 24)
+                .padding(.bottom, 100)
             }
         }
         .onAppear { dataStore.loadIfNeeded() }
         .preferredColorScheme(.dark)
-        .navigationTitle("Quiz")
-        .navigationBarTitleDisplayMode(.large)
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Cosmic Quiz")
-                .font(.system(size: 34, weight: .bold))
-                .foregroundColor(.white)
-
-            Text("Pick a category and run a 10‑question mission.")
-                .font(.subheadline)
-                .foregroundColor(.white.opacity(0.75))
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 10) {
+                Image(systemName: "questionmark.circle.fill")
+                    .font(.system(size: 26, weight: .bold))
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [Color.white, Color.purple.opacity(0.8)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                Text("Cosmic Quiz")
+                    .font(.system(size: 30, weight: .bold))
+                    .foregroundColor(.white)
+            }
+            Text("Pick a category and run a 10‑question mission")
+                .font(.system(size: 14))
+                .foregroundColor(.white.opacity(0.55))
         }
-        .padding(16)
-        .cosmoCard(cornerRadius: 22)
+        .padding(.horizontal, 20)
+        .padding(.top, 16)
     }
 
     private var categoriesGrid: some View {
@@ -52,6 +61,7 @@ struct QuizHomeView: View {
                 }
                 .padding(16)
                 .cosmoCard()
+                .padding(.horizontal, 16)
             } else {
                 LazyVGrid(
                     columns: [
@@ -72,6 +82,7 @@ struct QuizHomeView: View {
                         .buttonStyle(.plain)
                     }
                 }
+                .padding(.horizontal, 16)
             }
         }
     }

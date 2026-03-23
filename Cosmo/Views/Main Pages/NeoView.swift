@@ -1,446 +1,1085 @@
 import SwiftUI
-import SceneKit
+import SpriteKit
 
-// MARK: - Neo Space Fact Model
-struct NeoFact: Identifiable {
-    var id: String { title }
-    let icon: String
-    let title: String
-    let body: String
-    let accentColor: Color
-}
-
-// MARK: - Neo View (Redesigned)
+// MARK: - Neo View (Galaga-Style Space Shooter)
 struct NeoView: View {
-    @State private var scrollOffset: CGFloat = 0
-
-    private let facts: [NeoFact] = [
-        NeoFact(icon: "light.max", title: "Speed of Light",
-                body: "Light travels 299,792 km every second. It takes just 8 minutes 20 seconds to reach Earth from the Sun.",
-                accentColor: .yellow),
-        NeoFact(icon: "clock.arrow.circlepath", title: "Time Dilation",
-                body: "Astronauts on the ISS age slightly slower due to speed and gravity. After 6 months they're ~0.007 seconds younger.",
-                accentColor: .cyan),
-        NeoFact(icon: "circle.fill", title: "Black Hole Mass",
-                body: "Sagittarius A*, the black hole at our galaxy's centre, is 4 million times more massive than our Sun.",
-                accentColor: .purple),
-        NeoFact(icon: "star.fill", title: "Neutron Stars",
-                body: "A teaspoon of neutron star material would weigh about 10 million tonnes. They spin up to 700 times per second.",
-                accentColor: .blue),
-        NeoFact(icon: "moon.stars.fill", title: "Moon's Distance",
-                body: "385,000 km away on average. If you drove at 100 km/h non-stop, it'd take ~160 days to reach the Moon.",
-                accentColor: .gray),
-        NeoFact(icon: "globe.americas.fill", title: "ISS Speed",
-                body: "The International Space Station travels at ~28,000 km/h — orbiting Earth once every 90 minutes.",
-                accentColor: .orange),
-        NeoFact(icon: "sparkles", title: "Observable Universe",
-                body: "The observable universe spans ~93 billion light-years in diameter, containing over 2 trillion galaxies.",
-                accentColor: .mint),
-        NeoFact(icon: "atom", title: "Dark Matter",
-                body: "About 27% of the universe is dark matter. It doesn't emit light but shapes the large-scale structure of the cosmos.",
-                accentColor: .indigo),
-        NeoFact(icon: "waveform.path", title: "Gravitational Waves",
-                body: "When two black holes merge, they create ripples in spacetime that stretch space itself — detected by LIGO in 2015.",
-                accentColor: .green),
-        NeoFact(icon: "thermometer.sun.fill", title: "Sun's Core",
-                body: "The Sun's core reaches 15 million °C. Energy produced there takes ~100,000 years to reach the surface.",
-                accentColor: .red),
-    ]
+    @State private var showGame = false
+    @State private var showInstructions = true
+    @State private var isPaused = false
 
     var body: some View {
-        ZStack {
-            CosmoAnimatedBackground()
-                .ignoresSafeArea()
+        GeometryReader { geometry in
+            ZStack {
+                CosmoAnimatedBackground()
+                    .ignoresSafeArea()
 
-            ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 0) {
-
-                    // MARK: Header
-                    HStack(alignment: .center) {
-                        HStack(spacing: 10) {
-                            Text("🙂")
-                                .font(.system(size: 28))
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text("Meet Neo")
-                                    .font(.system(size: 28, weight: .bold))
-                                    .foregroundColor(.white)
-                                Text("Your Space Companion")
-                                    .font(.system(size: 13))
-                                    .foregroundColor(.white.opacity(0.55))
-                            }
-                        }
-                        Spacer()
-                        // 3D badge
-                        HStack(spacing: 4) {
-                            Image(systemName: "cube.transparent")
-                                .font(.system(size: 11, weight: .semibold))
-                            Text("3D")
-                                .font(.system(size: 12, weight: .bold))
-                        }
-                        .foregroundColor(Color(red: 0.95, green: 0.82, blue: 0.45))
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 7)
-                        .background(
-                            Capsule()
-                                .fill(Color(red: 0.95, green: 0.82, blue: 0.45).opacity(0.15))
-                                .overlay(
-                                    Capsule()
-                                        .stroke(Color(red: 0.95, green: 0.82, blue: 0.45).opacity(0.4), lineWidth: 1)
-                                )
+                if showGame {
+                    VStack(spacing: 0) {
+                        GameHeaderView(isPaused: $isPaused)
+                            .padding(.top, geometry.safeAreaInsets.top > 0 ? 8 : 16)
+                            .padding(.horizontal, 20)
+                            .zIndex(100)
+                        
+                        GalagaGameView(
+                            showInstructions: $showInstructions,
+                            isPaused: $isPaused,
+                            topPadding: geometry.safeAreaInsets.top
                         )
+                        .transition(.opacity)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 16)
-                    .padding(.bottom, 18)
-
-                    // MARK: 3D Model Card
-                    NeoModelCard()
-                        .padding(.horizontal, 16)
-
-                    // Drag hint
-                    Text("Drag to rotate  ·  Pinch to zoom")
-                        .font(.footnote)
-                        .foregroundColor(.white.opacity(0.45))
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, 10)
-                        .padding(.bottom, 22)
-
-                    // MARK: Who is Neo?
-                    VStack(alignment: .center, spacing: 12) {
-                        HStack(spacing: 8) {
-                            Text("🙂")
-                                .font(.system(size: 22))
-                            Text("Who is Neo?")
-                                .font(.system(size: 20, weight: .bold))
-                                .foregroundColor(.white)
-                        }
-
-                        Text("""
-                        Born the moment the first photon of the Big Bang touched matter, Neo is your eternal companion on this cosmic journey. Curious, witty, and full of wonder — he's been drifting through galaxies, black holes, and nebulae, collecting the most mind-bending facts in the universe.
-
-                        As a space enthusiast who has "seen" everything from the first stars forming to the collision of galaxy clusters, Neo loves nothing more than sharing the universe's greatest secrets with explorers like you.
-                        """)
-                        .font(.system(size: 14))
-                        .foregroundColor(.white.opacity(0.72))
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                    }
-                    .padding(.horizontal, 22)
-                    .padding(.vertical, 20)
-                    .background(
-                        RoundedRectangle(cornerRadius: 20, style: .continuous)
-                            .fill(Color.black.opacity(0.30))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                    .stroke(Color.white.opacity(0.10), lineWidth: 1)
-                            )
-                    )
-                    .padding(.horizontal, 16)
-
-                    // MARK: Space Facts Header
-                    HStack {
-                        Text("⚡️ Neo's Space Facts")
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundColor(.white)
-                        Spacer()
-                        Text("\(facts.count) facts")
-                            .font(.system(size: 12))
-                            .foregroundColor(.white.opacity(0.4))
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 22)
-                    .padding(.bottom, 12)
-
-                    // MARK: Facts Horizontal Scroll
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 12) {
-                            ForEach(facts) { fact in
-                                NeoFactCard(fact: fact)
-                            }
-                        }
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 4)
-                    }
-
-                    // MARK: Cosmic Stats Section
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("🌌 Quick Cosmic Stats")
-                            .font(.system(size: 17, weight: .bold))
-                            .foregroundColor(.white)
-
-                        LazyVGrid(columns: [
-                            GridItem(.flexible(), spacing: 10),
-                            GridItem(.flexible(), spacing: 10)
-                        ], spacing: 10) {
-                            CosmicStatBubble(value: "13.8B", label: "Years since Big Bang", color: .purple)
-                            CosmicStatBubble(value: "2T+", label: "Galaxies in universe", color: .blue)
-                            CosmicStatBubble(value: "8 min", label: "Light travel: Sun → Earth", color: .yellow)
-                            CosmicStatBubble(value: "4,000+", label: "Exoplanets discovered", color: .green)
-                        }
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.top, 24)
-                    .padding(.bottom, 8)
-
-                    Spacer(minLength: 100)
                 }
+                
+                if showInstructions && showGame {
+                    GameInstructionsOverlay(showInstructions: $showInstructions)
+                        .transition(.opacity)
+                        .zIndex(200)
+                }
+            }
+        }
+        .onAppear {
+            withAnimation(.easeIn(duration: 0.3)) {
+                showGame = true
             }
         }
         .preferredColorScheme(.dark)
+        .ignoresSafeArea(.all, edges: .bottom)
     }
 }
 
-// MARK: - 3D Model Card
-private struct NeoModelCard: View {
+// MARK: - Game Instructions Overlay
+struct GameInstructionsOverlay: View {
+    @Binding var showInstructions: Bool
+    
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .fill(Color(red: 0.06, green: 0.06, blue: 0.09))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 24, style: .continuous)
-                        .stroke(Color.white.opacity(0.12), lineWidth: 1)
-                )
-                .shadow(color: Color.black.opacity(0.6), radius: 30, x: 0, y: 16)
-
-            MorphySceneView()
-                .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-                .padding(4)
-        }
-        .frame(height: 280)
-    }
-}
-
-// MARK: - Neo Fact Card
-private struct NeoFactCard: View {
-    let fact: NeoFact
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            ZStack {
-                Circle()
-                    .fill(fact.accentColor.opacity(0.18))
-                    .frame(width: 42, height: 42)
-                Image(systemName: fact.icon)
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(fact.accentColor)
-            }
-
-            Text(fact.title)
-                .font(.system(size: 14, weight: .bold))
-                .foregroundColor(.white)
-                .lineLimit(1)
-
-            Text(fact.body)
-                .font(.system(size: 12))
-                .foregroundColor(.white.opacity(0.65))
-                .lineLimit(4)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .padding(14)
-        .frame(width: 180, alignment: .topLeading)
-        .background(
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .fill(Color.black.opacity(0.35))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 18, style: .continuous)
-                        .stroke(fact.accentColor.opacity(0.3), lineWidth: 1)
-                )
-        )
-        .shadow(color: fact.accentColor.opacity(0.12), radius: 10, x: 0, y: 4)
-    }
-}
-
-// MARK: - Cosmic Stat Bubble
-private struct CosmicStatBubble: View {
-    let value: String
-    let label: String
-    let color: Color
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(value)
-                .font(.system(size: 20, weight: .bold))
-                .foregroundColor(color)
-            Text(label)
-                .font(.system(size: 11))
-                .foregroundColor(.white.opacity(0.6))
-                .lineLimit(2)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .padding(14)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(Color.black.opacity(0.35))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .stroke(color.opacity(0.28), lineWidth: 1)
-                )
-        )
-    }
-}
-
-// MARK: - SceneKit-based Morphy view (unchanged)
-private struct MorphySceneView: UIViewRepresentable {
-    class Coordinator: NSObject, SCNSceneRendererDelegate {
-        var originalCameraTransform: SCNMatrix4?
-        var resetWorkItem: DispatchWorkItem?
-        weak var view: SCNView?
-
-        func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-            guard let cameraNode = renderer.pointOfView,
-                  let base = originalCameraTransform else { return }
-
-            let current = cameraNode.transform
-            if !SCNMatrix4AlmostEqual(current, base) {
-                resetWorkItem?.cancel()
-
-                let work = DispatchWorkItem { [weak self] in
-                    guard let camera = self?.view?.pointOfView,
-                          let baseTransform = self?.originalCameraTransform else { return }
-                    SCNTransaction.begin()
-                    SCNTransaction.animationDuration = 0.5
-                    SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-                    camera.transform = baseTransform
-                    SCNTransaction.commit()
+            Color.black.opacity(0.8)
+                .ignoresSafeArea()
+            
+            ScrollView {
+                VStack(spacing: 24) {
+                    VStack(spacing: 12) {
+                        Image(systemName: "gamecontroller.fill")
+                            .font(.system(size: 48))
+                            .foregroundColor(Color(red: 0.3, green: 0.8, blue: 1.0))
+                        
+                        Text("Space Defender")
+                            .font(.system(size: 32, weight: .bold))
+                            .foregroundColor(.white)
+                        
+                        Text("Protect the cosmos from incoming meteors")
+                            .font(.system(size: 15))
+                            .foregroundColor(.white.opacity(0.7))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 20)
+                    }
+                    .padding(.top, 8)
+                    
+                    VStack(alignment: .leading, spacing: 14) {
+                        InstructionRow(icon: "hand.draw.fill", text: "Drag anywhere to move your ship")
+                        InstructionRow(icon: "sparkles", text: "Auto-fires bullets at meteors")
+                        InstructionRow(icon: "star.fill", text: "Collect golden power-ups (+50 pts)")
+                        InstructionRow(icon: "flame.fill", text: "Avoid meteors or lose lives")
+                        InstructionRow(icon: "chart.line.uptrend.xyaxis", text: "Survive waves for higher scores")
+                    }
+                    .padding(.horizontal, 24)
+                    
+                    Button(action: {
+                        withAnimation(.easeOut(duration: 0.3)) {
+                            showInstructions = false
+                        }
+                    }) {
+                        Text("START GAME")
+                            .font(.system(size: 18, weight: .bold))
+                            .foregroundColor(.white)
+                            .frame(width: 240, height: 56)
+                            .background(
+                                RoundedRectangle(cornerRadius: 28, style: .continuous)
+                                    .fill(Color(red: 0.3, green: 0.8, blue: 1.0).opacity(0.3))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 28, style: .continuous)
+                                            .stroke(Color(red: 0.3, green: 0.8, blue: 1.0), lineWidth: 2)
+                                    )
+                            )
+                    }
+                    .padding(.top, 4)
+                    .padding(.bottom, 8)
                 }
-
-                resetWorkItem = work
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: work)
+                .padding(.vertical, 32)
+                .padding(.horizontal, 32)
+                .background(
+                    RoundedRectangle(cornerRadius: 32, style: .continuous)
+                        .fill(Color.black.opacity(0.7))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 32, style: .continuous)
+                                .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                        )
+                )
+                .padding(.horizontal, 24)
+                .padding(.vertical, 40)
             }
         }
     }
+}
 
-    func makeCoordinator() -> Coordinator { Coordinator() }
-
-    func makeUIView(context: Context) -> SCNView {
-        let scnView = SCNView()
-        scnView.backgroundColor = .clear
-        scnView.allowsCameraControl = true
-        scnView.autoenablesDefaultLighting = false
-        scnView.antialiasingMode = .multisampling4X
-        scnView.delegate = context.coordinator
-        context.coordinator.view = scnView
-
-        let scene = SCNScene()
-        scnView.scene = scene
-
-        let modelNode: SCNNode
-        if let url = Bundle.main.url(forResource: "FINISHEDWORK", withExtension: "usdc"),
-           let loadedScene = try? SCNScene(url: url, options: [.checkConsistency: true, .convertToYUp: true]) {
-            let container = SCNNode()
-            for child in loadedScene.rootNode.childNodes {
-                container.addChildNode(child)
-            }
-            modelNode = container
-        } else {
-            let sphere = SCNSphere(radius: 1.0)
-            sphere.firstMaterial?.diffuse.contents = UIColor(white: 0.1, alpha: 1.0)
-            modelNode = SCNNode(geometry: sphere)
+struct InstructionRow: View {
+    let icon: String
+    let text: String
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundColor(Color(red: 0.95, green: 0.82, blue: 0.45))
+                .frame(width: 30)
+            
+            Text(text)
+                .font(.system(size: 15))
+                .foregroundColor(.white.opacity(0.85))
         }
+    }
+}
 
-        applyMorphyMaterials(to: modelNode)
+// MARK: - Game Header
+struct GameHeaderView: View {
+    @Binding var isPaused: Bool
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                HStack(spacing: 10) {
+                    Image(systemName: "gamecontroller.fill")
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [Color(red: 0.3, green: 0.8, blue: 1.0), Color.cyan.opacity(0.8)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                    
+                    Text("Space Defender")
+                        .font(.system(size: 26, weight: .bold))
+                        .foregroundColor(.white)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+                }
+                
+                Spacer()
+                
+                Button(action: {
+                    isPaused.toggle()
+                }) {
+                    Image(systemName: isPaused ? "play.fill" : "pause.fill")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(.white)
+                        .frame(width: 36, height: 36)
+                        .background(
+                            Circle()
+                                .fill(Color.white.opacity(0.15))
+                                .overlay(
+                                    Circle()
+                                        .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                                )
+                        )
+                }
+            }
+            
+            Text("Defend the cosmos · Survive the waves")
+                .font(.system(size: 13))
+                .foregroundColor(.white.opacity(0.55))
+        }
+    }
+}
 
-        let (min, max) = modelNode.boundingBox
-        let size = SCNVector3(max.x - min.x, max.y - min.y, max.z - min.z)
-        let maxDim = Swift.max(size.x, Swift.max(size.y, size.z))
-        let target: Float = 2.8
-        let scale = target / maxDim
-        modelNode.scale = SCNVector3(scale, scale, scale)
+// MARK: - Game View Wrapper
+struct GalagaGameView: UIViewRepresentable {
+    @Binding var showInstructions: Bool
+    @Binding var isPaused: Bool
+    let topPadding: CGFloat
+    
+    func makeUIView(context: Context) -> SKView {
+        let skView = SKView()
+        skView.ignoresSiblingOrder = true
+        skView.showsFPS = false
+        skView.showsNodeCount = false
+        skView.allowsTransparency = true
+        skView.backgroundColor = .clear
+        
+        let scene = GalagaGameScene()
+        scene.scaleMode = .resizeFill
+        scene.showInstructionsBinding = showInstructions
+        scene.topSafeAreaInset = topPadding
+        skView.presentScene(scene)
+        
+        context.coordinator.scene = scene
+        context.coordinator.showInstructionsBinding = _showInstructions
+        context.coordinator.isPausedBinding = _isPaused
+        
+        return skView
+    }
+    
+    func updateUIView(_ uiView: SKView, context: Context) {
+        if let scene = context.coordinator.scene {
+            scene.showInstructionsBinding = showInstructions
+            scene.isGamePaused = isPaused
+        }
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator()
+    }
+    
+    class Coordinator {
+        var scene: GalagaGameScene?
+        var showInstructionsBinding: Binding<Bool>?
+        var isPausedBinding: Binding<Bool>?
+    }
+}
 
-        let center = SCNVector3(
-            (min.x + max.x) / 2 * scale,
-            (min.y + max.y) / 2 * scale,
-            (min.z + max.z) / 2 * scale
+// MARK: - Game Scene
+class GalagaGameScene: SKScene, SKPhysicsContactDelegate {
+    
+    // MARK: - Game State
+    private var player: SKSpriteNode!
+    private var score = 0
+    private var lives = 3
+    private var scoreLabel: SKLabelNode!
+    private var livesLabel: SKLabelNode!
+    private var gameOverLabel: SKLabelNode!
+    private var restartButton: SKSpriteNode!
+    private var restartLabel: SKLabelNode!
+    private var isGameOver = false
+    private var lastUpdateTime: TimeInterval = 0
+    private var deltaTime: TimeInterval = 0
+    private var wave = 1
+    private var meteorsDestroyed = 0
+    var showInstructionsBinding = false
+    var topSafeAreaInset: CGFloat = 0
+    var isGamePaused = false {
+        didSet {
+            handlePauseStateChange()
+        }
+    }
+    
+    // MARK: - Physics Categories
+    private let playerCategory: UInt32 = 0x1 << 0
+    private let meteorCategory: UInt32 = 0x1 << 1
+    private let bulletCategory: UInt32 = 0x1 << 2
+    private let powerUpCategory: UInt32 = 0x1 << 3
+    
+    // MARK: - Game Settings
+    private let playerSpeed: CGFloat = 500
+    private let bulletSpeed: CGFloat = 800
+    private let meteorSpeed: CGFloat = 150
+    private let fireRate: TimeInterval = 0.2
+    private var lastFireTime: TimeInterval = 0
+    private var touchLocation: CGPoint?
+    
+    // MARK: - Setup
+    override func didMove(to view: SKView) {
+        size = view.bounds.size
+        backgroundColor = .clear
+        physicsWorld.gravity = .zero
+        physicsWorld.contactDelegate = self
+        
+        setupBackground()
+        setupPlayer()
+        setupHUD()
+        startSpawning()
+    }
+    
+    override func didChangeSize(_ oldSize: CGSize) {
+        super.didChangeSize(oldSize)
+        
+        if oldSize != .zero && oldSize != size {
+            repositionHUD()
+        }
+    }
+    
+    private func repositionHUD() {
+        let headerHeight: CGFloat = 80
+        let topInset = topSafeAreaInset > 0 ? topSafeAreaInset + 8 : 16
+        let totalTopSpace = topInset + headerHeight + 12
+        let hudY = size.height - totalTopSpace
+        
+        let hudWidth: CGFloat = min(size.width - 40, 360)
+        let leftX = (size.width - hudWidth) / 2 + 60
+        let rightX = size.width - leftX
+        
+        if let scoreLabel = childNode(withName: "scoreLabel") as? SKLabelNode {
+            scoreLabel.position = CGPoint(x: leftX, y: hudY)
+        }
+        if let livesLabel = childNode(withName: "livesLabel") as? SKLabelNode {
+            livesLabel.position = CGPoint(x: rightX, y: hudY)
+        }
+    }
+    
+    private func setupBackground() {
+        backgroundColor = .clear
+    }
+    
+    private func setupPlayer() {
+        player = SKSpriteNode(imageNamed: "Spaceship")
+        player.size = CGSize(width: 60, height: 60)
+        let bottomSafeArea: CGFloat = 100
+        player.position = CGPoint(x: size.width / 2, y: bottomSafeArea + 50)
+        player.zPosition = 10
+        
+        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 45, height: 45))
+        player.physicsBody?.isDynamic = true
+        player.physicsBody?.categoryBitMask = playerCategory
+        player.physicsBody?.contactTestBitMask = meteorCategory | powerUpCategory
+        player.physicsBody?.collisionBitMask = 0
+        player.physicsBody?.usesPreciseCollisionDetection = true
+        
+        let engineGlow = SKShapeNode(circleOfRadius: 12)
+        engineGlow.fillColor = UIColor(red: 0.3, green: 0.8, blue: 1.0, alpha: 0.5)
+        engineGlow.strokeColor = .clear
+        engineGlow.position = CGPoint(x: 0, y: -25)
+        engineGlow.setScale(1.0)
+        engineGlow.zPosition = -1
+        player.addChild(engineGlow)
+        
+        let pulse = SKAction.sequence([
+            SKAction.group([
+                SKAction.scale(to: 1.4, duration: 0.2),
+                SKAction.fadeAlpha(to: 0.3, duration: 0.2)
+            ]),
+            SKAction.group([
+                SKAction.scale(to: 1.0, duration: 0.2),
+                SKAction.fadeAlpha(to: 0.5, duration: 0.2)
+            ])
+        ])
+        engineGlow.run(SKAction.repeatForever(pulse))
+        
+        addChild(player)
+    }
+    
+    private func setupHUD() {
+        let headerHeight: CGFloat = 80
+        let topInset = topSafeAreaInset > 0 ? topSafeAreaInset + 8 : 16
+        let totalTopSpace = topInset + headerHeight + 12
+        let hudY = size.height - totalTopSpace
+        
+        let hudWidth: CGFloat = min(size.width - 40, 360)
+        let leftX = (size.width - hudWidth) / 2 + 60
+        let rightX = size.width - leftX
+        
+        scoreLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
+        scoreLabel.fontSize = 18
+        scoreLabel.fontColor = UIColor(red: 0.3, green: 1.0, blue: 0.3, alpha: 1.0)
+        scoreLabel.position = CGPoint(x: leftX, y: hudY)
+        scoreLabel.horizontalAlignmentMode = .left
+        scoreLabel.verticalAlignmentMode = .center
+        scoreLabel.zPosition = 100
+        scoreLabel.name = "scoreLabel"
+        updateScoreLabel()
+        addChild(scoreLabel)
+        
+        livesLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
+        livesLabel.fontSize = 18
+        livesLabel.fontColor = UIColor(red: 1.0, green: 0.4, blue: 0.4, alpha: 1.0)
+        livesLabel.position = CGPoint(x: rightX, y: hudY)
+        livesLabel.horizontalAlignmentMode = .right
+        livesLabel.verticalAlignmentMode = .center
+        livesLabel.zPosition = 100
+        livesLabel.name = "livesLabel"
+        updateLivesLabel()
+        addChild(livesLabel)
+    }
+    
+    private func updateScoreLabel() {
+        scoreLabel.text = "Score: \(score)"
+    }
+    
+    private func updateLivesLabel() {
+        livesLabel.text = "Lives: \(lives)"
+    }
+    
+    // MARK: - Spawning
+    private func startSpawning() {
+        updateSpawnRate()
+        
+        let spawnPowerUp = SKAction.run { [weak self] in
+            if Double.random(in: 0...1) < 0.15 {
+                self?.spawnPowerUp()
+            }
+        }
+        let powerUpWait = SKAction.wait(forDuration: 8.0)
+        let powerUpSequence = SKAction.sequence([spawnPowerUp, powerUpWait])
+        run(SKAction.repeatForever(powerUpSequence), withKey: "powerUpSpawning")
+    }
+    
+    private func updateSpawnRate() {
+        removeAction(forKey: "spawning")
+        
+        let spawnInterval = max(0.5, 1.2 - (Double(wave - 1) * 0.1))
+        
+        let spawnMeteor = SKAction.run { [weak self] in
+            self?.spawnMeteor()
+        }
+        let wait = SKAction.wait(forDuration: spawnInterval)
+        let spawnSequence = SKAction.sequence([spawnMeteor, wait])
+        run(SKAction.repeatForever(spawnSequence), withKey: "spawning")
+    }
+    
+    private func spawnMeteor() {
+        let meteorSize = CGFloat.random(in: 40...80)
+        let meteor = SKSpriteNode(imageNamed: "Comets")
+        meteor.size = CGSize(width: meteorSize, height: meteorSize)
+        
+        let leftMargin = meteorSize + 20
+        let rightMargin = size.width - meteorSize - 20
+        
+        meteor.position = CGPoint(
+            x: CGFloat.random(in: leftMargin...rightMargin),
+            y: size.height + meteorSize
         )
-        modelNode.position = SCNVector3(-center.x, -center.y * 0.6, -center.z)
-        scene.rootNode.addChildNode(modelNode)
-
-        let cameraNode = SCNNode()
-        cameraNode.camera = SCNCamera()
-        cameraNode.camera?.fieldOfView = 40
-        cameraNode.position = SCNVector3(0, 0.9, 6)
-        cameraNode.look(at: SCNVector3(0, 0.4, 0))
-        scene.rootNode.addChildNode(cameraNode)
-        context.coordinator.originalCameraTransform = cameraNode.transform
-
-        let keyLight = SCNNode()
-        keyLight.light = SCNLight()
-        keyLight.light?.type = .spot
-        keyLight.light?.color = UIColor(red: 1.0, green: 0.96, blue: 0.88, alpha: 1.0)
-        keyLight.light?.intensity = 1200
-        keyLight.light?.spotInnerAngle = 25
-        keyLight.light?.spotOuterAngle = 60
-        keyLight.light?.castsShadow = true
-        keyLight.light?.shadowRadius = 4
-        keyLight.light?.shadowColor = UIColor.black.withAlphaComponent(0.6)
-        keyLight.position = SCNVector3(0, 6, 3)
-        keyLight.look(at: SCNVector3(0, 0.6, 0))
-        scene.rootNode.addChildNode(keyLight)
-
-        let fillLight = SCNNode()
-        fillLight.light = SCNLight()
-        fillLight.light?.type = .omni
-        fillLight.light?.color = UIColor(red: 0.7, green: 0.75, blue: 0.9, alpha: 1.0)
-        fillLight.light?.intensity = 230
-        fillLight.position = SCNVector3(-4, 2, 3)
-        scene.rootNode.addChildNode(fillLight)
-
-        let rimLight = SCNNode()
-        rimLight.light = SCNLight()
-        rimLight.light?.type = .omni
-        rimLight.light?.color = UIColor(red: 1.0, green: 0.85, blue: 0.65, alpha: 1.0)
-        rimLight.light?.intensity = 320
-        rimLight.position = SCNVector3(3, 4, -3)
-        scene.rootNode.addChildNode(rimLight)
-
-        let ambient = SCNNode()
-        ambient.light = SCNLight()
-        ambient.light?.type = .ambient
-        ambient.light?.color = UIColor(red: 0.15, green: 0.15, blue: 0.2, alpha: 1.0)
-        ambient.light?.intensity = 180
-        scene.rootNode.addChildNode(ambient)
-
-        return scnView
+        meteor.zPosition = 5
+        meteor.name = "meteor"
+        
+        meteor.physicsBody = SKPhysicsBody(circleOfRadius: meteorSize * 0.35)
+        meteor.physicsBody?.isDynamic = true
+        meteor.physicsBody?.categoryBitMask = meteorCategory
+        meteor.physicsBody?.contactTestBitMask = bulletCategory | playerCategory
+        meteor.physicsBody?.collisionBitMask = 0
+        meteor.physicsBody?.usesPreciseCollisionDetection = true
+        
+        let glowNode = SKShapeNode(circleOfRadius: meteorSize * 0.5)
+        glowNode.fillColor = UIColor(red: 0.9, green: 0.5, blue: 0.3, alpha: 0.25)
+        glowNode.strokeColor = .clear
+        glowNode.zPosition = -1
+        glowNode.setScale(1.0)
+        meteor.addChild(glowNode)
+        
+        let glowPulse = SKAction.sequence([
+            SKAction.group([
+                SKAction.scale(to: 1.3, duration: 0.5),
+                SKAction.fadeAlpha(to: 0.15, duration: 0.5)
+            ]),
+            SKAction.group([
+                SKAction.scale(to: 1.0, duration: 0.5),
+                SKAction.fadeAlpha(to: 0.25, duration: 0.5)
+            ])
+        ])
+        glowNode.run(SKAction.repeatForever(glowPulse))
+        
+        let trailEmitter = SKEmitterNode()
+        trailEmitter.particleTexture = SKTexture(imageNamed: "Comets")
+        trailEmitter.particleBirthRate = 30
+        trailEmitter.particleLifetime = 0.8
+        trailEmitter.particleScale = 0.15
+        trailEmitter.particleScaleSpeed = -0.1
+        trailEmitter.particleAlpha = 0.6
+        trailEmitter.particleAlphaSpeed = -0.75
+        trailEmitter.particleColor = UIColor(red: 0.7, green: 0.88, blue: 1.0, alpha: 1.0)
+        trailEmitter.particleColorBlendFactor = 1.0
+        trailEmitter.particleSpeed = 20
+        trailEmitter.particleSpeedRange = 10
+        trailEmitter.emissionAngle = .pi / 2
+        trailEmitter.emissionAngleRange = .pi / 6
+        trailEmitter.position = CGPoint(x: 0, y: meteorSize * 0.3)
+        trailEmitter.zPosition = -2
+        trailEmitter.targetNode = self
+        meteor.addChild(trailEmitter)
+        
+        addChild(meteor)
+        
+        let duration = TimeInterval(CGFloat.random(in: 3...6))
+        let moveAction = SKAction.moveTo(y: -meteorSize, duration: duration)
+        let rotateAction = SKAction.rotate(byAngle: CGFloat.random(in: -8...8), duration: duration)
+        let removeAction = SKAction.removeFromParent()
+        
+        meteor.run(SKAction.sequence([
+            SKAction.group([moveAction, rotateAction]),
+            removeAction
+        ]))
     }
-
-    func updateUIView(_ uiView: SCNView, context: Context) {}
-}
-
-private func SCNMatrix4AlmostEqual(_ a: SCNMatrix4, _ b: SCNMatrix4, eps: Float = 0.0005) -> Bool {
-    let deltas: [Float] = [
-        a.m11 - b.m11, a.m12 - b.m12, a.m13 - b.m13, a.m14 - b.m14,
-        a.m21 - b.m21, a.m22 - b.m22, a.m23 - b.m23, a.m24 - b.m24,
-        a.m31 - b.m31, a.m32 - b.m32, a.m33 - b.m33, a.m34 - b.m34,
-        a.m41 - b.m41, a.m42 - b.m42, a.m43 - b.m43, a.m44 - b.m44
-    ]
-    return deltas.allSatisfy { abs($0) < eps }
-}
-
-private func applyMorphyMaterials(to node: SCNNode) {
-    let lowerName = (node.name ?? "").lowercased()
-    let isEye = lowerName.contains("eye")
-
-    if let geometry = node.geometry {
-        if isEye {
-            let eye = SCNMaterial()
-            eye.diffuse.contents = UIColor.white
-            eye.emission.contents = UIColor.white
-            eye.lightingModel = .constant
-            geometry.materials = [eye]
-        } else {
-            let body = SCNMaterial()
-            body.diffuse.contents = UIColor(red: 0.06, green: 0.06, blue: 0.08, alpha: 1.0)
-            body.specular.contents = UIColor(red: 0.4, green: 0.38, blue: 0.45, alpha: 1.0)
-            body.shininess = 0.4
-            body.lightingModel = .physicallyBased
-            body.roughness.contents = 0.55
-            body.metalness.contents = 0.15
-            geometry.materials = [body]
+    
+    private func spawnPowerUp() {
+        let powerUp = SKShapeNode(circleOfRadius: 18)
+        powerUp.fillColor = UIColor(red: 0.95, green: 0.82, blue: 0.45, alpha: 0.9)
+        powerUp.strokeColor = UIColor.white.withAlphaComponent(0.6)
+        powerUp.lineWidth = 2
+        powerUp.glowWidth = 8
+        
+        let outerGlow = SKShapeNode(circleOfRadius: 24)
+        outerGlow.fillColor = UIColor(red: 0.95, green: 0.82, blue: 0.45, alpha: 0.2)
+        outerGlow.strokeColor = .clear
+        outerGlow.zPosition = -1
+        powerUp.addChild(outerGlow)
+        
+        let star = SKShapeNode()
+        let starPath = UIBezierPath()
+        for i in 0..<5 {
+            let angle = CGFloat(i) * .pi * 2 / 5 - .pi / 2
+            let point = CGPoint(x: cos(angle) * 12, y: sin(angle) * 12)
+            if i == 0 {
+                starPath.move(to: point)
+            } else {
+                starPath.addLine(to: point)
+            }
+            let innerAngle = angle + .pi / 5
+            let innerPoint = CGPoint(x: cos(innerAngle) * 6, y: sin(innerAngle) * 6)
+            starPath.addLine(to: innerPoint)
+        }
+        starPath.close()
+        star.path = starPath.cgPath
+        star.fillColor = .white
+        star.strokeColor = .clear
+        powerUp.addChild(star)
+        
+        let leftMargin: CGFloat = 50
+        let rightMargin = size.width - 50
+        
+        powerUp.position = CGPoint(
+            x: CGFloat.random(in: leftMargin...rightMargin),
+            y: size.height + 40
+        )
+        powerUp.zPosition = 5
+        powerUp.name = "powerUp"
+        
+        powerUp.physicsBody = SKPhysicsBody(circleOfRadius: 18)
+        powerUp.physicsBody?.isDynamic = true
+        powerUp.physicsBody?.categoryBitMask = powerUpCategory
+        powerUp.physicsBody?.contactTestBitMask = playerCategory
+        powerUp.physicsBody?.collisionBitMask = 0
+        
+        addChild(powerUp)
+        
+        let pulse = SKAction.sequence([
+            SKAction.group([
+                SKAction.scale(to: 1.25, duration: 0.35),
+                SKAction.fadeAlpha(to: 0.7, duration: 0.35)
+            ]),
+            SKAction.group([
+                SKAction.scale(to: 1.0, duration: 0.35),
+                SKAction.fadeAlpha(to: 1.0, duration: 0.35)
+            ])
+        ])
+        powerUp.run(SKAction.repeatForever(pulse))
+        
+        let rotate = SKAction.rotate(byAngle: .pi * 2, duration: 2.0)
+        powerUp.run(SKAction.repeatForever(rotate))
+        
+        let moveAction = SKAction.moveTo(y: -40, duration: 6.0)
+        let removeAction = SKAction.removeFromParent()
+        powerUp.run(SKAction.sequence([moveAction, removeAction]))
+    }
+    
+    // MARK: - Update Loop
+    override func update(_ currentTime: TimeInterval) {
+        if lastUpdateTime == 0 {
+            lastUpdateTime = currentTime
+        }
+        deltaTime = currentTime - lastUpdateTime
+        lastUpdateTime = currentTime
+        
+        if !isGameOver && !isGamePaused {
+            updatePlayerPosition()
+            autoFire(currentTime: currentTime)
         }
     }
-
-    for child in node.childNodes {
-        applyMorphyMaterials(to: child)
+    
+    private func handlePauseStateChange() {
+        if isGamePaused {
+            self.isPaused = true
+        } else {
+            self.isPaused = false
+        }
+    }
+    
+    private func updatePlayerPosition() {
+        guard let touch = touchLocation else { return }
+        
+        let distance = hypot(touch.x - player.position.x, touch.y - player.position.y)
+        
+        if distance > 5 {
+            let angle = atan2(touch.y - player.position.y, touch.x - player.position.x)
+            let maxMove = playerSpeed * CGFloat(deltaTime)
+            let moveDistance = min(distance, maxMove)
+            
+            player.position.x += cos(angle) * moveDistance
+            player.position.y += sin(angle) * moveDistance
+            
+            let headerHeight: CGFloat = 60
+            let topInset = topSafeAreaInset > 0 ? topSafeAreaInset + 8 : 16
+            let topBoundary = size.height - topInset - headerHeight - 100
+            let bottomBoundary: CGFloat = 80
+            
+            player.position.x = max(40, min(size.width - 40, player.position.x))
+            player.position.y = max(bottomBoundary, min(topBoundary, player.position.y))
+        }
+    }
+    
+    private func autoFire(currentTime: TimeInterval) {
+        if currentTime - lastFireTime >= fireRate {
+            fireBullet()
+            lastFireTime = currentTime
+        }
+    }
+    
+    private func fireBullet() {
+        let bullet = SKShapeNode(rectOf: CGSize(width: 6, height: 20), cornerRadius: 3)
+        bullet.fillColor = UIColor(red: 0.3, green: 1.0, blue: 0.3, alpha: 1.0)
+        bullet.strokeColor = UIColor.white.withAlphaComponent(0.8)
+        bullet.lineWidth = 1.5
+        bullet.glowWidth = 6
+        bullet.position = CGPoint(x: player.position.x, y: player.position.y + 30)
+        bullet.zPosition = 8
+        bullet.name = "bullet"
+        
+        let trail = SKShapeNode(rectOf: CGSize(width: 4, height: 12), cornerRadius: 2)
+        trail.fillColor = UIColor(red: 0.3, green: 1.0, blue: 0.3, alpha: 0.4)
+        trail.strokeColor = .clear
+        trail.position = CGPoint(x: 0, y: -12)
+        trail.zPosition = -1
+        bullet.addChild(trail)
+        
+        bullet.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 6, height: 20))
+        bullet.physicsBody?.isDynamic = true
+        bullet.physicsBody?.categoryBitMask = bulletCategory
+        bullet.physicsBody?.contactTestBitMask = meteorCategory
+        bullet.physicsBody?.collisionBitMask = 0
+        bullet.physicsBody?.usesPreciseCollisionDetection = true
+        
+        addChild(bullet)
+        
+        let moveAction = SKAction.moveTo(y: size.height + 50, duration: 1.0)
+        let fadeTrail = SKAction.fadeOut(withDuration: 0.3)
+        trail.run(fadeTrail)
+        
+        let removeAction = SKAction.removeFromParent()
+        bullet.run(SKAction.sequence([moveAction, removeAction]))
+    }
+    
+    // MARK: - Touch Handling
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
+        
+        if showInstructionsBinding {
+            return
+        }
+        
+        if isGameOver {
+            if restartButton.contains(location) {
+                restartGame()
+            }
+            return
+        }
+        
+        touchLocation = location
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first, !isGameOver, !showInstructionsBinding else { return }
+        touchLocation = touch.location(in: self)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        touchLocation = nil
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        touchLocation = nil
+    }
+    
+    // MARK: - Collision Detection
+    func didBegin(_ contact: SKPhysicsContact) {
+        let firstBody = contact.bodyA
+        let secondBody = contact.bodyB
+        
+        if (firstBody.categoryBitMask == bulletCategory && secondBody.categoryBitMask == meteorCategory) ||
+           (firstBody.categoryBitMask == meteorCategory && secondBody.categoryBitMask == bulletCategory) {
+            
+            let bullet = firstBody.categoryBitMask == bulletCategory ? firstBody.node : secondBody.node
+            let meteor = firstBody.categoryBitMask == meteorCategory ? firstBody.node : secondBody.node
+            
+            bulletHitMeteor(bullet: bullet, meteor: meteor)
+        }
+        
+        if (firstBody.categoryBitMask == playerCategory && secondBody.categoryBitMask == meteorCategory) ||
+           (firstBody.categoryBitMask == meteorCategory && secondBody.categoryBitMask == playerCategory) {
+            
+            let meteor = firstBody.categoryBitMask == meteorCategory ? firstBody.node : secondBody.node
+            playerHitMeteor(meteor: meteor)
+        }
+        
+        if (firstBody.categoryBitMask == playerCategory && secondBody.categoryBitMask == powerUpCategory) ||
+           (firstBody.categoryBitMask == powerUpCategory && secondBody.categoryBitMask == playerCategory) {
+            
+            let powerUp = firstBody.categoryBitMask == powerUpCategory ? firstBody.node : secondBody.node
+            playerCollectedPowerUp(powerUp: powerUp)
+        }
+    }
+    
+    private func bulletHitMeteor(bullet: SKNode?, meteor: SKNode?) {
+        guard let bullet = bullet, let meteor = meteor else { return }
+        
+        createExplosion(at: meteor.position, color: UIColor(red: 0.95, green: 0.6, blue: 0.3, alpha: 1.0))
+        
+        bullet.removeFromParent()
+        meteor.removeFromParent()
+        
+        score += 10
+        meteorsDestroyed += 1
+        updateScoreLabel()
+        
+        if meteorsDestroyed % 15 == 0 {
+            wave += 1
+            updateSpawnRate()
+            showWaveNotification()
+        }
+        
+        let scorePopup = SKLabelNode(fontNamed: "AvenirNext-Bold")
+        scorePopup.text = "+10"
+        scorePopup.fontSize = 20
+        scorePopup.fontColor = UIColor(red: 0.3, green: 1.0, blue: 0.3, alpha: 1.0)
+        scorePopup.position = meteor.position
+        scorePopup.zPosition = 50
+        addChild(scorePopup)
+        
+        let rise = SKAction.moveBy(x: 0, y: 40, duration: 0.6)
+        let fade = SKAction.fadeOut(withDuration: 0.6)
+        let remove = SKAction.removeFromParent()
+        scorePopup.run(SKAction.sequence([
+            SKAction.group([rise, fade]),
+            remove
+        ]))
+    }
+    
+    private func showWaveNotification() {
+        let waveLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
+        waveLabel.text = "WAVE \(wave)"
+        waveLabel.fontSize = 40
+        waveLabel.fontColor = UIColor(red: 0.3, green: 0.8, blue: 1.0, alpha: 1.0)
+        waveLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        waveLabel.zPosition = 150
+        waveLabel.alpha = 0
+        waveLabel.setScale(0.5)
+        addChild(waveLabel)
+        
+        let appear = SKAction.group([
+            SKAction.fadeIn(withDuration: 0.3),
+            SKAction.scale(to: 1.2, duration: 0.3)
+        ])
+        let hold = SKAction.wait(forDuration: 1.0)
+        let disappear = SKAction.group([
+            SKAction.fadeOut(withDuration: 0.3),
+            SKAction.scale(to: 0.8, duration: 0.3)
+        ])
+        let remove = SKAction.removeFromParent()
+        
+        waveLabel.run(SKAction.sequence([appear, hold, disappear, remove]))
+    }
+    
+    private func playerHitMeteor(meteor: SKNode?) {
+        guard let meteor = meteor, !isGameOver else { return }
+        
+        createExplosion(at: player.position, color: UIColor(red: 0.3, green: 0.8, blue: 1.0, alpha: 1.0))
+        createExplosion(at: meteor.position, color: UIColor(red: 0.95, green: 0.6, blue: 0.3, alpha: 1.0))
+        meteor.removeFromParent()
+        
+        lives -= 1
+        updateLivesLabel()
+        
+        let shieldFlash = SKShapeNode(circleOfRadius: 40)
+        shieldFlash.fillColor = .clear
+        shieldFlash.strokeColor = UIColor(red: 1.0, green: 0.4, blue: 0.4, alpha: 0.8)
+        shieldFlash.lineWidth = 3
+        shieldFlash.glowWidth = 6
+        shieldFlash.position = player.position
+        shieldFlash.zPosition = 12
+        addChild(shieldFlash)
+        
+        let expand = SKAction.scale(to: 2.0, duration: 0.3)
+        let fade = SKAction.fadeOut(withDuration: 0.3)
+        let remove = SKAction.removeFromParent()
+        shieldFlash.run(SKAction.sequence([
+            SKAction.group([expand, fade]),
+            remove
+        ]))
+        
+        player.run(SKAction.sequence([
+            SKAction.fadeAlpha(to: 0.2, duration: 0.08),
+            SKAction.fadeAlpha(to: 1.0, duration: 0.08),
+            SKAction.fadeAlpha(to: 0.2, duration: 0.08),
+            SKAction.fadeAlpha(to: 1.0, duration: 0.08),
+            SKAction.fadeAlpha(to: 0.2, duration: 0.08),
+            SKAction.fadeAlpha(to: 1.0, duration: 0.08)
+        ]))
+        
+        if lives <= 0 {
+            gameOver()
+        }
+    }
+    
+    private func playerCollectedPowerUp(powerUp: SKNode?) {
+        guard let powerUp = powerUp else { return }
+        
+        let powerUpRing = SKShapeNode(circleOfRadius: 50)
+        powerUpRing.fillColor = .clear
+        powerUpRing.strokeColor = UIColor(red: 0.95, green: 0.82, blue: 0.45, alpha: 0.8)
+        powerUpRing.lineWidth = 3
+        powerUpRing.glowWidth = 8
+        powerUpRing.position = powerUp.position
+        powerUpRing.zPosition = 25
+        addChild(powerUpRing)
+        
+        let expand = SKAction.scale(to: 2.5, duration: 0.5)
+        let fade = SKAction.fadeOut(withDuration: 0.5)
+        let remove = SKAction.removeFromParent()
+        powerUpRing.run(SKAction.sequence([
+            SKAction.group([expand, fade]),
+            remove
+        ]))
+        
+        for _ in 0..<20 {
+            let sparkle = SKShapeNode(circleOfRadius: 3)
+            sparkle.fillColor = UIColor(red: 0.95, green: 0.82, blue: 0.45, alpha: 1.0)
+            sparkle.strokeColor = .white
+            sparkle.lineWidth = 1
+            sparkle.position = powerUp.position
+            sparkle.zPosition = 26
+            addChild(sparkle)
+            
+            let angle = CGFloat.random(in: 0...2 * .pi)
+            let distance = CGFloat.random(in: 50...120)
+            let destination = CGPoint(
+                x: powerUp.position.x + cos(angle) * distance,
+                y: powerUp.position.y + sin(angle) * distance
+            )
+            
+            let move = SKAction.move(to: destination, duration: 0.7)
+            let fade = SKAction.fadeOut(withDuration: 0.7)
+            let remove = SKAction.removeFromParent()
+            
+            sparkle.run(SKAction.sequence([
+                SKAction.group([move, fade]),
+                remove
+            ]))
+        }
+        
+        powerUp.removeFromParent()
+        
+        score += 50
+        updateScoreLabel()
+        
+        let scorePopup = SKLabelNode(fontNamed: "AvenirNext-Bold")
+        scorePopup.text = "+50"
+        scorePopup.fontSize = 28
+        scorePopup.fontColor = UIColor(red: 0.95, green: 0.82, blue: 0.45, alpha: 1.0)
+        scorePopup.position = player.position
+        scorePopup.zPosition = 50
+        addChild(scorePopup)
+        
+        let rise = SKAction.moveBy(x: 0, y: 60, duration: 0.8)
+        let popFade = SKAction.fadeOut(withDuration: 0.8)
+        let popRemove = SKAction.removeFromParent()
+        scorePopup.run(SKAction.sequence([
+            SKAction.group([rise, popFade]),
+            popRemove
+        ]))
+        
+        let scaleUp = SKAction.scale(to: 1.2, duration: 0.15)
+        let scaleDown = SKAction.scale(to: 1.0, duration: 0.15)
+        player.run(SKAction.sequence([scaleUp, scaleDown]))
+    }
+    
+    private func createExplosion(at position: CGPoint, color: UIColor) {
+        let flashNode = SKShapeNode(circleOfRadius: 40)
+        flashNode.fillColor = color.withAlphaComponent(0.6)
+        flashNode.strokeColor = .clear
+        flashNode.position = position
+        flashNode.zPosition = 20
+        addChild(flashNode)
+        
+        let flashExpand = SKAction.scale(to: 2.0, duration: 0.3)
+        let flashFade = SKAction.fadeOut(withDuration: 0.3)
+        let flashRemove = SKAction.removeFromParent()
+        flashNode.run(SKAction.sequence([
+            SKAction.group([flashExpand, flashFade]),
+            flashRemove
+        ]))
+        
+        for _ in 0..<16 {
+            let particle = SKShapeNode(circleOfRadius: CGFloat.random(in: 2...6))
+            particle.fillColor = color
+            particle.strokeColor = .white.withAlphaComponent(0.6)
+            particle.lineWidth = 1
+            particle.glowWidth = 2
+            particle.position = position
+            particle.zPosition = 15
+            addChild(particle)
+            
+            let angle = CGFloat.random(in: 0...2 * .pi)
+            let distance = CGFloat.random(in: 40...100)
+            let destination = CGPoint(
+                x: position.x + cos(angle) * distance,
+                y: position.y + sin(angle) * distance
+            )
+            
+            let move = SKAction.move(to: destination, duration: 0.6)
+            let fade = SKAction.fadeOut(withDuration: 0.6)
+            let scale = SKAction.scale(to: 0.1, duration: 0.6)
+            let rotate = SKAction.rotate(byAngle: CGFloat.random(in: -4...4), duration: 0.6)
+            let remove = SKAction.removeFromParent()
+            
+            particle.run(SKAction.sequence([
+                SKAction.group([move, fade, scale, rotate]),
+                remove
+            ]))
+        }
+        
+        for _ in 0..<8 {
+            let sparkle = SKShapeNode(circleOfRadius: 2)
+            sparkle.fillColor = .white
+            sparkle.strokeColor = .clear
+            sparkle.position = position
+            sparkle.zPosition = 16
+            addChild(sparkle)
+            
+            let angle = CGFloat.random(in: 0...2 * .pi)
+            let distance = CGFloat.random(in: 60...140)
+            let destination = CGPoint(
+                x: position.x + cos(angle) * distance,
+                y: position.y + sin(angle) * distance
+            )
+            
+            let move = SKAction.move(to: destination, duration: 0.8)
+            let fade = SKAction.fadeOut(withDuration: 0.8)
+            let remove = SKAction.removeFromParent()
+            
+            sparkle.run(SKAction.sequence([
+                SKAction.group([move, fade]),
+                remove
+            ]))
+        }
+    }
+    
+    // MARK: - Game Over
+    private func gameOver() {
+        isGameOver = true
+        removeAction(forKey: "spawning")
+        removeAction(forKey: "powerUpSpawning")
+        touchLocation = nil
+        
+        let overlay = SKShapeNode(rectOf: size)
+        overlay.fillColor = UIColor.black.withAlphaComponent(0.75)
+        overlay.strokeColor = .clear
+        overlay.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        overlay.zPosition = 190
+        overlay.alpha = 0
+        overlay.name = "gameOverOverlay"
+        addChild(overlay)
+        
+        let cardWidth: CGFloat = min(340, size.width - 60)
+        let cardHeight: CGFloat = 300
+        let cardBackground = SKShapeNode(rectOf: CGSize(width: cardWidth, height: cardHeight), cornerRadius: 32)
+        cardBackground.fillColor = UIColor.black.withAlphaComponent(0.6)
+        cardBackground.strokeColor = UIColor.white.withAlphaComponent(0.2)
+        cardBackground.lineWidth = 1
+        cardBackground.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        cardBackground.zPosition = 195
+        cardBackground.alpha = 0
+        cardBackground.name = "gameOverCard"
+        addChild(cardBackground)
+        
+        gameOverLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
+        gameOverLabel.text = "MISSION COMPLETE"
+        gameOverLabel.fontSize = 28
+        gameOverLabel.fontColor = UIColor(red: 0.3, green: 0.8, blue: 1.0, alpha: 1.0)
+        gameOverLabel.position = CGPoint(x: size.width / 2, y: size.height / 2 + 90)
+        gameOverLabel.zPosition = 200
+        gameOverLabel.alpha = 0
+        gameOverLabel.name = "gameOverTitle"
+        addChild(gameOverLabel)
+        
+        let finalScoreLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
+        finalScoreLabel.text = "SCORE"
+        finalScoreLabel.fontSize = 16
+        finalScoreLabel.fontColor = UIColor.white.withAlphaComponent(0.6)
+        finalScoreLabel.position = CGPoint(x: size.width / 2, y: size.height / 2 + 35)
+        finalScoreLabel.zPosition = 200
+        finalScoreLabel.alpha = 0
+        finalScoreLabel.name = "scoreTitle"
+        addChild(finalScoreLabel)
+        
+        let scoreValueLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
+        scoreValueLabel.text = "\(score)"
+        scoreValueLabel.fontSize = 56
+        scoreValueLabel.fontColor = UIColor(red: 0.95, green: 0.82, blue: 0.45, alpha: 1.0)
+        scoreValueLabel.position = CGPoint(x: size.width / 2, y: size.height / 2 - 25)
+        scoreValueLabel.zPosition = 200
+        scoreValueLabel.alpha = 0
+        scoreValueLabel.name = "scoreValue"
+        addChild(scoreValueLabel)
+        
+        let buttonBackground = SKShapeNode(rectOf: CGSize(width: 240, height: 56), cornerRadius: 28)
+        buttonBackground.fillColor = UIColor(red: 0.3, green: 0.8, blue: 1.0, alpha: 0.25)
+        buttonBackground.strokeColor = UIColor(red: 0.3, green: 0.8, blue: 1.0, alpha: 1.0)
+        buttonBackground.lineWidth = 2
+        buttonBackground.glowWidth = 4
+        buttonBackground.position = CGPoint(x: size.width / 2, y: size.height / 2 - 105)
+        buttonBackground.zPosition = 199
+        buttonBackground.alpha = 0
+        buttonBackground.name = "restartButtonBackground"
+        addChild(buttonBackground)
+        
+        restartButton = SKSpriteNode(color: .clear, size: CGSize(width: 240, height: 56))
+        restartButton.position = CGPoint(x: size.width / 2, y: size.height / 2 - 105)
+        restartButton.zPosition = 200
+        restartButton.alpha = 0
+        restartButton.name = "restartButton"
+        addChild(restartButton)
+        
+        restartLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
+        restartLabel.text = "PLAY AGAIN"
+        restartLabel.fontSize = 20
+        restartLabel.fontColor = .white
+        restartLabel.position = CGPoint(x: 0, y: -7)
+        restartLabel.zPosition = 201
+        restartButton.addChild(restartLabel)
+        
+        overlay.run(SKAction.fadeAlpha(to: 0.75, duration: 0.4))
+        cardBackground.run(SKAction.fadeIn(withDuration: 0.5))
+        gameOverLabel.run(SKAction.sequence([
+            SKAction.wait(forDuration: 0.2),
+            SKAction.fadeIn(withDuration: 0.4)
+        ]))
+        finalScoreLabel.run(SKAction.sequence([
+            SKAction.wait(forDuration: 0.4),
+            SKAction.fadeIn(withDuration: 0.3)
+        ]))
+        scoreValueLabel.run(SKAction.sequence([
+            SKAction.wait(forDuration: 0.5),
+            SKAction.fadeIn(withDuration: 0.4)
+        ]))
+        buttonBackground.run(SKAction.sequence([
+            SKAction.wait(forDuration: 0.7),
+            SKAction.fadeIn(withDuration: 0.4)
+        ]))
+        restartButton.run(SKAction.sequence([
+            SKAction.wait(forDuration: 0.7),
+            SKAction.fadeIn(withDuration: 0.4)
+        ]))
+    }
+    
+    private func restartGame() {
+        removeAllChildren()
+        
+        score = 0
+        lives = 3
+        wave = 1
+        meteorsDestroyed = 0
+        isGameOver = false
+        lastFireTime = 0
+        touchLocation = nil
+        
+        setupBackground()
+        setupPlayer()
+        setupHUD()
+        startSpawning()
     }
 }

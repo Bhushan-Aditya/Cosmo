@@ -1,6 +1,39 @@
 Command line invocation:
-    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild build -scheme Cosmo -destination "platform=iOS Simulator,name=iPhone 17 Pro"
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -scheme Cosmo -sdk iphonesimulator build
 
+Build settings from command line:
+    SDKROOT = iphonesimulator26.2
+
+2026-03-13 12:00:03.010 xcodebuild[28082:767971] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS Simulator, id:dvtdevice-DVTiOSDeviceSimulatorPlaceholder-iphonesimulator:placeholder, name:Any iOS Simulator Device }
+{ platform:iOS Simulator, arch:arm64, id:CFC57E24-5E78-4641-AF1E-87D350C427AE, OS:26.0, name:iPad (A16) }
+{ platform:iOS Simulator, arch:arm64, id:2D504F2D-C729-4322-8A26-7EA78F69D36D, OS:26.2, name:iPad (A16) }
+{ platform:iOS Simulator, arch:arm64, id:1822519F-BAE6-45C5-9894-D0B2B2C8F68C, OS:26.0, name:iPad Air 11-inch (M3) }
+{ platform:iOS Simulator, arch:arm64, id:C22B543A-C9ED-4B18-AB8C-920FCE211C82, OS:26.2, name:iPad Air 11-inch (M3) }
+{ platform:iOS Simulator, arch:arm64, id:C24874D3-4F04-4426-BACC-B7E31A29B0F2, OS:26.0, name:iPad Air 13-inch (M3) }
+{ platform:iOS Simulator, arch:arm64, id:8E49E920-CF70-428F-BD4F-09707D51B4F5, OS:26.2, name:iPad Air 13-inch (M3) }
+{ platform:iOS Simulator, arch:arm64, id:0AB1C91C-F814-4D5D-95B5-CB1FA7F943AA, OS:26.0, name:iPad Pro 11-inch (M4) }
+{ platform:iOS Simulator, arch:arm64, id:4DBE2755-C506-4C7F-8094-70744C6F60B0, OS:26.0, name:iPad Pro 11-inch (M5) }
+{ platform:iOS Simulator, arch:arm64, id:16AA0C42-43E3-40D4-9C5B-0EFC750DB391, OS:26.2, name:iPad Pro 11-inch (M5) }
+{ platform:iOS Simulator, arch:arm64, id:41E4DE8D-ED20-4A34-B187-100CB978DD28, OS:26.0, name:iPad Pro 13-inch (M4) }
+{ platform:iOS Simulator, arch:arm64, id:B110D78D-8910-48BF-B3DB-4EACA2EB9A8A, OS:26.0, name:iPad Pro 13-inch (M5) }
+{ platform:iOS Simulator, arch:arm64, id:45C84125-34AF-41EB-8971-5382C9370215, OS:26.2, name:iPad Pro 13-inch (M5) }
+{ platform:iOS Simulator, arch:arm64, id:56BD409F-694A-4608-9636-C4137EFF794F, OS:26.2, name:iPad Pro 13-inch (M5) (16GB) }
+{ platform:iOS Simulator, arch:arm64, id:8CB786F1-8524-4F90-8AA1-112D0D7E2AF4, OS:26.0, name:iPad mini (A17 Pro) }
+{ platform:iOS Simulator, arch:arm64, id:6E58CB94-52AA-4EA3-A61A-3827B187B1A9, OS:26.2, name:iPad mini (A17 Pro) }
+{ platform:iOS Simulator, arch:arm64, id:28993612-A9C4-4E71-9690-B9C75F705682, OS:26.0, name:iPhone 16e }
+{ platform:iOS Simulator, arch:arm64, id:55B7668A-A3AA-4D5F-9530-3F0BB44265FA, OS:26.2, name:iPhone 16e }
+{ platform:iOS Simulator, arch:arm64, id:8AECD78B-13C9-4040-8E62-A632BFF37609, OS:26.0, name:iPhone 17 }
+{ platform:iOS Simulator, arch:arm64, id:ABC65B40-D4C4-4388-9191-32A2D09133A3, OS:26.2, name:iPhone 17 }
+{ platform:iOS Simulator, arch:arm64, id:1D88AD42-D97B-4621-8A83-93C9DC58727E, OS:26.0, name:iPhone 17 Pro }
+{ platform:iOS Simulator, arch:arm64, id:DB90A6A9-D843-44C0-AEE4-98D136CBD6AE, OS:26.2, name:iPhone 17 Pro }
+{ platform:iOS Simulator, arch:arm64, id:92E37B08-77AA-468C-84C0-8786C88893B5, OS:26.0, name:iPhone 17 Pro Max }
+{ platform:iOS Simulator, arch:arm64, id:4CA57786-4385-4141-AC56-EE4FCE1BF67B, OS:26.2, name:iPhone 17 Pro Max }
+{ platform:iOS Simulator, arch:arm64, id:AF602FC5-500F-4DFE-80F7-492E19DF3E7E, OS:26.0, name:iPhone Air }
+{ platform:iOS Simulator, arch:arm64, id:0174C864-E70A-47B5-AE83-03CA04CB38E1, OS:26.2, name:iPhone Air }
+{ platform:macOS, arch:arm64, variant:Designed for [iPad,iPhone], id:00006040-000431082E92801C, name:My Mac }
+{ platform:iOS, id:dvtdevice-DVTiPhonePlaceholder-iphoneos:placeholder, name:Any iOS Device }
 ComputePackagePrebuildTargetDependencyGraph
 
 Prepare packages
@@ -30,15 +63,576 @@ ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeD
 
 ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
 
-Build description signature: 25d8c69b30f0b7a576f292f89636e5e3
-Build description path: /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/XCBuildData/25d8c69b30f0b7a576f292f89636e5e3.xcbuilddata
-ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk /Users/admin5/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache
+Build description signature: 96e81dd0d96bd5dba710f53cb6885b5f
+Build description path: /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/XCBuildData/96e81dd0d96bd5dba710f53cb6885b5f.xcbuilddata
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk /Users/admin5/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C57-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache
     cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo.xcodeproj
-    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -o /Users/admin5/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -o /Users/admin5/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C57-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache
+
+ProcessProductPackaging "" /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo.app-Simulated.xcent (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+    Entitlements:
+    
+    {
+    "application-identifier" = "356ZYCG5SF.Aditya.Cosmo";
+}
+    
+    builtin-productPackagingUtility -entitlements -format xml -o /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo.app-Simulated.xcent
+
+ProcessProductPackagingDER /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo.app-Simulated.xcent /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo.app-Simulated.xcent.der (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    /usr/bin/derq query -f xml -i /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo.app-Simulated.xcent -o /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo.app-Simulated.xcent.der --raw
+
+CpResource /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/FINISHEDWORK.usdc /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Cosmo/Resources/FINISHEDWORK.usdc (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Cosmo/Resources/FINISHEDWORK.usdc /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app
+
+Ld /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Binary/__preview.dylib normal x86_64 (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target x86_64-apple-ios18.2-simulator -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -O0 -L/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -F/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -install_name @rpath/Cosmo.debug.dylib -dead_strip -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -debug_variant -Xlinker -dependency_info -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo_dependency_info.dat -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __entitlements -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo.app-Simulated.xcent -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __ents_der -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo.app-Simulated.xcent.der -Xlinker -no_adhoc_codesign -o /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Binary/__preview.dylib
+
+CompileAssetCatalogVariant thinned /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Preview\ Content/Preview\ Assets.xcassets /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Assets.xcassets (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    /Applications/Xcode.app/Contents/Developer/usr/bin/actool /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Preview\ Content/Preview\ Assets.xcassets /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Assets.xcassets --compile /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/assetcatalog_output/thinned --output-format human-readable-text --notices --warnings --export-dependency-info /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/assetcatalog_dependencies_thinned --output-partial-info-plist /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/assetcatalog_generated_info.plist_thinned --app-icon AppIcon --accent-color AccentColor --compress-pngs --enable-on-demand-resources YES --development-region en --target-device iphone --target-device ipad --minimum-deployment-target 18.2 --platform iphonesimulator
+/* com.apple.actool.compilation-results */
+/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/assetcatalog_generated_info.plist_thinned
+/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/assetcatalog_output/thinned/Assets.car
+
+
+Ld /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Binary/__preview.dylib normal arm64 (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios18.2-simulator -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -O0 -L/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -F/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -install_name @rpath/Cosmo.debug.dylib -dead_strip -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -debug_variant -Xlinker -dependency_info -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo_dependency_info.dat -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __entitlements -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo.app-Simulated.xcent -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __ents_der -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo.app-Simulated.xcent.der -Xlinker -no_adhoc_codesign -o /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Binary/__preview.dylib
+
+CpResource /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/quiz_questions.json /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Quiz/Data/quiz_questions.json (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Quiz/Data/quiz_questions.json /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app
+
+CreateUniversalBinary /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/__preview.dylib normal arm64\ x86_64 (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo -create /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Binary/__preview.dylib /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Binary/__preview.dylib -output /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/__preview.dylib
+
+SwiftDriver Cosmo normal x86_64 com.apple.xcode.tools.swift.compiler (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Cosmo -Onone -enforce-exclusivity\=checked @/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target x86_64-apple-ios18.2-simulator -g -module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -F /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -emit-localized-strings -emit-localized-strings-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64 -c -j12 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C57-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache -output-file-map /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo_const_extract_protocols.json -Xcc -iquote -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-generated-files.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-own-target-headers.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-all-target-headers.hmap -Xcc -iquote -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-project-headers.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources-normal/x86_64 -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources/x86_64 -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo-Swift.h -working-directory /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo -experimental-emit-module-separately -disable-cmo
+
+SwiftDriver Cosmo normal arm64 com.apple.xcode.tools.swift.compiler (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Cosmo -Onone -enforce-exclusivity\=checked @/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios18.2-simulator -g -module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -F /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -emit-localized-strings -emit-localized-strings-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64 -c -j12 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C57-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache -output-file-map /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo_const_extract_protocols.json -Xcc -iquote -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-generated-files.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-own-target-headers.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-all-target-headers.hmap -Xcc -iquote -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-project-headers.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources-normal/arm64 -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources/arm64 -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo-Swift.h -working-directory /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo -experimental-emit-module-separately -disable-cmo
+
+SwiftCompile normal arm64 Compiling\ NeoView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Main\ Pages/NeoView.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftCompile normal arm64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Main\ Pages/NeoView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftEmitModule normal arm64 Emitting\ module\ for\ Cosmo (in target 'Cosmo' from project 'Cosmo')
+
+EmitSwiftModule normal arm64 (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/UniformTypeIdentifiers-2JJT08TP4430UKNXEBZL4X4G1.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/OpenGLES-8PLJEAI61VMFRKDYXQ2QN2H3L.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreTransferable-I01HZ1O8SFK5BSV9JBZOHA9I.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/UIUtilities-3IXQ6KXR07NBPHMMIJQNSVPDO.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/ModelIO-5DPU62GICWTPX78I74RJI6SR.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/DataDetection-CBZMEZ4ZB1M56VR3PW5LNRS1W.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Symbols-E3J3TAG4Y2X5MELOSYVBNYGVP.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Accessibility-6OOS5GJVEC7JX2UF874UK3P3Y.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/OSLog-564AVGF3PM3ULT5SH63GH070Y.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreData-33KCIQIFPZGTGZ1JBB037A75V.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/UserNotifications-18CMN40W8NB2TV3XYDLFUYF37.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/IOSurface-2W84DFL1N9ZW5TLNCLNR3ILJ5.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/FileProvider-1TO8SVWBS7E7Z1C0OYLZQHHD2.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Metal-7ITI5Y69OLBUUF9HTXLFIU850.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreVideo-F5F3FZ6QVFK7RTP46O1PHXAZG.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/QuartzCore-464X0NDCNAWEIGWZADGS6MMT1.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/CoreImage-M8G1SG1YLOJ83V0U0W5GRA3P.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/SwiftUICore-18SMFU9UCDJRLMB44T95VNEOC.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/UIKit-2SHIXB54NSQRF2JRF5CG9QENW.pcm
+
+SwiftDriverJobDiscovery normal arm64 Emitting module for Cosmo (in target 'Cosmo' from project 'Cosmo')
+
+SwiftDriver\ Compilation\ Requirements Cosmo normal arm64 com.apple.xcode.tools.swift.compiler (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Cosmo -Onone -enforce-exclusivity\=checked @/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios18.2-simulator -g -module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -F /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -emit-localized-strings -emit-localized-strings-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64 -c -j12 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C57-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache -output-file-map /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo_const_extract_protocols.json -Xcc -iquote -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-generated-files.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-own-target-headers.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-all-target-headers.hmap -Xcc -iquote -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-project-headers.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources-normal/arm64 -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources/arm64 -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo-Swift.h -working-directory /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo -experimental-emit-module-separately -disable-cmo
+
+Copy /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.swiftmodule/arm64-apple-ios-simulator.swiftdoc /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.swiftdoc (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.swiftdoc /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.swiftmodule/arm64-apple-ios-simulator.swiftdoc
+
+Copy /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.swiftmodule/arm64-apple-ios-simulator.abi.json /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.abi.json (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.abi.json /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.swiftmodule/arm64-apple-ios-simulator.abi.json
+
+Copy /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.swiftsourceinfo (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.swiftsourceinfo /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo
+
+Copy /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.swiftmodule/arm64-apple-ios-simulator.swiftmodule /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.swiftmodule (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.swiftmodule /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.swiftmodule/arm64-apple-ios-simulator.swiftmodule
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/SwiftUI-4B4P5256ER7EQDFVBEHQXCXD8.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/GLKit-44KJS7RXKKTZDEP90ALK8AJMX.pcm
+
+SwiftExplicitDependencyGeneratePcm x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/SpriteKit-ALIZ3HNVLL5FKD0NNGVJ2SL4L.pcm
+
+SwiftCompile normal x86_64 Compiling\ NeoView.swift,\ QuizPage.swift,\ TheoryPage.swift,\ CosmoAnimatedBackground.swift,\ EnhancedCosmicBackground.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Main\ Pages/NeoView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Main\ Pages/QuizPage.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Main\ Pages/TheoryPage.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Shared\ Components/Background/CosmoAnimatedBackground.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Shared\ Components/Background/EnhancedCosmicBackground.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Main\ Pages/NeoView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Main\ Pages/QuizPage.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+/Users/admin5/Desktop/iOS/iOS Apps/Cosmo/Cosmo/Views/Main Pages/QuizPage.swift:1114:10: warning: 'onChange(of:perform:)' was deprecated in iOS 17.0: Use `onChange` with a two or zero parameter action closure instead.
+        .onChange(of: score) { _ in
+         ^
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Main\ Pages/TheoryPage.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Shared\ Components/Background/CosmoAnimatedBackground.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Shared\ Components/Background/EnhancedCosmicBackground.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 Compiling\ GravitationalDelayView.swift,\ StellarTravelView.swift,\ TimeDelayView.swift,\ HyperloopView.swift,\ RocketsView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/SpaceTime/GravitationalDelayView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/SpaceTime/StellarTravelView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/SpaceTime/TimeDelayView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Technology/HyperloopView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Technology/RocketsView.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/SpaceTime/GravitationalDelayView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/SpaceTime/StellarTravelView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/SpaceTime/TimeDelayView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Technology/HyperloopView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Technology/RocketsView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftEmitModule normal x86_64 Emitting\ module\ for\ Cosmo (in target 'Cosmo' from project 'Cosmo')
+
+EmitSwiftModule normal x86_64 (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 Compiling\ WormHolesView.swift,\ EclipsesView.swift,\ GravityView.swift,\ SolarFlare.swift,\ TidalWave.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/CosmicPhenomena/WormHolesView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/EarthSpace/EclipsesView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/EarthSpace/GravityView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/EarthSpace/SolarFlare.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/EarthSpace/TidalWave.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/CosmicPhenomena/WormHolesView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/EarthSpace/EclipsesView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/EarthSpace/GravityView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/EarthSpace/SolarFlare.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/EarthSpace/TidalWave.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 Compiling\ CosmoCardStyle.swift,\ SectionCard.swift,\ ContentView.swift,\ CosmoApp.swift,\ GeneratedAssetSymbols.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Shared\ Components/Cards/CosmoCardStyle.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Shared\ Components/Cards/SectionCard.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/ContentView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/CosmoApp.swift /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Shared\ Components/Cards/CosmoCardStyle.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Shared\ Components/Cards/SectionCard.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/ContentView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/CosmoApp.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 Compiling\ CometsView.swift,\ MoonsView.swift,\ SatellitesView.swift,\ SolarSystemView.swift,\ CryogenicSleepView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/SolarSystem/CometsView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/SolarSystem/MoonsView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/SolarSystem/SatellitesView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/SolarSystem/SolarSystemView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/SpaceTime/CryogenicSleepView.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/SolarSystem/CometsView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/SolarSystem/MoonsView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/SolarSystem/SatellitesView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/SolarSystem/SolarSystemView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/SpaceTime/CryogenicSleepView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 Compiling\ Anim_StellarTravel.swift,\ Anim_Telescope.swift,\ Anim_TidalWave.swift,\ Anim_TimeDelay.swift,\ Anim_Wormhole.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_StellarTravel.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Telescope.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_TidalWave.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_TimeDelay.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Wormhole.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_StellarTravel.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Telescope.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_TidalWave.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_TimeDelay.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Wormhole.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 Compiling\ Anim_Cryogenic.swift,\ Anim_Dimensions.swift,\ Anim_Eclipse.swift,\ Anim_Gravity.swift,\ Anim_GravTime.swift,\ Anim_Hyperloop.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Cryogenic.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Dimensions.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Eclipse.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Gravity.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_GravTime.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Hyperloop.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Cryogenic.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Dimensions.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Eclipse.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Gravity.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_GravTime.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Hyperloop.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 Compiling\ QuizHomeView.swift,\ QuizResultsView.swift,\ QuizRunView.swift,\ Anim_BlackHole.swift,\ Anim_Comet.swift,\ Anim_Constellation.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Quiz/Views/QuizHomeView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Quiz/Views/QuizResultsView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Quiz/Views/QuizRunView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_BlackHole.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Comet.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Constellation.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Quiz/Views/QuizHomeView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Quiz/Views/QuizResultsView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Quiz/Views/QuizRunView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+/Users/admin5/Desktop/iOS/iOS Apps/Cosmo/Cosmo/Quiz/Views/QuizRunView.swift:72:13: warning: 'init(destination:isActive:label:)' was deprecated in iOS 16.0: use NavigationLink(value:label:), or navigationDestination(isPresented:destination:), inside a NavigationStack or NavigationSplitView
+            NavigationLink(
+            ^
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_BlackHole.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Comet.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Constellation.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 Compiling\ Anim_Moon.swift,\ Anim_Rocket.swift,\ Anim_Satellite.swift,\ Anim_SolarFlare.swift,\ Anim_SolarSystem.swift,\ Anim_SpaceStation.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Moon.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Rocket.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Satellite.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_SolarFlare.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_SolarSystem.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_SpaceStation.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Moon.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Rocket.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_Satellite.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_SolarFlare.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_SolarSystem.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/Anim_SpaceStation.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 Compiling\ AnimationHelpers.swift,\ SectionAnimationView.swift,\ BlackHolesView.swift,\ ConstellationsView.swift,\ DimensionsView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/AnimationHelpers.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/SectionAnimationView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/CosmicPhenomena/BlackHolesView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/CosmicPhenomena/ConstellationsView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/CosmicPhenomena/DimensionsView.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/AnimationHelpers.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Animations/SectionAnimationView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/CosmicPhenomena/BlackHolesView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/CosmicPhenomena/ConstellationsView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/CosmicPhenomena/DimensionsView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+/Users/admin5/Desktop/iOS/iOS Apps/Cosmo/Cosmo/Views/Explore Sections/CosmicPhenomena/DimensionsView.swift:29:43: warning: non-constant range: argument must be an integer literal
+                    ForEach(0..<dimension.number) { index in
+                                          ^
+/Users/admin5/Desktop/iOS/iOS Apps/Cosmo/Cosmo/Views/Explore Sections/CosmicPhenomena/DimensionsView.swift:87:47: warning: non-constant range: argument must be an integer literal
+                        ForEach(0..<dimension.number) { index in
+                                              ^
+
+SwiftDriverJobDiscovery normal x86_64 Compiling Anim_Moon.swift, Anim_Rocket.swift, Anim_Satellite.swift, Anim_SolarFlare.swift, Anim_SolarSystem.swift, Anim_SpaceStation.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftCompile normal x86_64 Compiling\ ExploreSection.swift,\ SectionGroup.swift,\ QuizDataStore.swift,\ QuizRepository.swift,\ QuizModels.swift,\ QuizStatsStore.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Models/ExploreSection.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Models/SectionGroup.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Quiz/Data/QuizDataStore.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Quiz/Data/QuizRepository.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Quiz/Models/QuizModels.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Quiz/Stats/QuizStatsStore.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Models/ExploreSection.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Models/SectionGroup.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Quiz/Data/QuizDataStore.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Quiz/Data/QuizRepository.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Quiz/Models/QuizModels.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Quiz/Stats/QuizStatsStore.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftDriverJobDiscovery normal x86_64 Compiling Anim_Cryogenic.swift, Anim_Dimensions.swift, Anim_Eclipse.swift, Anim_Gravity.swift, Anim_GravTime.swift, Anim_Hyperloop.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftCompile normal x86_64 Compiling\ SpaceStationView.swift,\ TelescopesView.swift,\ ExplorePage.swift,\ HomePage.swift,\ LandingPage.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Technology/SpaceStationView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Technology/TelescopesView.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Main\ Pages/ExplorePage.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Main\ Pages/HomePage.swift /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Main\ Pages/LandingPage.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Technology/SpaceStationView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Explore\ Sections/Technology/TelescopesView.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Main\ Pages/ExplorePage.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Main\ Pages/HomePage.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftCompile normal x86_64 /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Views/Main\ Pages/LandingPage.swift (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+
+SwiftDriverJobDiscovery normal x86_64 Compiling CosmoCardStyle.swift, SectionCard.swift, ContentView.swift, CosmoApp.swift, GeneratedAssetSymbols.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftDriverJobDiscovery normal arm64 Compiling NeoView.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftDriver\ Compilation Cosmo normal arm64 com.apple.xcode.tools.swift.compiler (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-Swift-Compilation -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Cosmo -Onone -enforce-exclusivity\=checked @/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios18.2-simulator -g -module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -F /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -emit-localized-strings -emit-localized-strings-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64 -c -j12 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C57-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache -output-file-map /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo_const_extract_protocols.json -Xcc -iquote -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-generated-files.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-own-target-headers.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-all-target-headers.hmap -Xcc -iquote -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-project-headers.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources-normal/arm64 -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources/arm64 -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo-Swift.h -working-directory /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo -experimental-emit-module-separately -disable-cmo
+
+SwiftDriverJobDiscovery normal x86_64 Emitting module for Cosmo (in target 'Cosmo' from project 'Cosmo')
+
+SwiftDriver\ Compilation\ Requirements Cosmo normal x86_64 com.apple.xcode.tools.swift.compiler (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Cosmo -Onone -enforce-exclusivity\=checked @/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target x86_64-apple-ios18.2-simulator -g -module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -F /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -emit-localized-strings -emit-localized-strings-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64 -c -j12 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C57-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache -output-file-map /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo_const_extract_protocols.json -Xcc -iquote -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-generated-files.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-own-target-headers.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-all-target-headers.hmap -Xcc -iquote -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-project-headers.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources-normal/x86_64 -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources/x86_64 -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo-Swift.h -working-directory /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo -experimental-emit-module-separately -disable-cmo
+
+SwiftMergeGeneratedHeaders /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources/Cosmo-Swift.h /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo-Swift.h /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo-Swift.h (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-swiftHeaderTool -arch arm64 /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo-Swift.h -arch x86_64 /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo-Swift.h -o /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources/Cosmo-Swift.h
+
+Copy /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.swiftmodule/x86_64-apple-ios-simulator.swiftmodule /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.swiftmodule (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.swiftmodule /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.swiftmodule/x86_64-apple-ios-simulator.swiftmodule
+
+Copy /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.swiftmodule/x86_64-apple-ios-simulator.swiftdoc /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.swiftdoc (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.swiftdoc /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.swiftmodule/x86_64-apple-ios-simulator.swiftdoc
+
+Copy /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.swiftmodule/x86_64-apple-ios-simulator.abi.json /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.abi.json (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.abi.json /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.swiftmodule/x86_64-apple-ios-simulator.abi.json
+
+Copy /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.swiftsourceinfo (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.swiftsourceinfo /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo
+
+Ld /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Binary/Cosmo.debug.dylib normal arm64 (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios18.2-simulator -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -O0 -L/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator -L/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -F/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator -F/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -filelist /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.LinkFileList -install_name @rpath/Cosmo.debug.dylib -Xlinker -rpath -Xlinker /usr/lib/swift -Xlinker -rpath -Xlinker @executable_path/Frameworks -dead_strip -Xlinker -object_path_lto -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo_lto.o -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -debug_variant -Xlinker -dependency_info -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo_dependency_info.dat -fobjc-link-runtime -fprofile-instr-generate -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator -L/usr/lib/swift -Xlinker -add_ast_path -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.swiftmodule @/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo-linker-args.resp -Xlinker -alias -Xlinker _main -Xlinker ___debug_main_executable_dylib_entry_point -Xlinker -no_adhoc_codesign -o /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Binary/Cosmo.debug.dylib
+
+ConstructStubExecutorLinkFileList /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-ExecutorLinkFileList-normal-arm64.txt (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    construct-stub-executor-link-file-list /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Binary/Cosmo.debug.dylib /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libPreviewsJITStubExecutor_no_swift_entry_point.a /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libPreviewsJITStubExecutor.a --output /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-ExecutorLinkFileList-normal-arm64.txt
+note: Using stub executor library with Swift entry point. (in target 'Cosmo' from project 'Cosmo')
+
+Ld /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Binary/Cosmo normal arm64 (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios18.2-simulator -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -O0 -L/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -F/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -Xlinker -rpath -Xlinker @executable_path -Xlinker -rpath -Xlinker @executable_path/Frameworks -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -debug_variant -e ___debug_blank_executor_main -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __debug_dylib -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-DebugDylibPath-normal-arm64.txt -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __debug_instlnm -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-DebugDylibInstallName-normal-arm64.txt -Xlinker -filelist -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-ExecutorLinkFileList-normal-arm64.txt -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __entitlements -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo.app-Simulated.xcent -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __ents_der -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo.app-Simulated.xcent.der /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Binary/Cosmo.debug.dylib -Xlinker -no_adhoc_codesign -o /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Binary/Cosmo
+
+SwiftDriverJobDiscovery normal x86_64 Compiling ExploreSection.swift, SectionGroup.swift, QuizDataStore.swift, QuizRepository.swift, QuizModels.swift, QuizStatsStore.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftDriverJobDiscovery normal x86_64 Compiling QuizHomeView.swift, QuizResultsView.swift, QuizRunView.swift, Anim_BlackHole.swift, Anim_Comet.swift, Anim_Constellation.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftDriverJobDiscovery normal x86_64 Compiling Anim_StellarTravel.swift, Anim_Telescope.swift, Anim_TidalWave.swift, Anim_TimeDelay.swift, Anim_Wormhole.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftDriverJobDiscovery normal x86_64 Compiling GravitationalDelayView.swift, StellarTravelView.swift, TimeDelayView.swift, HyperloopView.swift, RocketsView.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftDriverJobDiscovery normal x86_64 Compiling CometsView.swift, MoonsView.swift, SatellitesView.swift, SolarSystemView.swift, CryogenicSleepView.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftDriverJobDiscovery normal x86_64 Compiling WormHolesView.swift, EclipsesView.swift, GravityView.swift, SolarFlare.swift, TidalWave.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftDriverJobDiscovery normal x86_64 Compiling AnimationHelpers.swift, SectionAnimationView.swift, BlackHolesView.swift, ConstellationsView.swift, DimensionsView.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftDriverJobDiscovery normal x86_64 Compiling SpaceStationView.swift, TelescopesView.swift, ExplorePage.swift, HomePage.swift, LandingPage.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftDriverJobDiscovery normal x86_64 Compiling NeoView.swift, QuizPage.swift, TheoryPage.swift, CosmoAnimatedBackground.swift, EnhancedCosmicBackground.swift (in target 'Cosmo' from project 'Cosmo')
+
+SwiftDriver\ Compilation Cosmo normal x86_64 com.apple.xcode.tools.swift.compiler (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-Swift-Compilation -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Cosmo -Onone -enforce-exclusivity\=checked @/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target x86_64-apple-ios18.2-simulator -g -module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -F /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -emit-localized-strings -emit-localized-strings-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64 -c -j12 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C57-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache -output-file-map /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/admin5/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo_const_extract_protocols.json -Xcc -iquote -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-generated-files.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-own-target-headers.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-all-target-headers.hmap -Xcc -iquote -Xcc /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-project-headers.hmap -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources-normal/x86_64 -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources/x86_64 -Xcc -I/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo-Swift.h -working-directory /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo -experimental-emit-module-separately -disable-cmo
+
+Ld /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Binary/Cosmo.debug.dylib normal x86_64 (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target x86_64-apple-ios18.2-simulator -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -O0 -L/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator -L/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -F/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator -F/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -filelist /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.LinkFileList -install_name @rpath/Cosmo.debug.dylib -Xlinker -rpath -Xlinker /usr/lib/swift -Xlinker -rpath -Xlinker @executable_path/Frameworks -dead_strip -Xlinker -object_path_lto -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo_lto.o -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -debug_variant -Xlinker -dependency_info -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo_dependency_info.dat -fobjc-link-runtime -fprofile-instr-generate -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator -L/usr/lib/swift -Xlinker -add_ast_path -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.swiftmodule @/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo-linker-args.resp -Xlinker -alias -Xlinker _main -Xlinker ___debug_main_executable_dylib_entry_point -Xlinker -no_adhoc_codesign -o /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Binary/Cosmo.debug.dylib
+
+CreateUniversalBinary /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/Cosmo.debug.dylib normal arm64\ x86_64 (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo -create /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Binary/Cosmo.debug.dylib /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Binary/Cosmo.debug.dylib -output /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/Cosmo.debug.dylib
+
+ConstructStubExecutorLinkFileList /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-ExecutorLinkFileList-normal-x86_64.txt (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    construct-stub-executor-link-file-list /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Binary/Cosmo.debug.dylib /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libPreviewsJITStubExecutor_no_swift_entry_point.a /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libPreviewsJITStubExecutor.a --output /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-ExecutorLinkFileList-normal-x86_64.txt
+note: Using stub executor library with Swift entry point. (in target 'Cosmo' from project 'Cosmo')
+
+Ld /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Binary/Cosmo normal x86_64 (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target x86_64-apple-ios18.2-simulator -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -O0 -L/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -F/Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator -Xlinker -rpath -Xlinker @executable_path -Xlinker -rpath -Xlinker @executable_path/Frameworks -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -debug_variant -e ___debug_blank_executor_main -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __debug_dylib -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-DebugDylibPath-normal-x86_64.txt -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __debug_instlnm -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-DebugDylibInstallName-normal-x86_64.txt -Xlinker -filelist -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo-ExecutorLinkFileList-normal-x86_64.txt -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __entitlements -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo.app-Simulated.xcent -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __ents_der -Xlinker /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo.app-Simulated.xcent.der /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Binary/Cosmo.debug.dylib -Xlinker -no_adhoc_codesign -o /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Binary/Cosmo
+
+CreateUniversalBinary /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/Cosmo normal arm64\ x86_64 (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo -create /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Binary/Cosmo /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Binary/Cosmo -output /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/Cosmo
+
+LinkAssetCatalog /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Preview\ Content/Preview\ Assets.xcassets /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo/Cosmo/Assets.xcassets (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-linkAssetCatalog --thinned /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/assetcatalog_output/thinned --thinned-dependencies /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/assetcatalog_dependencies_thinned --thinned-info-plist-content /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/assetcatalog_generated_info.plist_thinned --unthinned /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/assetcatalog_output/unthinned --unthinned-dependencies /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/assetcatalog_dependencies_unthinned --unthinned-info-plist-content /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/assetcatalog_generated_info.plist_unthinned --output /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app --plist-output /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/assetcatalog_generated_info.plist
+note: Emplaced /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/Assets.car (in target 'Cosmo' from project 'Cosmo')
 
 ProcessInfoPlistFile /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/Info.plist /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/empty-Cosmo.plist (in target 'Cosmo' from project 'Cosmo')
     cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
     builtin-infoPlistUtility /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/empty-Cosmo.plist -producttype com.apple.product-type.application -genpkginfo /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/assetcatalog_generated_info.plist -o /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/Info.plist
+
+CopySwiftLibs /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/Cosmo.debug.dylib --scan-folder /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/Frameworks --scan-folder /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/PlugIns --scan-folder /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/SystemExtensions --scan-folder /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/Extensions --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/Frameworks --strip-bitcode --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os --back-deploy-swift-span
+
+ExtractAppIntentsMetadata (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/appintentsmetadataprocessor --toolchain-dir /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --module-name Cosmo --sdk-root /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk --xcode-version 17C529 --platform-family iOS --deployment-target 18.2 --bundle-identifier Aditya.Cosmo --output /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app --target-triple arm64-apple-ios18.2-simulator --target-triple x86_64-apple-ios18.2-simulator --binary-file /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/Cosmo --dependency-file /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo_dependency_info.dat --dependency-file /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo_dependency_info.dat --stringsdata-file /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/ExtractedAppShortcutsMetadata.stringsdata --stringsdata-file /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/ExtractedAppShortcutsMetadata.stringsdata --source-file-list /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.SwiftFileList --source-file-list /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.SwiftFileList --metadata-file-list /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo.DependencyMetadataFileList --static-metadata-file-list /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Cosmo.DependencyStaticMetadataFileList --swift-const-vals-list /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/arm64/Cosmo.SwiftConstValuesFileList --swift-const-vals-list /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Intermediates.noindex/Cosmo.build/Debug-iphonesimulator/Cosmo.build/Objects-normal/x86_64/Cosmo.SwiftConstValuesFileList --compile-time-extraction --deployment-aware-processing --validate-assistant-intents --no-app-shortcuts-localization
+2026-03-13 12:00:23.105 appintentsmetadataprocessor[28453:769248] Starting appintentsmetadataprocessor export
+2026-03-13 12:00:23.106 appintentsmetadataprocessor[28453:769248] warning: Metadata extraction skipped. No AppIntents.framework dependency found.
+
+CodeSign /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/Cosmo.debug.dylib (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/Cosmo.debug.dylib
+
+CodeSign /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/__preview.dylib (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app/__preview.dylib
+
+CodeSign /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app
+
+Validate /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app (in target 'Cosmo' from project 'Cosmo')
+    cd /Users/admin5/Desktop/iOS/iOS\ Apps/Cosmo
+    builtin-validationUtility /Users/admin5/Library/Developer/Xcode/DerivedData/Cosmo-eudicbnzjxggcharpanpvudimqzr/Build/Products/Debug-iphonesimulator/Cosmo.app -shallow-bundle -infoplist-subpath Info.plist
 
 ** BUILD SUCCEEDED **
 

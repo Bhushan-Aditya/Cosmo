@@ -43,152 +43,85 @@ struct ContentView: View {
     }
 }
 
-// MARK: - Liquid Glass Tab Bar
+// MARK: - Native Liquid Glass Tab Bar
 private struct MainTabView: View {
     @Binding var selectedTab: AppPage
     @Binding var showStars: Bool
 
-    init(selectedTab: Binding<AppPage>, showStars: Binding<Bool>) {
-        self._selectedTab = selectedTab
-        self._showStars = showStars
-
-        // Make system tab bar invisible — we use our own
-        let invisible = UITabBarAppearance()
-        invisible.configureWithTransparentBackground()
-        invisible.backgroundColor = .clear
-        invisible.shadowColor = .clear
-        UITabBar.appearance().isTranslucent = true
-        UITabBar.appearance().standardAppearance = invisible
-        UITabBar.appearance().scrollEdgeAppearance = invisible
-    }
-
-    private let tabs: [(page: AppPage, label: String, icon: String)] = [
-        (.explore,   "Explore",   "sparkles"),
-        (.theories,  "Theories",  "atom"),
-        (.quiz,      "Quiz",      "questionmark.circle.fill"),
-        (.neo,       "Neo",       "cube.transparent"),
-    ]
-
     var body: some View {
-        GeometryReader { proxy in
-            let bottomInset = proxy.safeAreaInsets.bottom
-
-            ZStack(alignment: .bottom) {
-                // Page content
-                TabView(selection: $selectedTab) {
-                    NavigationStack {
-                        ExplorePage()
-                            .toolbar(.hidden, for: .navigationBar)
-                    }
-                    .tag(AppPage.explore)
-                    .tabItem { Label("Explore", systemImage: "sparkles") }
-
-                    NavigationStack {
-                        TheoryExplorerView()
-                            .toolbar(.hidden, for: .navigationBar)
-                    }
-                    .tag(AppPage.theories)
-                    .tabItem { Label("Theories", systemImage: "atom") }
-
-                    NavigationStack {
-                        QuizHomeView()
-                    }
-                    .tag(AppPage.quiz)
-                    .tabItem { Label("Quiz", systemImage: "questionmark.circle.fill") }
-
-                    NavigationStack {
-                        NeoView()
-                    }
-                    .tag(AppPage.neo)
-                    .tabItem { Label("Neo", systemImage: "cube.transparent") }
-                }
-                .tint(.white)
-                .toolbarBackground(.hidden, for: .tabBar)
-                .toolbarColorScheme(.dark, for: .tabBar)
-
-                // Custom liquid glass capsule tab bar
-                liquidTabBar(bottomInset: bottomInset)
+        TabView(selection: $selectedTab) {
+            NavigationStack {
+                ExplorePage()
+                    .toolbar(.hidden, for: .navigationBar)
             }
+            .tabItem {
+                Label("Explore", systemImage: "sparkles")
+            }
+            .tag(AppPage.explore)
+            
+            NavigationStack {
+                TheoryExplorerView()
+                    .toolbar(.hidden, for: .navigationBar)
+            }
+            .tabItem {
+                Label("Theories", systemImage: "atom")
+            }
+            .tag(AppPage.theories)
+            
+            NavigationStack {
+                QuizHomeView()
+            }
+            .tabItem {
+                Label("Quiz", systemImage: "questionmark.circle.fill")
+            }
+            .tag(AppPage.quiz)
+            
+            NavigationStack {
+                NeoView()
+            }
+            .tabItem {
+                Label("Game", systemImage: "gamecontroller.fill")
+            }
+            .tag(AppPage.neo)
         }
-        .ignoresSafeArea(edges: .bottom)
         .onAppear {
+            setupLiquidGlassTabBar()
             if selectedTab == .landing || selectedTab == .home {
                 selectedTab = .explore
             }
         }
     }
-
-    @ViewBuilder
-    private func liquidTabBar(bottomInset: CGFloat) -> some View {
-        let tabBarHeight: CGFloat = 62
-        let bottomPad: CGFloat = max(10, bottomInset * 0.5)
-
-        ZStack {
-            // Blur + glass capsule background
-            Capsule()
-                .fill(.ultraThinMaterial)
-                .overlay(
-                    Capsule()
-                        .stroke(
-                            LinearGradient(
-                                colors: [
-                                    Color.white.opacity(0.28),
-                                    Color.white.opacity(0.08)
-                                ],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ),
-                            lineWidth: 1
-                        )
-                )
-                .shadow(color: Color.black.opacity(0.45), radius: 20, x: 0, y: 8)
-                .shadow(color: Color.white.opacity(0.05), radius: 2, x: 0, y: -1)
-
-            // Tab buttons
-            HStack(spacing: 0) {
-                ForEach(tabs, id: \.page) { tab in
-                    tabButton(tab: tab)
-                }
-            }
-            .padding(.horizontal, 8)
+    
+    private func setupLiquidGlassTabBar() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithTransparentBackground()
+        
+        // Liquid glass effect with blur
+        let blurEffect = UIBlurEffect(style: .systemUltraThinMaterialDark)
+        appearance.backgroundEffect = blurEffect
+        
+        // Subtle border on top
+        appearance.shadowColor = UIColor.white.withAlphaComponent(0.1)
+        appearance.shadowImage = UIImage()
+        
+        // Selected item appearance
+        appearance.stackedLayoutAppearance.selected.iconColor = .white
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: UIColor.white,
+            .font: UIFont.systemFont(ofSize: 10, weight: .semibold)
+        ]
+        
+        // Normal item appearance
+        appearance.stackedLayoutAppearance.normal.iconColor = UIColor.white.withAlphaComponent(0.5)
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor.white.withAlphaComponent(0.5),
+            .font: UIFont.systemFont(ofSize: 10, weight: .regular)
+        ]
+        
+        UITabBar.appearance().standardAppearance = appearance
+        if #available(iOS 15.0, *) {
+            UITabBar.appearance().scrollEdgeAppearance = appearance
         }
-        .frame(height: tabBarHeight)
-        .padding(.horizontal, 20)
-        .padding(.bottom, bottomPad)
-    }
-
-    @ViewBuilder
-    private func tabButton(tab: (page: AppPage, label: String, icon: String)) -> some View {
-        let isSelected = selectedTab == tab.page
-
-        Button {
-            withAnimation(.spring(response: 0.38, dampingFraction: 0.72)) {
-                selectedTab = tab.page
-            }
-        } label: {
-            VStack(spacing: 4) {
-                ZStack {
-                    if isSelected {
-                        Capsule()
-                            .fill(Color.white.opacity(0.15))
-                            .frame(width: 40, height: 28)
-                            .transition(.scale.combined(with: .opacity))
-                    }
-                    Image(systemName: tab.icon)
-                        .font(.system(size: 17, weight: isSelected ? .semibold : .regular))
-                        .foregroundColor(isSelected ? .white : .white.opacity(0.45))
-                        .scaleEffect(isSelected ? 1.1 : 1.0)
-                        .animation(.spring(response: 0.3, dampingFraction: 0.65), value: isSelected)
-                }
-
-                Text(tab.label)
-                    .font(.system(size: 10, weight: isSelected ? .semibold : .regular))
-                    .foregroundColor(isSelected ? .white : .white.opacity(0.45))
-            }
-            .frame(maxWidth: .infinity)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
     }
 }
 

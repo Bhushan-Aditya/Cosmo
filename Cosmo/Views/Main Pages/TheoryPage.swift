@@ -207,11 +207,16 @@ struct TheoryExplorerView: View {
             )
             .ignoresSafeArea()
 
-            VStack(spacing: 16) {
-                headerSection
-                theorySelectorSection
-                    .padding(.horizontal)
-                theoriesList
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 0) {
+                    headerSection
+                    
+                    theorySelectorSection
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 14)
+                    
+                    theoriesList
+                }
             }
         }
         .onAppear {
@@ -227,11 +232,10 @@ struct TheoryExplorerView: View {
 
     // MARK: - View Components
     private var headerSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            // Icon + Title row
-            HStack(alignment: .center, spacing: 10) {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 10) {
                 Image(systemName: "atom")
-                    .font(.system(size: 24, weight: .bold))
+                    .font(.system(size: 26, weight: .bold))
                     .foregroundStyle(
                         LinearGradient(
                             colors: [Color.white, Color.cyan.opacity(0.8)],
@@ -240,25 +244,20 @@ struct TheoryExplorerView: View {
                         )
                     )
                 Text("Theory Explorer")
-                    .font(.system(size: 28, weight: .bold))
+                    .font(.system(size: 30, weight: .bold))
                     .foregroundColor(.white)
-
             }
-
-            // Subtitle
             Text(headerDescription)
                 .font(.system(size: 14))
-                .foregroundColor(.white.opacity(0.6))
-                .multilineTextAlignment(.leading)
+                .foregroundColor(.white.opacity(0.55))
         }
         .padding(.horizontal, 20)
         .padding(.top, 16)
-        .padding(.bottom, 8)
     }
 
     private var theorySelectorSection: some View { // Theory type selector 
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 12) {
+            HStack(spacing: 8) {
                 TheoryTypeButton(
                     title: "All",
                     icon: "star.circle.fill",
@@ -289,36 +288,32 @@ struct TheoryExplorerView: View {
                     }
                 }
             }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 8)
         }
     }
 
     // Category + search sections removed (per request).
 
     private var theoriesList: some View { 
-        ScrollView(showsIndicators: false) {
-            LazyVStack(spacing: 12) {
-                ForEach(Array(filteredTheories.enumerated()), id: \.element.id) { index, theory in
-                    TheoryCard(theory: theory) { 
-                        print("Action from TheoryCard triggered in TheoryExplorerView for: \(theory.title)") 
-                        withAnimation {
-                            selectedTheory = theory
-                            showTheoryDetail = true
-                        }
+        LazyVStack(spacing: 12) {
+            ForEach(Array(filteredTheories.enumerated()), id: \.element.id) { index, theory in
+                TheoryCard(theory: theory) { 
+                    print("Action from TheoryCard triggered in TheoryExplorerView for: \(theory.title)") 
+                    withAnimation {
+                        selectedTheory = theory
+                        showTheoryDetail = true
                     }
-                    .offset(y: animateCards ? 0 : 30)
-                    .opacity(animateCards ? 1 : 0)
-                    .animation(
-                        .spring(response: 0.45, dampingFraction: 0.75)
-                        .delay(Double(index) * 0.05),
-                        value: animateCards
-                    )
                 }
+                .offset(y: animateCards ? 0 : 30)
+                .opacity(animateCards ? 1 : 0)
+                .animation(
+                    .spring(response: 0.45, dampingFraction: 0.75)
+                    .delay(Double(index) * 0.05),
+                    value: animateCards
+                )
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
         }
+        .padding(.horizontal, 16)
+        .padding(.bottom, 100)
         .onAppear {
             withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.1)) {
                 animateCards = true
