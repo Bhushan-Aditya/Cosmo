@@ -527,9 +527,6 @@ struct SpaceStationView: View {
             ZStack {
                 Color.black
 
-                // Animated Star Field
-                StarFieldView() // <------ REMOVE THIS LINE
-
                 // Animated background effects
                 ForEach(0..<3) { index in
                     Circle()
