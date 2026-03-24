@@ -54,6 +54,47 @@ final class SupabaseAuthService {
 
     private init() {}
 
+    func refreshSession() async throws -> SupabaseSession {
+        guard let refreshToken = AuthSessionStore.shared.currentRefreshToken else {
+            throw SupabaseAuthError.invalidResponse
+        }
+
+        guard var components = URLComponents(
+            url: SupabaseConfig.authURL.appendingPathComponent("token"),
+            resolvingAgainstBaseURL: false
+        ) else {
+            throw SupabaseAuthError.invalidURL
+        }
+
+        components.queryItems = [URLQueryItem(name: "grant_type", value: "refresh_token")]
+        guard let url = components.url else { throw SupabaseAuthError.invalidURL }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        SupabaseConfig.defaultHeaders.forEach { request.setValue($1, forHTTPHeaderField: $0) }
+        request.httpBody = try JSONSerialization.data(withJSONObject: ["refresh_token": refreshToken])
+
+        let (data, response) = try await session.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw SupabaseAuthError.invalidResponse
+        }
+
+        if (200..<300).contains(httpResponse.statusCode) {
+            let refreshed = try JSONDecoder().decode(SupabaseSession.self, from: data)
+            logAuth("Token refresh success. New expiry decoded from access token.")
+            return refreshed
+        }
+
+        if let errorResponse = try? JSONDecoder().decode(SupabaseAuthErrorResponse.self, from: data) {
+            let message = errorResponse.errorDescription ?? errorResponse.message ?? errorResponse.error ?? "Token refresh failed."
+            logAuth("Token refresh failed: \(message)")
+            throw SupabaseAuthError.server(message)
+        }
+
+        throw SupabaseAuthError.server("Token refresh failed with status \(httpResponse.statusCode).")
+    }
+
     func signInWithApple(idToken: String, rawNonce: String?) async throws -> SupabaseSession {
         logAuth("Starting Supabase token exchange for Apple sign-in")
         logAuth("Incoming Apple id_token: \(idToken)")

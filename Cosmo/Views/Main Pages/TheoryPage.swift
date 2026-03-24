@@ -246,6 +246,8 @@ struct TheoryExplorerView: View {
                 Text("Theory Explorer")
                     .font(.system(size: 30, weight: .bold))
                     .foregroundColor(.white)
+                Spacer()
+                ProfileTopButton()
             }
             Text(headerDescription)
                 .font(.system(size: 14))

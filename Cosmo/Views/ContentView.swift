@@ -27,6 +27,7 @@ struct CosmosConstants {
 // MARK: - Main View
 struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
+    @StateObject private var toastManager = ToastManager.shared
     @State private var currentPage: AppPage = AuthSessionStore.shared.hasValidLogin ? .explore : .landing
     @State private var showStars = true
 
@@ -43,13 +44,24 @@ struct ContentView: View {
             case .home, .explore, .theories, .quiz, .neo:
                 MainTabView(selectedTab: $currentPage, showStars: $showStars)
             }
+
+            ToastOverlayView(manager: toastManager)
+                .ignoresSafeArea(edges: .top)
+                .zIndex(999)
         }
         .onAppear {
             enforceSessionValidity()
+            Task { await SupabaseUploadQueue.shared.drain() }
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 enforceSessionValidity()
+                Task { await SupabaseUploadQueue.shared.drain() }
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .authDidLogout)) { _ in
+            withAnimation(.easeInOut(duration: 0.35)) {
+                currentPage = .landing
             }
         }
     }
@@ -60,7 +72,7 @@ struct ContentView: View {
 
         if !hasSession && isInMainApp {
             withAnimation(.easeInOut(duration: 0.35)) {
-                currentPage = .welcomeGate
+                currentPage = .landing
             }
         }
     }

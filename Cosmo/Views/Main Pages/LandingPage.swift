@@ -1,4 +1,7 @@
 import SwiftUI
+import AuthenticationServices
+import CryptoKit
+import Security
 
 struct LandingPage: View {
     @Binding var currentPage: AppPage
@@ -6,28 +9,27 @@ struct LandingPage: View {
     @State private var showSubtitle = false
     @State private var showButton = false
     @State private var orbitAngle: Double = 0
+    @State private var isAuthenticating = false
+    @State private var authErrorMessage: String?
+    @State private var currentNonce: String?
     
     var body: some View {
         ZStack {
-            // Background Color or Gradient
             LinearGradient(
                 gradient: Gradient(colors: [Color.black, Color.blue.opacity(0.6)]),
                 startPoint: .top,
                 endPoint: .bottom
             )
-            .edgesIgnoringSafeArea(.all) // Ensure the background covers the entire screen
+            .edgesIgnoringSafeArea(.all)
             
-            // Particle System for starry background effect
             ParticleSystem(particleCount: 100)
                 .opacity(0.5)
             
-            // The main orbiting planets animation
             OrbitingPlanetsView(orbitAngle: orbitAngle)
             
             VStack(spacing: 40) {
                 Spacer()
                 
-                // Title Group
                 VStack(spacing: 20) {
                     Text("COSMOS")
                         .font(.system(size: 60, weight: .bold))
@@ -45,22 +47,32 @@ struct LandingPage: View {
                 
                 Spacer()
                 
-                // Start Button and Subtitle
-                VStack(spacing: 20) {
-                    CosmosButton(text: "Continue") {
-                        withAnimation(.easeInOut(duration: 0.5)) {
-                            currentPage = .welcomeGate
+                VStack(spacing: 12) {
+                    SignInWithAppleButton(.signIn, onRequest: configureAppleSignInRequest, onCompletion: handleAppleSignInCompletion)
+                        .signInWithAppleButtonStyle(.white)
+                        .frame(height: 52)
+                        .clipShape(Capsule())
+                        .overlay {
+                            if isAuthenticating {
+                                ProgressView()
+                                    .tint(.black)
+                            }
                         }
+                        .disabled(isAuthenticating)
+                        .opacity(isAuthenticating ? 0.8 : 1)
+
+                    if let authErrorMessage {
+                        Text(authErrorMessage)
+                            .font(.footnote)
+                            .foregroundColor(.red.opacity(0.9))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 12)
                     }
-                    .opacity(showButton ? 1 : 0)
-                    .offset(y: showButton ? 0 : 50)
-                    
-                    Text("Tap to explore")
-                        .font(.subheadline)
-                        .foregroundColor(CosmosColors.secondaryText)
-                        .opacity(showButton ? 0.7 : 0)
                 }
-                .padding(.bottom, 50)
+                .padding(.horizontal, 24)
+                .opacity(showButton ? 1 : 0)
+                .offset(y: showButton ? 0 : 30)
+                .padding(.bottom, 60)
             }
         }
         .onAppear {
@@ -85,6 +97,88 @@ struct LandingPage: View {
         withAnimation(.linear(duration: 20).repeatForever(autoreverses: false)) {
             orbitAngle = 360
         }
+    }
+
+    private func configureAppleSignInRequest(_ request: ASAuthorizationAppleIDRequest) {
+        let nonce = randomNonceString()
+        currentNonce = nonce
+        authErrorMessage = nil
+        request.requestedScopes = [.fullName, .email]
+        request.nonce = sha256(nonce)
+    }
+
+    private func handleAppleSignInCompletion(_ result: Result<ASAuthorization, Error>) {
+        switch result {
+        case .failure(let error):
+            authErrorMessage = error.localizedDescription
+
+        case .success(let authorization):
+            guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else {
+                authErrorMessage = "Invalid Apple ID credentials."
+                return
+            }
+
+            guard
+                let tokenData = credential.identityToken,
+                let idToken = String(data: tokenData, encoding: .utf8)
+            else {
+                authErrorMessage = "Unable to read Apple identity token."
+                return
+            }
+
+            isAuthenticating = true
+            let fullName = credential.fullName?.formatted()
+
+            Task {
+                do {
+                    let session = try await SupabaseAuthService.shared.signInWithApple(idToken: idToken, rawNonce: currentNonce)
+                    AuthSessionStore.shared.persistSuccessfulLogin(session: session)
+                    try? await SupabaseProfileSyncService.shared.upsertCurrentProfile(displayName: fullName)
+                    await MainActor.run {
+                        isAuthenticating = false
+                        currentNonce = nil
+                        withAnimation(.easeInOut(duration: 0.45)) {
+                            currentPage = .explore
+                        }
+                    }
+                } catch {
+                    await MainActor.run {
+                        isAuthenticating = false
+                        currentNonce = nil
+                        authErrorMessage = error.localizedDescription
+                    }
+                }
+            }
+        }
+    }
+
+    private func sha256(_ input: String) -> String {
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        return hashedData.compactMap { String(format: "%02x", $0) }.joined()
+    }
+
+    private func randomNonceString(length: Int = 32) -> String {
+        precondition(length > 0)
+        let charset: [Character] = Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        var result = ""
+        var remainingLength = length
+
+        while remainingLength > 0 {
+            var random: UInt8 = 0
+            let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
+
+            if errorCode != errSecSuccess {
+                fatalError("Unable to generate nonce. SecRandomCopyBytes failed with code: \(errorCode)")
+            }
+
+            if random < charset.count {
+                result.append(charset[Int(random)])
+                remainingLength -= 1
+            }
+        }
+
+        return result
     }
 }
 

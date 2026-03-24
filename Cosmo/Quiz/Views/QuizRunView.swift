@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct QuizRunResult: Hashable {
+struct QuizRunResult: Hashable, Codable {
     let categoryId: String
     let questionIds: [String]
     let answersById: [String: Int]
@@ -231,6 +231,7 @@ struct QuizRunView: View {
 
     private func nextOrFinish() {
         if currentIndex >= questions.count - 1 {
+            uploadResultImmediately()
             showResults = true
             return
         }
@@ -238,6 +239,22 @@ struct QuizRunView: View {
         currentIndex += 1
         selectedIndex = nil
         revealAnswer = false
+    }
+
+    private func uploadResultImmediately() {
+        let result = makeResult()
+        DailyStreakStore.shared.recordActivity()
+        Task {
+            do {
+                try await SupabaseQuizSyncService.shared.uploadQuizRun(result)
+                ToastManager.shared.show("Run synced", style: .success)
+            } catch {
+                ToastManager.shared.show("Sync failed — will retry when online", style: .error)
+#if DEBUG
+                print("[QuizRun] Immediate sync failed: \(error.localizedDescription)")
+#endif
+            }
+        }
     }
 
     private func makeResult() -> QuizRunResult {

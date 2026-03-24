@@ -12,9 +12,15 @@ struct BlackHoleAnim: View {
                         let angle = CGFloat(t*0.45+fi*1.1)
                         cg.saveGState()
                         cg.translateBy(x: cx, y: cy); cg.rotate(by: angle); cg.scaleBy(x: 1, y: ry/r)
-                        UIColor(hue: max(0,0.08-fi*0.04), saturation: 0.9, brightness: 1-fi*0.3, alpha: 0.7-fi*0.06).setStroke()
-                        let e = UIBezierPath(ovalIn: CGRect(x: -r, y: -r, width: r*2, height: r*2))
-                        e.lineWidth = 2-fi*0.15; e.stroke()
+                        let stroke = UIColor(
+                            hue: max(0, 0.08 - fi * 0.04),
+                            saturation: 0.9,
+                            brightness: 1 - fi * 0.3,
+                            alpha: 0.7 - fi * 0.06
+                        )
+                        cg.setStrokeColor(stroke.cgColor)
+                        cg.setLineWidth(2 - fi * 0.15)
+                        cg.strokeEllipse(in: CGRect(x: -r, y: -r, width: r * 2, height: r * 2))
                         cg.restoreGState()
                     }
                 }

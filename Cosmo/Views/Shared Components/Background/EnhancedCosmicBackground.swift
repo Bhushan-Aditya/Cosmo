@@ -35,6 +35,7 @@ struct EnhancedCosmicBackground: View {
 
                 TimelineView(.animation) { timeline in
                     Canvas { context, size in
+                        guard size.width > 0, size.height > 0, !stars.isEmpty else { return }
                         let time = timeline.date.timeIntervalSinceReferenceDate
                         let center = CGPoint(x: size.width / 2, y: size.height / 2)
 

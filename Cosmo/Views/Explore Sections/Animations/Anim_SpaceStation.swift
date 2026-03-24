@@ -22,9 +22,9 @@ struct SpaceStationAnim: View {
                 // Elliptic outer ring
                 ctx.withCGContext { cg in
                     cg.saveGState(); cg.translateBy(x: cx, y: cy); cg.rotate(by: CGFloat(rotation)); cg.scaleBy(x: 1, y: 0.55)
-                    UIColor(white: 0.65, alpha: 0.7).setStroke()
-                    let ring = UIBezierPath(ovalIn: CGRect(x: -ringR, y: -ringR, width: ringR*2, height: ringR*2))
-                    ring.lineWidth = 2.5; ring.stroke()
+                    cg.setStrokeColor(UIColor(white: 0.65, alpha: 0.7).cgColor)
+                    cg.setLineWidth(2.5)
+                    cg.strokeEllipse(in: CGRect(x: -ringR, y: -ringR, width: ringR * 2, height: ringR * 2))
                     cg.restoreGState()
                 }
                 // Solar panels

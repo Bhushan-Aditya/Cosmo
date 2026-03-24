@@ -111,6 +111,7 @@ struct WelcomeGateView: View {
             }
 
             isAuthenticating = true
+            let fullName = credential.fullName?.formatted()
             logAuth("Apple sign-in success. User ID: \(credential.user)")
             logAuth("Apple email: \(credential.email ?? "nil"), fullName: \(credential.fullName?.formatted() ?? "nil")")
             logAuth("Apple identity token: \(idToken)")
@@ -118,8 +119,9 @@ struct WelcomeGateView: View {
             Task {
                 do {
                     let session = try await SupabaseAuthService.shared.signInWithApple(idToken: idToken, rawNonce: currentNonce)
+                    AuthSessionStore.shared.persistSuccessfulLogin(session: session)
+                    try? await SupabaseProfileSyncService.shared.upsertCurrentProfile(displayName: fullName)
                     await MainActor.run {
-                        AuthSessionStore.shared.persistSuccessfulLogin(session: session)
                         logAuth("Supabase auth success. User id: \(session.user.id), email: \(session.user.email ?? "nil")")
                         logAuth("Supabase access token: \(session.accessToken)")
                         logAuth("Supabase refresh token: \(session.refreshToken)")
@@ -185,4 +187,3 @@ struct WelcomeGateView_Previews: PreviewProvider {
     }
 }
 #endif
-

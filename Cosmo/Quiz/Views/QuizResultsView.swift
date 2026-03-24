@@ -203,4 +203,3 @@ private struct ReviewRow: View {
         .cosmoCard(cornerRadius: 18, strokeColor: accent.opacity(0.25), fillOpacity: 0.20)
     }
 }
-

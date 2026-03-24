@@ -23,7 +23,21 @@ struct NeoView: View {
                         GalagaGameView(
                             showInstructions: $showInstructions,
                             isPaused: $isPaused,
-                            topPadding: geometry.safeAreaInsets.top
+                            topPadding: geometry.safeAreaInsets.top,
+                            onGameCompleted: { snapshot in
+                                DailyStreakStore.shared.recordActivity()
+                                Task {
+                                    do {
+                                        try await SupabaseGameSyncService.shared.uploadGameSession(snapshot)
+                                        await ToastManager.shared.show("Session synced", style: .success)
+                                    } catch {
+                                        await ToastManager.shared.show("Sync failed — will retry when online", style: .error)
+#if DEBUG
+                                        print("[NeoView] Game sync failed: \(error.localizedDescription)")
+#endif
+                                    }
+                                }
+                            }
                         )
                         .transition(.opacity)
                     }
@@ -142,7 +156,7 @@ struct InstructionRow: View {
 // MARK: - Game Header
 struct GameHeaderView: View {
     @Binding var isPaused: Bool
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
@@ -196,6 +210,7 @@ struct GalagaGameView: UIViewRepresentable {
     @Binding var showInstructions: Bool
     @Binding var isPaused: Bool
     let topPadding: CGFloat
+    let onGameCompleted: (GameSessionSnapshot) -> Void
     
     func makeUIView(context: Context) -> SKView {
         let skView = SKView()
@@ -209,6 +224,7 @@ struct GalagaGameView: UIViewRepresentable {
         scene.scaleMode = .resizeFill
         scene.showInstructionsBinding = showInstructions
         scene.topSafeAreaInset = topPadding
+        scene.onGameCompleted = onGameCompleted
         skView.presentScene(scene)
         
         context.coordinator.scene = scene
@@ -222,6 +238,7 @@ struct GalagaGameView: UIViewRepresentable {
         if let scene = context.coordinator.scene {
             scene.showInstructionsBinding = showInstructions
             scene.isGamePaused = isPaused
+            scene.onGameCompleted = onGameCompleted
         }
     }
     
@@ -249,12 +266,15 @@ class GalagaGameScene: SKScene, SKPhysicsContactDelegate {
     private var restartButton: SKSpriteNode!
     private var restartLabel: SKLabelNode!
     private var isGameOver = false
+    private var didReportCurrentGame = false
     private var lastUpdateTime: TimeInterval = 0
     private var deltaTime: TimeInterval = 0
     private var wave = 1
     private var meteorsDestroyed = 0
+    private var gameStartedAt: Date = Date()
     var showInstructionsBinding = false
     var topSafeAreaInset: CGFloat = 0
+    var onGameCompleted: ((GameSessionSnapshot) -> Void)?
     var isGamePaused = false {
         didSet {
             handlePauseStateChange()
@@ -285,6 +305,8 @@ class GalagaGameScene: SKScene, SKPhysicsContactDelegate {
         setupBackground()
         setupPlayer()
         setupHUD()
+        gameStartedAt = Date()
+        didReportCurrentGame = false
         startSpawning()
     }
     
@@ -964,6 +986,19 @@ class GalagaGameScene: SKScene, SKPhysicsContactDelegate {
         removeAction(forKey: "spawning")
         removeAction(forKey: "powerUpSpawning")
         touchLocation = nil
+
+        if !didReportCurrentGame {
+            didReportCurrentGame = true
+            let duration = max(0, Int(Date().timeIntervalSince(gameStartedAt)))
+            onGameCompleted?(
+                GameSessionSnapshot(
+                    score: score,
+                    waveReached: wave,
+                    livesLeft: max(0, lives),
+                    durationSeconds: duration
+                )
+            )
+        }
         
         let overlay = SKShapeNode(rectOf: size)
         overlay.fillColor = UIColor.black.withAlphaComponent(0.75)
@@ -1074,6 +1109,8 @@ class GalagaGameScene: SKScene, SKPhysicsContactDelegate {
         wave = 1
         meteorsDestroyed = 0
         isGameOver = false
+        didReportCurrentGame = false
+        gameStartedAt = Date()
         lastFireTime = 0
         touchLocation = nil
         

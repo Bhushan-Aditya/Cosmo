@@ -330,6 +330,8 @@ struct ExplorePage: View {
                             Text("Cosmic Odyssey")
                                 .font(.system(size: 30, weight: .bold))
                                 .foregroundColor(.white)
+                            Spacer()
+                            ProfileTopButton()
                         }
                         Text("Explore the Universe · March 2026")
                             .font(.system(size: 14))
