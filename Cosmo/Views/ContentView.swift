@@ -46,7 +46,6 @@ struct ContentView: View {
             }
 
             ToastOverlayView(manager: toastManager)
-                .ignoresSafeArea(edges: .top)
                 .zIndex(999)
         }
         .onAppear {

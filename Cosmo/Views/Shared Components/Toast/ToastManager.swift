@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 // MARK: - Model
 
@@ -44,6 +45,7 @@ final class ToastManager: ObservableObject {
         withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
             current = Toast(message: message, style: style)
         }
+        playHaptic(for: style)
         dismissTask = Task {
             try? await Task.sleep(for: .seconds(3))
             guard !Task.isCancelled else { return }
@@ -59,6 +61,19 @@ final class ToastManager: ObservableObject {
             current = nil
         }
     }
+
+    private func playHaptic(for style: ToastStyle) {
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+        switch style {
+        case .success:
+            generator.notificationOccurred(.success)
+        case .error:
+            generator.notificationOccurred(.error)
+        case .info:
+            generator.notificationOccurred(.warning)
+        }
+    }
 }
 
 // MARK: - Overlay View
@@ -67,46 +82,46 @@ struct ToastOverlayView: View {
     @ObservedObject var manager: ToastManager
 
     var body: some View {
-        VStack {
-            if let toast = manager.current {
-                HStack(spacing: 10) {
-                    Image(systemName: toast.style.icon)
-                        .font(.system(size: 15, weight: .semibold))
-                        .foregroundColor(toast.style.tint)
+        GeometryReader { proxy in
+            VStack {
+                if let toast = manager.current {
+                    HStack(spacing: 10) {
+                        Image(systemName: toast.style.icon)
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundColor(toast.style.tint)
+                            .frame(width: 22, height: 22)
+                            .background(Color.white.opacity(0.14))
+                            .clipShape(Circle())
 
-                    Text(toast.message)
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(.white)
-                        .lineLimit(2)
-                        .fixedSize(horizontal: false, vertical: true)
+                        Text(toast.message)
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundStyle(.primary)
+                            .lineLimit(2)
+                            .fixedSize(horizontal: false, vertical: true)
 
-                    Spacer(minLength: 0)
-
-                    Button {
-                        manager.dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 11, weight: .bold))
-                            .foregroundColor(.white.opacity(0.5))
+                        Spacer(minLength: 0)
                     }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 13)
+                    .background(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .fill(.regularMaterial)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .stroke(Color.white.opacity(0.2), lineWidth: 0.8)
+                            )
+                    )
+                    .shadow(color: Color.black.opacity(0.22), radius: 10, x: 0, y: 4)
+                    .padding(.horizontal, 16)
+                    .padding(.top, max(proxy.safeAreaInsets.top + 12, 30))
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .top).combined(with: .opacity),
+                        removal: .opacity
+                    ))
+                    .onTapGesture { manager.dismiss() }
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
-                .background(
-                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .fill(Color.white.opacity(0.10))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .stroke(toast.style.tint.opacity(0.4), lineWidth: 1)
-                        )
-                )
-                .shadow(color: Color.black.opacity(0.3), radius: 12, x: 0, y: 4)
-                .padding(.horizontal, 20)
-                .padding(.top, 12)
-                .transition(.move(edge: .top).combined(with: .opacity))
-                .onTapGesture { manager.dismiss() }
+                Spacer()
             }
-            Spacer()
         }
         .animation(.spring(response: 0.35, dampingFraction: 0.8), value: manager.current?.id)
     }

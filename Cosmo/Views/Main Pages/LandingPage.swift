@@ -31,7 +31,7 @@ struct LandingPage: View {
                 Spacer()
                 
                 VStack(spacing: 20) {
-                    Text("COSMOS")
+                    Text("COSMO")
                         .font(.system(size: 60, weight: .bold))
                         .foregroundColor(CosmosColors.text)
                         .opacity(showTitle ? 1 : 0)
@@ -49,7 +49,7 @@ struct LandingPage: View {
                 
                 VStack(spacing: 12) {
                     SignInWithAppleButton(.signIn, onRequest: configureAppleSignInRequest, onCompletion: handleAppleSignInCompletion)
-                        .signInWithAppleButtonStyle(.white)
+                        .signInWithAppleButtonStyle(.black)
                         .frame(height: 52)
                         .clipShape(Capsule())
                         .overlay {

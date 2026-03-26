@@ -43,7 +43,7 @@ struct WelcomeGateView: View {
 
                 VStack(spacing: 12) {
                     SignInWithAppleButton(.continue, onRequest: configureAppleSignInRequest, onCompletion: handleAppleSignInCompletion)
-                        .signInWithAppleButtonStyle(.white)
+                        .signInWithAppleButtonStyle(.black)
                         .frame(height: 52)
                         .clipShape(Capsule())
                         .overlay {

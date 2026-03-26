@@ -225,7 +225,7 @@ struct QuizHomeView: View {
             switch restError {
             case .server(let status, let message):
                 if status == 404 || message.lowercased().contains("no published daily quiz") {
-                    return "Today's quiz isn't ready yet — it's generated nightly around 11:50 PM IST. Check back later!"
+                    return "Today's quiz isn't ready yet. Check back later!"
                 }
                 if status == 403 || message.lowercased().contains("attempt limit") {
                     return "You've used all your attempts for today. Come back tomorrow!"
