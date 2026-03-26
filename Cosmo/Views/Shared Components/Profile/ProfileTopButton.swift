@@ -29,6 +29,9 @@ struct ProfileTopButton: View {
 
 struct ProfilePageView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
+
+    private let privacyPolicyURL = URL(string: "https://drive.google.com/file/d/1piykY8GDwFMBhD48doJEZ6OHHBa0gp7S/view?usp=sharing")
 
     @State private var remoteProfile: RemoteProfile?
     @State private var dailyStreak = DailyStreakStore.shared.currentStreak
@@ -262,6 +265,15 @@ struct ProfilePageView: View {
                 )
             }
             .buttonStyle(.plain)
+
+            if let privacyPolicyURL {
+                Button {
+                    openURL(privacyPolicyURL)
+                } label: {
+                    actionRow(label: "Privacy Policy", icon: "hand.raised.fill", color: .white)
+                }
+                .buttonStyle(.plain)
+            }
 
             Button {
                 AuthSessionStore.shared.clearSession()
