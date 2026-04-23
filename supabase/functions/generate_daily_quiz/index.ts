@@ -27,6 +27,10 @@ interface ValidatedQuestion extends RawQuestion {
   question_hash: string;
 }
 
+interface JWTClaims {
+  role?: string;
+}
+
 // ─── Gemini generation ───────────────────────────────────────────────────────
 
 async function generateCandidates(existingHashes: Set<string>): Promise<ValidatedQuestion[]> {
@@ -120,6 +124,17 @@ function hashQuestion(prompt: string, options: string[]): string {
 // ─── Handler ─────────────────────────────────────────────────────────────────
 
 Deno.serve(async (req) => {
+  // Require trusted callers only (service role JWT by default).
+  const authHeader = req.headers.get("Authorization") ?? "";
+  if (!authHeader.startsWith("Bearer ")) {
+    return new Response(JSON.stringify({ ok: false, error: "Missing Authorization header" }), { status: 401 });
+  }
+
+  const claims = decodeJWTClaims(authHeader.slice("Bearer ".length));
+  if (claims.role !== "service_role") {
+    return new Response(JSON.stringify({ ok: false, error: "Forbidden" }), { status: 403 });
+  }
+
   // Allow health-check GET
   if (req.method === "GET") {
     return new Response(JSON.stringify({ ok: true }), { status: 200 });
@@ -263,3 +278,16 @@ Deno.serve(async (req) => {
     { status: 200 },
   );
 });
+
+function decodeJWTClaims(token: string): JWTClaims {
+  const parts = token.split(".");
+  if (parts.length < 2) return {};
+  const base64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+  const padding = base64.length % 4;
+  const padded = base64 + (padding > 0 ? "=".repeat(4 - padding) : "");
+  try {
+    return JSON.parse(atob(padded)) as JWTClaims;
+  } catch {
+    return {};
+  }
+}

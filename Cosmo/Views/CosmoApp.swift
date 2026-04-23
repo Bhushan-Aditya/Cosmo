@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct CosmosApp: App {
+    @StateObject private var purchaseManager = PurchaseManager.shared
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(purchaseManager)
         }
     }
 }

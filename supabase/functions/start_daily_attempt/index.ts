@@ -6,7 +6,7 @@ const ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
 const FREE_ATTEMPT_CAP = 1;
-const PRO_ATTEMPT_CAP = 5;
+const PRO_ATTEMPT_CAP = 3;
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -54,8 +54,9 @@ Deno.serve(async (req) => {
     .eq("user_id", userId)
     .maybeSingle();
 
-  const isPro = entitlement?.is_pro === true;
-  const cap = isPro ? PRO_ATTEMPT_CAP : FREE_ATTEMPT_CAP;
+  // `is_pro` is the DB column for Premium (paid tier).
+  const hasPremium = entitlement?.is_pro === true;
+  const cap = hasPremium ? PRO_ATTEMPT_CAP : FREE_ATTEMPT_CAP;
 
   const { count: usedCount } = await admin
     .from("daily_attempts")

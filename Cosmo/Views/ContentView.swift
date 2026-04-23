@@ -27,6 +27,7 @@ struct CosmosConstants {
 // MARK: - Main View
 struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
+    @EnvironmentObject private var purchaseManager: PurchaseManager
     @StateObject private var toastManager = ToastManager.shared
     @State private var currentPage: AppPage = AuthSessionStore.shared.hasValidLogin ? .explore : .landing
     @State private var showStars = true
@@ -51,11 +52,17 @@ struct ContentView: View {
         .onAppear {
             enforceSessionValidity()
             Task { await SupabaseUploadQueue.shared.drain() }
+            if AuthSessionStore.shared.hasValidLogin {
+                Task { await purchaseManager.refreshAndSyncEntitlements() }
+            }
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 enforceSessionValidity()
                 Task { await SupabaseUploadQueue.shared.drain() }
+                if AuthSessionStore.shared.hasValidLogin {
+                    Task { await purchaseManager.refreshAndSyncEntitlements() }
+                }
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .authDidLogout)) { _ in

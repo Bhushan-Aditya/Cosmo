@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct QuizHomeView: View {
+    @EnvironmentObject private var purchaseManager: PurchaseManager
     @StateObject private var dataStore = QuizDataStore()
     @StateObject private var statsStore = QuizStatsStore()
     @State private var remoteStatsByCategory: [String: QuizCategoryStats] = [:]
@@ -10,6 +11,7 @@ struct QuizHomeView: View {
     @State private var pendingDailyAttempt: DailyAttemptStartResponse?
     @State private var showDailyRun: Bool = false
     @State private var showLeaderboard: Bool = false
+    @State private var showPremiumPaywall: Bool = false
 
     var body: some View {
         ZStack {
@@ -44,6 +46,12 @@ struct QuizHomeView: View {
         }
         .navigationDestination(isPresented: $showLeaderboard) {
             DailyLeaderboardView(initialDate: attemptStatus.quizDate.isEmpty ? nil : attemptStatus.quizDate)
+        }
+        .sheet(isPresented: $showPremiumPaywall) {
+            PremiumPaywallSheet(context: .quizLimit) {
+                Task { await fetchDailyAttemptStatus() }
+            }
+            .environmentObject(purchaseManager)
         }
     }
 
@@ -162,7 +170,7 @@ struct QuizHomeView: View {
                         } else {
                             Image(systemName: "bolt.fill")
                         }
-                        Text(isStartingDailyAttempt ? "Starting..." : "Play Daily Quiz")
+                        Text(buttonTitle)
                             .font(.headline)
                     }
                     .foregroundColor(.white)
@@ -177,8 +185,8 @@ struct QuizHomeView: View {
                     )
                     .cornerRadius(14)
                 }
-                .disabled(isStartingDailyAttempt || !attemptStatus.hasAttemptsLeft || !AuthSessionStore.shared.hasValidLogin)
-                .opacity((isStartingDailyAttempt || !attemptStatus.hasAttemptsLeft) ? 0.65 : 1)
+                .disabled(isStartingDailyAttempt || !AuthSessionStore.shared.hasValidLogin)
+                .opacity((isStartingDailyAttempt || !AuthSessionStore.shared.hasValidLogin) ? 0.65 : 1)
             }
             .padding(14)
             .cosmoCard(
@@ -203,9 +211,19 @@ struct QuizHomeView: View {
     }
 
     private var attemptSubtitle: String {
-        attemptStatus.isPro
-        ? "Pro: \(attemptStatus.attemptsUsed)/5 attempts used today"
+        attemptStatus.hasPremium
+        ? "Premium: \(attemptStatus.attemptsUsed)/3 attempts used today"
         : "Free: \(attemptStatus.attemptsUsed)/1 attempt used today"
+    }
+
+    private var buttonTitle: String {
+        if isStartingDailyAttempt {
+            return "Starting..."
+        }
+        if !attemptStatus.hasAttemptsLeft {
+            return "Upgrade for More Attempts"
+        }
+        return "Play Daily Quiz"
     }
 
     private func mergedStats(for categoryId: String) -> QuizCategoryStats {
@@ -228,7 +246,7 @@ struct QuizHomeView: View {
                     return "Today's quiz isn't ready yet. Check back later!"
                 }
                 if status == 403 || message.lowercased().contains("attempt limit") {
-                    return "You've used all your attempts for today. Come back tomorrow!"
+                    return "You've used all your attempts for today. Upgrade to Premium for up to 3 attempts."
                 }
                 return message
             case .notAuthenticated:
@@ -274,7 +292,8 @@ struct QuizHomeView: View {
             return
         }
         guard attemptStatus.hasAttemptsLeft else {
-            dailyStartError = "Daily limit reached. Come back tomorrow for more."
+            dailyStartError = "Daily limit reached for Free. Upgrade to Premium for 3 attempts/day."
+            showPremiumPaywall = true
             return
         }
 
@@ -287,6 +306,9 @@ struct QuizHomeView: View {
             showDailyRun = true
             await fetchDailyAttemptStatus()
         } catch {
+            if case let SupabaseRESTError.server(status, _) = error, status == 403 {
+                showPremiumPaywall = true
+            }
             dailyStartError = friendlyQuizError(error)
         }
     }

@@ -3,9 +3,11 @@ import SpriteKit
 
 // MARK: - Neo View (Galaga-Style Space Shooter)
 struct NeoView: View {
+    @EnvironmentObject private var purchaseManager: PurchaseManager
     @State private var showGame = false
     @State private var showInstructions = true
     @State private var isPaused = false
+    @State private var showPremiumPaywall = false
 
     var body: some View {
         GeometryReader { geometry in
@@ -23,7 +25,11 @@ struct NeoView: View {
                         GalagaGameView(
                             showInstructions: $showInstructions,
                             isPaused: $isPaused,
+                            hasPremium: purchaseManager.hasPremium,
                             topPadding: geometry.safeAreaInsets.top,
+                            onPremiumRequired: {
+                                showPremiumPaywall = true
+                            },
                             onGameCompleted: { snapshot in
                                 DailyStreakStore.shared.recordActivity()
                                 Task {
@@ -54,6 +60,10 @@ struct NeoView: View {
             withAnimation(.easeIn(duration: 0.3)) {
                 showGame = true
             }
+        }
+        .sheet(isPresented: $showPremiumPaywall) {
+            PremiumPaywallSheet(context: .gameContinue)
+                .environmentObject(purchaseManager)
         }
         .preferredColorScheme(.dark)
         .ignoresSafeArea(.all, edges: .bottom)
@@ -209,7 +219,9 @@ struct GameHeaderView: View {
 struct GalagaGameView: UIViewRepresentable {
     @Binding var showInstructions: Bool
     @Binding var isPaused: Bool
+    let hasPremium: Bool
     let topPadding: CGFloat
+    let onPremiumRequired: () -> Void
     let onGameCompleted: (GameSessionSnapshot) -> Void
     
     func makeUIView(context: Context) -> SKView {
@@ -224,6 +236,8 @@ struct GalagaGameView: UIViewRepresentable {
         scene.scaleMode = .resizeFill
         scene.showInstructionsBinding = showInstructions
         scene.topSafeAreaInset = topPadding
+        scene.hasPremiumAccess = hasPremium
+        scene.onPremiumRequired = onPremiumRequired
         scene.onGameCompleted = onGameCompleted
         skView.presentScene(scene)
         
@@ -238,6 +252,8 @@ struct GalagaGameView: UIViewRepresentable {
         if let scene = context.coordinator.scene {
             scene.showInstructionsBinding = showInstructions
             scene.isGamePaused = isPaused
+            scene.hasPremiumAccess = hasPremium
+            scene.onPremiumRequired = onPremiumRequired
             scene.onGameCompleted = onGameCompleted
         }
     }
@@ -265,7 +281,10 @@ class GalagaGameScene: SKScene, SKPhysicsContactDelegate {
     private var gameOverLabel: SKLabelNode!
     private var restartButton: SKSpriteNode!
     private var restartLabel: SKLabelNode!
+    private var continueButton: SKSpriteNode?
+    private var continueButtonBackground: SKShapeNode?
     private var isGameOver = false
+    private var didUseContinueInCurrentRun = false
     private var didReportCurrentGame = false
     private var lastUpdateTime: TimeInterval = 0
     private var deltaTime: TimeInterval = 0
@@ -274,6 +293,13 @@ class GalagaGameScene: SKScene, SKPhysicsContactDelegate {
     private var gameStartedAt: Date = Date()
     var showInstructionsBinding = false
     var topSafeAreaInset: CGFloat = 0
+    var hasPremiumAccess = false {
+        didSet {
+            guard oldValue != hasPremiumAccess, isGameOver else { return }
+            refreshGameOverButtons()
+        }
+    }
+    var onPremiumRequired: (() -> Void)?
     var onGameCompleted: ((GameSessionSnapshot) -> Void)?
     var isGamePaused = false {
         didSet {
@@ -685,7 +711,15 @@ class GalagaGameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         if isGameOver {
-            if restartButton.contains(location) {
+            if let continueButton, continueButton.contains(location) {
+                if hasPremiumAccess && !didUseContinueInCurrentRun {
+                    continueGameFromGameOver()
+                } else {
+                    onPremiumRequired?()
+                }
+                return
+            }
+            if let restartButton, restartButton.contains(location) {
                 restartGame()
             }
             return
@@ -986,18 +1020,12 @@ class GalagaGameScene: SKScene, SKPhysicsContactDelegate {
         removeAction(forKey: "spawning")
         removeAction(forKey: "powerUpSpawning")
         touchLocation = nil
+        clearGameOverOverlayNodes()
 
-        if !didReportCurrentGame {
-            didReportCurrentGame = true
-            let duration = max(0, Int(Date().timeIntervalSince(gameStartedAt)))
-            onGameCompleted?(
-                GameSessionSnapshot(
-                    score: score,
-                    waveReached: wave,
-                    livesLeft: max(0, lives),
-                    durationSeconds: duration
-                )
-            )
+        let canContinue = hasPremiumAccess && !didUseContinueInCurrentRun
+        let shouldShowSecondaryButton = canContinue || !hasPremiumAccess
+        if !canContinue {
+            finalizeCurrentGameIfNeeded()
         }
         
         let overlay = SKShapeNode(rectOf: size)
@@ -1010,7 +1038,9 @@ class GalagaGameScene: SKScene, SKPhysicsContactDelegate {
         addChild(overlay)
         
         let cardWidth: CGFloat = min(340, size.width - 60)
-        let cardHeight: CGFloat = 300
+        // Inset buttons from card edge so stroke + glow don't clip the rounded card corners
+        let buttonWidth: CGFloat = min(250, max(200, cardWidth - 40))
+        let cardHeight: CGFloat = shouldShowSecondaryButton ? 400 : 300
         let cardBackground = SKShapeNode(rectOf: CGSize(width: cardWidth, height: cardHeight), cornerRadius: 32)
         cardBackground.fillColor = UIColor.black.withAlphaComponent(0.6)
         cardBackground.strokeColor = UIColor.white.withAlphaComponent(0.2)
@@ -1051,19 +1081,22 @@ class GalagaGameScene: SKScene, SKPhysicsContactDelegate {
         scoreValueLabel.name = "scoreValue"
         addChild(scoreValueLabel)
         
-        let buttonBackground = SKShapeNode(rectOf: CGSize(width: 240, height: 56), cornerRadius: 28)
+        let buttonHeight: CGFloat = 50
+        let cornerRadius: CGFloat = buttonHeight / 2
+        let restartY: CGFloat = shouldShowSecondaryButton ? (size.height / 2 - 140) : (size.height / 2 - 100)
+        let buttonBackground = SKShapeNode(rectOf: CGSize(width: buttonWidth, height: buttonHeight), cornerRadius: cornerRadius)
         buttonBackground.fillColor = UIColor(red: 0.3, green: 0.8, blue: 1.0, alpha: 0.25)
         buttonBackground.strokeColor = UIColor(red: 0.3, green: 0.8, blue: 1.0, alpha: 1.0)
         buttonBackground.lineWidth = 2
-        buttonBackground.glowWidth = 4
-        buttonBackground.position = CGPoint(x: size.width / 2, y: size.height / 2 - 105)
+        buttonBackground.glowWidth = 2
+        buttonBackground.position = CGPoint(x: size.width / 2, y: restartY)
         buttonBackground.zPosition = 199
         buttonBackground.alpha = 0
         buttonBackground.name = "restartButtonBackground"
         addChild(buttonBackground)
-        
-        restartButton = SKSpriteNode(color: .clear, size: CGSize(width: 240, height: 56))
-        restartButton.position = CGPoint(x: size.width / 2, y: size.height / 2 - 105)
+
+        restartButton = SKSpriteNode(color: .clear, size: CGSize(width: buttonWidth, height: buttonHeight))
+        restartButton.position = CGPoint(x: size.width / 2, y: restartY)
         restartButton.zPosition = 200
         restartButton.alpha = 0
         restartButton.name = "restartButton"
@@ -1076,6 +1109,16 @@ class GalagaGameScene: SKScene, SKPhysicsContactDelegate {
         restartLabel.position = CGPoint(x: 0, y: -7)
         restartLabel.zPosition = 201
         restartButton.addChild(restartLabel)
+
+        if shouldShowSecondaryButton {
+            addContinueOrUpgradeButton(
+                y: size.height / 2 - 66,
+                buttonWidth: buttonWidth,
+                buttonHeight: buttonHeight,
+                cornerRadius: cornerRadius,
+                canContinue: canContinue
+            )
+        }
         
         overlay.run(SKAction.fadeAlpha(to: 0.75, duration: 0.4))
         cardBackground.run(SKAction.fadeIn(withDuration: 0.5))
@@ -1100,20 +1143,138 @@ class GalagaGameScene: SKScene, SKPhysicsContactDelegate {
             SKAction.fadeIn(withDuration: 0.4)
         ]))
     }
-    
+
+    private func addContinueOrUpgradeButton(
+        y: CGFloat,
+        buttonWidth: CGFloat,
+        buttonHeight: CGFloat,
+        cornerRadius: CGFloat,
+        canContinue: Bool
+    ) {
+        let buttonBackground = SKShapeNode(rectOf: CGSize(width: buttonWidth, height: buttonHeight), cornerRadius: cornerRadius)
+        buttonBackground.fillColor = canContinue
+        ? UIColor(red: 0.95, green: 0.82, blue: 0.45, alpha: 0.25)
+        : UIColor.white.withAlphaComponent(0.12)
+        buttonBackground.strokeColor = canContinue
+        ? UIColor(red: 0.95, green: 0.82, blue: 0.45, alpha: 1.0)
+        : UIColor.white.withAlphaComponent(0.35)
+        buttonBackground.lineWidth = 2
+        buttonBackground.glowWidth = 2
+        buttonBackground.position = CGPoint(x: size.width / 2, y: y)
+        buttonBackground.zPosition = 199
+        buttonBackground.alpha = 0
+        buttonBackground.name = "continueButtonBackground"
+        addChild(buttonBackground)
+        continueButtonBackground = buttonBackground
+
+        let button = SKSpriteNode(color: .clear, size: CGSize(width: buttonWidth, height: buttonHeight))
+        button.position = CGPoint(x: size.width / 2, y: y)
+        button.zPosition = 200
+        button.alpha = 0
+        button.name = "continueButton"
+        addChild(button)
+        continueButton = button
+
+        let label = SKLabelNode(fontNamed: "AvenirNext-Bold")
+        label.text = canContinue ? "CONTINUE RUN" : "UNLOCK PREMIUM"
+        label.fontSize = 18
+        label.fontColor = .white
+        label.position = CGPoint(x: 0, y: -7)
+        label.zPosition = 201
+        button.addChild(label)
+
+        buttonBackground.run(SKAction.sequence([
+            SKAction.wait(forDuration: 0.6),
+            SKAction.fadeIn(withDuration: 0.3)
+        ]))
+        button.run(SKAction.sequence([
+            SKAction.wait(forDuration: 0.6),
+            SKAction.fadeIn(withDuration: 0.3)
+        ]))
+    }
+
+    private func refreshGameOverButtons() {
+        guard isGameOver else { return }
+
+        clearGameOverOverlayNodes()
+        gameOver()
+    }
+
+    private func continueGameFromGameOver() {
+        didUseContinueInCurrentRun = true
+        isGameOver = false
+        lives = 1
+        updateLivesLabel()
+
+        clearGameOverOverlayNodes()
+
+        enumerateChildNodes(withName: "meteor") { node, _ in node.removeFromParent() }
+        enumerateChildNodes(withName: "powerUp") { node, _ in node.removeFromParent() }
+        enumerateChildNodes(withName: "bullet") { node, _ in node.removeFromParent() }
+
+        let continueLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
+        continueLabel.text = "CONTINUE USED"
+        continueLabel.fontSize = 22
+        continueLabel.fontColor = UIColor(red: 0.95, green: 0.82, blue: 0.45, alpha: 1.0)
+        continueLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        continueLabel.alpha = 0
+        continueLabel.zPosition = 220
+        addChild(continueLabel)
+
+        continueLabel.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 0.2),
+            SKAction.wait(forDuration: 0.45),
+            SKAction.fadeOut(withDuration: 0.25),
+            SKAction.removeFromParent()
+        ]))
+
+        startSpawning()
+    }
+
+    private func clearGameOverOverlayNodes() {
+        enumerateChildNodes(withName: "gameOver*") { node, _ in
+            node.removeFromParent()
+        }
+        childNode(withName: "restartButtonBackground")?.removeFromParent()
+        childNode(withName: "continueButtonBackground")?.removeFromParent()
+        childNode(withName: "restartButton")?.removeFromParent()
+        childNode(withName: "continueButton")?.removeFromParent()
+        restartButton = nil
+        restartLabel = nil
+        continueButton = nil
+        continueButtonBackground = nil
+    }
+
+    private func finalizeCurrentGameIfNeeded() {
+        guard !didReportCurrentGame else { return }
+        didReportCurrentGame = true
+
+        let duration = max(0, Int(Date().timeIntervalSince(gameStartedAt)))
+        onGameCompleted?(
+            GameSessionSnapshot(
+                score: score,
+                waveReached: wave,
+                livesLeft: max(0, lives),
+                durationSeconds: duration
+            )
+        )
+    }
+
     private func restartGame() {
+        finalizeCurrentGameIfNeeded()
         removeAllChildren()
-        
+
         score = 0
         lives = 3
         wave = 1
         meteorsDestroyed = 0
         isGameOver = false
+        didUseContinueInCurrentRun = false
         didReportCurrentGame = false
         gameStartedAt = Date()
         lastFireTime = 0
         touchLocation = nil
-        
+
         setupBackground()
         setupPlayer()
         setupHUD()

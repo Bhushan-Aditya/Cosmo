@@ -82,11 +82,11 @@ final class SupabaseDailyQuizService {
         let attempts = try await attemptsResult
         let entitlements = try await entitlementResult
 
-        let isPro = entitlements.first?.isPro ?? false
+        let hasPremium = entitlements.first?.hasPremium ?? false
         return DailyAttemptStatus(
             quizDate: today,
             attemptsUsed: attempts.count,
-            isPro: isPro
+            hasPremium: hasPremium
         )
     }
 
@@ -213,9 +213,9 @@ private struct EmptyRow: Decodable {
 }
 
 private struct EntitlementRow: Decodable {
-    let isPro: Bool
+    let hasPremium: Bool
 
     enum CodingKeys: String, CodingKey {
-        case isPro = "is_pro"
+        case hasPremium = "is_pro"
     }
 }

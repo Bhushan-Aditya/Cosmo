@@ -128,12 +128,18 @@ struct LandingPage: View {
 
             isAuthenticating = true
             let fullName = credential.fullName?.formatted()
+            let authorizationCode = credential.authorizationCode
+                .flatMap { String(data: $0, encoding: .utf8) }
 
             Task {
                 do {
                     let session = try await SupabaseAuthService.shared.signInWithApple(idToken: idToken, rawNonce: currentNonce)
                     AuthSessionStore.shared.persistSuccessfulLogin(session: session)
                     try? await SupabaseProfileSyncService.shared.upsertCurrentProfile(displayName: fullName)
+                    if let authorizationCode, !authorizationCode.isEmpty {
+                        await SupabaseAppleAccountService.shared.storeAppleRefreshToken(authorizationCode: authorizationCode)
+                    }
+                    await PurchaseManager.shared.refreshAndSyncEntitlements()
                     await MainActor.run {
                         isAuthenticating = false
                         currentNonce = nil

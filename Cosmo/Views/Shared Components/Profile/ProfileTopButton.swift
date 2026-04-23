@@ -30,6 +30,7 @@ struct ProfileTopButton: View {
 struct ProfilePageView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
+    @EnvironmentObject private var purchaseManager: PurchaseManager
 
     private let privacyPolicyURL = URL(string: "https://drive.google.com/file/d/1piykY8GDwFMBhD48doJEZ6OHHBa0gp7S/view?usp=sharing")
 
@@ -41,8 +42,10 @@ struct ProfilePageView: View {
     @State private var draftName = ""
     @State private var isSavingName = false
 
-    @State private var isSyncing = false
     @State private var showDeleteConfirm = false
+    @State private var showPremiumPaywall = false
+    @State private var isRestoringPurchases = false
+    @State private var isDeletingAccount = false
 
     private var email: String? { AuthSessionStore.shared.currentEmail }
 
@@ -62,6 +65,10 @@ struct ProfilePageView: View {
                         .padding(.horizontal, 20)
                         .padding(.bottom, 24)
 
+                    membershipCard
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 24)
+
                     historySection
                         .padding(.horizontal, 20)
                         .padding(.bottom, 24)
@@ -71,7 +78,16 @@ struct ProfilePageView: View {
                         .padding(.bottom, 40)
                 }
             }
+
+            if isDeletingAccount {
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                ProgressView()
+                    .tint(.white)
+                    .scaleEffect(1.2)
+            }
         }
+        .allowsHitTesting(!isDeletingAccount)
         .preferredColorScheme(.dark)
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.inline)
@@ -87,10 +103,17 @@ struct ProfilePageView: View {
             Task { await loadProfile() }
         }
         .alert("Delete Account Data", isPresented: $showDeleteConfirm) {
-            Button("Delete", role: .destructive) { deleteAccountData() }
+            Button("Delete", role: .destructive) {
+                Task { await deleteAccountData() }
+            }
+            .disabled(isDeletingAccount)
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("This clears all local data and signs you out. Your remote history is preserved.")
+            Text("This permanently deletes your account and all synced data from our database. This cannot be undone.")
+        }
+        .sheet(isPresented: $showPremiumPaywall) {
+            PremiumPaywallSheet(context: .profile)
+                .environmentObject(purchaseManager)
         }
     }
 
@@ -183,18 +206,18 @@ struct ProfilePageView: View {
                     .foregroundColor(.white.opacity(0.7))
             }
 
-            HStack(alignment: .firstTextBaseline, spacing: 6) {
-                Text("\(dailyStreak)")
-                    .font(.system(size: 48, weight: .bold))
-                    .foregroundColor(.white)
-                VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(alignment: .lastTextBaseline, spacing: 6) {
+                    Text("\(dailyStreak)")
+                        .font(.system(size: 48, weight: .bold, design: .rounded))
+                        .foregroundColor(.white)
                     Text("days")
-                        .font(.system(size: 14))
+                        .font(.system(size: 18, weight: .semibold, design: .rounded))
                         .foregroundColor(.white.opacity(0.5))
-                    Text("Best: \(dailyBest)")
-                        .font(.system(size: 12))
-                        .foregroundColor(.white.opacity(0.35))
                 }
+                Text("Best: \(dailyBest)")
+                    .font(.system(size: 12))
+                    .foregroundColor(.white.opacity(0.35))
             }
 
             Text(dailyStreak == 0
@@ -206,6 +229,95 @@ struct ProfilePageView: View {
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .cosmoCard(cornerRadius: 18, strokeColor: Color.orange.opacity(0.35), fillOpacity: 0.14)
+    }
+
+    // MARK: - Membership
+
+    private var membershipCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 8) {
+                Image(systemName: purchaseManager.hasPremium ? "star.circle.fill" : "person.crop.circle")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(purchaseManager.hasPremium ? .yellow : .white.opacity(0.85))
+                Text("Membership")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundColor(.white.opacity(0.72))
+                Spacer()
+                Text(purchaseManager.hasPremium ? "Premium" : "Free")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(
+                        Capsule()
+                            .fill(purchaseManager.hasPremium ? Color.yellow.opacity(0.35) : Color.white.opacity(0.16))
+                    )
+            }
+
+            Text(
+                purchaseManager.hasPremium
+                ? "3 quiz attempts/day · 1 continue per game run"
+                : "1 quiz attempt/day · no game continue"
+            )
+            .font(.system(size: 13, weight: .medium))
+            .foregroundColor(.white.opacity(0.6))
+
+            HStack(spacing: 10) {
+                if !purchaseManager.hasPremium {
+                    Button {
+                        showPremiumPaywall = true
+                    } label: {
+                        Label("Upgrade", systemImage: "sparkles")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 10)
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color.purple.opacity(0.6))
+                            )
+                    }
+                    .buttonStyle(.plain)
+                }
+
+                Button {
+                    Task { await restorePremium() }
+                } label: {
+                    HStack(spacing: 8) {
+                        if isRestoringPurchases {
+                            ProgressView().tint(.white).scaleEffect(0.8)
+                        } else {
+                            Image(systemName: "arrow.clockwise")
+                                .font(.system(size: 13, weight: .semibold))
+                        }
+                        Text(isRestoringPurchases ? "Restoring..." : "Restore")
+                            .font(.system(size: 14, weight: .semibold))
+                    }
+                    .foregroundColor(.white.opacity(0.9))
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 10)
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.white.opacity(0.1))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.white.opacity(0.18), lineWidth: 1)
+                            )
+                    )
+                }
+                .buttonStyle(.plain)
+                .disabled(isRestoringPurchases)
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .cosmoCard(
+            cornerRadius: 18,
+            strokeColor: purchaseManager.hasPremium ? Color.yellow.opacity(0.45) : Color.white.opacity(0.2),
+            fillOpacity: 0.14
+        )
     }
 
     // MARK: - History
@@ -235,37 +347,6 @@ struct ProfilePageView: View {
         VStack(spacing: 10) {
             sectionHeader("Settings")
 
-            Button {
-                guard !isSyncing else { return }
-                isSyncing = true
-                Task {
-                    await SupabaseUploadQueue.shared.drain()
-                    isSyncing = false
-                    ToastManager.shared.show("Sync complete", style: .success)
-                }
-            } label: {
-                HStack {
-                    Image(systemName: "arrow.triangle.2.circlepath")
-                        .font(.system(size: 15, weight: .semibold))
-                        .foregroundColor(.white)
-                    Text(isSyncing ? "Syncing…" : "Sync Now")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                    Spacer()
-                    if isSyncing {
-                        ProgressView().tint(.white).scaleEffect(0.8)
-                    }
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 14)
-                .background(
-                    RoundedRectangle(cornerRadius: 14)
-                        .fill(Color.white.opacity(0.08))
-                        .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.white.opacity(0.12), lineWidth: 1))
-                )
-            }
-            .buttonStyle(.plain)
-
             if let privacyPolicyURL {
                 Button {
                     openURL(privacyPolicyURL)
@@ -284,9 +365,14 @@ struct ProfilePageView: View {
             .buttonStyle(.plain)
 
             Button { showDeleteConfirm = true } label: {
-                actionRow(label: "Delete Account Data", icon: "trash", color: .red)
+                actionRow(
+                    label: isDeletingAccount ? "Deleting…" : "Delete Account Data",
+                    icon: "trash",
+                    color: .red
+                )
             }
             .buttonStyle(.plain)
+            .disabled(isDeletingAccount)
         }
     }
 
@@ -368,11 +454,53 @@ struct ProfilePageView: View {
         isSavingName = false
     }
 
-    private func deleteAccountData() {
+    @MainActor
+    private func deleteAccountData() async {
+        guard !isDeletingAccount else { return }
+        isDeletingAccount = true
+        defer { isDeletingAccount = false }
+
+        do {
+            try await SupabaseAccountService.shared.deleteCurrentAccount()
+            clearLocalAccountData()
+            ToastManager.shared.show("Account deleted", style: .success)
+            dismiss()
+        } catch {
+            let message: String
+            if let rest = error as? SupabaseRESTError {
+                switch rest {
+                case .notAuthenticated:
+                    message = "Session expired. Sign in and try again."
+                case .server(_, let details):
+                    message = details
+                default:
+                    message = "Failed to delete account."
+                }
+            } else {
+                message = error.localizedDescription
+            }
+            ToastManager.shared.show(message, style: .error)
+        }
+    }
+
+    private func clearLocalAccountData() {
         DailyStreakStore.shared.clearAll()
         UserDefaults.standard.removeObject(forKey: "cosmo.quiz.stats.v1")
         UserDefaults.standard.removeObject(forKey: "supabase.pendingUploads")
+        PurchaseManager.shared.resetLocalStateAfterServerAccountDeleted()
         AuthSessionStore.shared.clearSession()
-        dismiss()
+    }
+
+    @MainActor
+    private func restorePremium() async {
+        isRestoringPurchases = true
+        defer { isRestoringPurchases = false }
+
+        let restored = await purchaseManager.restorePurchases()
+        if restored {
+            ToastManager.shared.show("Premium restored", style: .success)
+        } else {
+            ToastManager.shared.show("No premium purchase found", style: .info)
+        }
     }
 }

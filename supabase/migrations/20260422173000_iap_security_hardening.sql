@@ -1,6 +1,35 @@
--- Fix nightly daily-quiz scheduler runtime failures caused by missing custom DB settings.
--- This migration now avoids hardcoded bearer tokens and uses DB settings instead.
+-- IAP security hardening
+-- 1) Prevent client-side entitlement escalation by removing write policies.
+-- 2) Reschedule daily quiz cron job without hardcoded bearer tokens.
 
+-- Lock entitlement mutations to trusted server-side actors (service_role).
+drop policy if exists "user_entitlements_insert_own" on public.user_entitlements;
+drop policy if exists "user_entitlements_update_own" on public.user_entitlements;
+
+-- Keep read access for users to their own entitlement snapshot.
+-- (No-op if already exists from prior migration.)
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policies
+    where schemaname = 'public'
+      and tablename = 'user_entitlements'
+      and policyname = 'user_entitlements_select_own'
+  ) then
+    create policy "user_entitlements_select_own"
+    on public.user_entitlements
+    for select
+    using (auth.uid() = user_id);
+  end if;
+end
+$$;
+
+-- Secure scheduler configuration:
+-- Requires DB settings:
+--   app.supabase_url
+--   app.service_role_key
+-- If missing, we intentionally skip scheduling to avoid insecure fallback.
 do $$
 declare
   v_job_id bigint;
@@ -35,7 +64,7 @@ begin
     end if;
 
     if v_service_role_key is null then
-      raise notice 'app.service_role_key is not configured; skipped secure schedule creation';
+      raise notice 'app.service_role_key is not configured; skipped generate_daily_quiz_nightly scheduling';
     else
       perform cron.schedule(
         'generate_daily_quiz_nightly',
@@ -56,7 +85,7 @@ begin
         )
       );
 
-      raise notice 'Scheduled generate_daily_quiz_nightly with secure service role auth at 23:50 IST';
+      raise notice 'Scheduled generate_daily_quiz_nightly with service role auth at 23:50 IST (18:20 UTC)';
     end if;
   else
     raise notice 'cron/net schema not available; nightly schedule not created';

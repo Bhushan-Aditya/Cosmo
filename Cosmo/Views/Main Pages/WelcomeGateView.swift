@@ -112,6 +112,8 @@ struct WelcomeGateView: View {
 
             isAuthenticating = true
             let fullName = credential.fullName?.formatted()
+            let authorizationCode = credential.authorizationCode
+                .flatMap { String(data: $0, encoding: .utf8) }
             logAuth("Apple sign-in success. User ID: \(credential.user)")
             logAuth("Apple email: \(credential.email ?? "nil"), fullName: \(credential.fullName?.formatted() ?? "nil")")
             logAuth("Apple identity token: \(idToken)")
@@ -121,6 +123,10 @@ struct WelcomeGateView: View {
                     let session = try await SupabaseAuthService.shared.signInWithApple(idToken: idToken, rawNonce: currentNonce)
                     AuthSessionStore.shared.persistSuccessfulLogin(session: session)
                     try? await SupabaseProfileSyncService.shared.upsertCurrentProfile(displayName: fullName)
+                    if let authorizationCode, !authorizationCode.isEmpty {
+                        await SupabaseAppleAccountService.shared.storeAppleRefreshToken(authorizationCode: authorizationCode)
+                    }
+                    await PurchaseManager.shared.refreshAndSyncEntitlements()
                     await MainActor.run {
                         logAuth("Supabase auth success. User id: \(session.user.id), email: \(session.user.email ?? "nil")")
                         logAuth("Supabase access token: \(session.accessToken)")

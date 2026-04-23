@@ -259,6 +259,18 @@ struct DailyQuizRunView: View {
                     attemptId: attemptResponse.attemptId,
                     answers: collectedAnswers
                 )
+                let mirror = QuizRunResult(
+                    categoryId: "daily_quiz",
+                    questionIds: questions.map(\.id),
+                    answersById: Dictionary(uniqueKeysWithValues: collectedAnswers.map { a in
+                        (a.questionId, a.selectedIndex ?? -1)
+                    }),
+                    correctCount: res.correctCount,
+                    totalCount: questions.count
+                )
+                Task {
+                    try? await SupabaseQuizSyncService.shared.uploadQuizRun(mirror, enqueueOnFailure: true)
+                }
                 await MainActor.run {
                     isSubmitting = false
                     result = res

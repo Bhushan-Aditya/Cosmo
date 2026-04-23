@@ -221,6 +221,11 @@ struct TheoryExplorerView: View {
         }
         .onAppear {
             startCosmicAnimations()
+            // Keep this on the root view (like ExplorePage). A nested .onAppear on LazyVStack
+            // is unreliable the first time a TabView tab is shown, leaving cards at opacity 0.
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.1)) {
+                animateCards = true
+            }
         }
         .preferredColorScheme(.dark)
         .sheet(isPresented: $showTheoryDetail) {
@@ -316,11 +321,6 @@ struct TheoryExplorerView: View {
         }
         .padding(.horizontal, 16)
         .padding(.bottom, 100)
-        .onAppear {
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.1)) {
-                animateCards = true
-            }
-        }
     }
 
 

@@ -333,7 +333,7 @@ struct ExplorePage: View {
                             Spacer()
                             ProfileTopButton()
                         }
-                        Text("Explore the Universe · March 2026")
+                        Text("Explore the Universe")
                             .font(.system(size: 14))
                             .foregroundColor(.white.opacity(0.55))
                     }

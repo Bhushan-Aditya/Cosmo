@@ -106,13 +106,14 @@ struct DailyLeaderboardEntry: Decodable, Identifiable {
 struct DailyAttemptStatus {
     let quizDate: String
     let attemptsUsed: Int
-    let isPro: Bool
+    /// Matches StoreKit / profile “Premium”; stored in Supabase as `is_pro`.
+    let hasPremium: Bool
 
-    var cap: Int { isPro ? 5 : 1 }
+    var cap: Int { hasPremium ? 3 : 1 }
     var attemptsRemaining: Int { max(0, cap - attemptsUsed) }
     var hasAttemptsLeft: Bool { attemptsRemaining > 0 }
 
-    static let unavailable = DailyAttemptStatus(quizDate: "", attemptsUsed: 0, isPro: false)
+    static let unavailable = DailyAttemptStatus(quizDate: "", attemptsUsed: 0, hasPremium: false)
 }
 
 // MARK: - Edge function error
